@@ -45,8 +45,9 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$fireba
 				if (snapshot.exists()){
 					$scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
 					$localStorage.userDetail=$scope.userDetail;
-					SessionService.setUserAuthenticated(true);
 					$window.location.href = '#/upcomingDonations';
+					SessionService.setUserAuthenticated(true);
+					window.location.reload(true);
 				}else{
 					$scope.errorMessage = "Mobile number not found. Please Register and try again";
 				}
@@ -395,7 +396,6 @@ app.controller("adminProfile", ["$scope", "$firebaseAuth", "$firebaseObject" , "
 
 app.controller("Register", ["$scope", "$firebaseAuth", "$firebaseArray" , "$firebaseObject",  "$localStorage" ,"$window" , "$route" , "SessionService" ,
   function($scope, $firebaseAuth, $firebaseArray ,$firebaseObject ,$localStorage ,$window,$route,SessionService) {
-	console.log("%%%%%%%%%%%%%%%%%%%%%%%%");
     var auth = $firebaseAuth();
 	$scope.showLoginInfo=false;
 	$scope.showForm = true;
