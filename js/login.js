@@ -1,5 +1,5 @@
-app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$localStorage" , "$timeout", "$window" , "$route" , "SessionService" ,
-  function($scope, $firebaseAuth ,$firebaseObject ,$localStorage, $timeout ,$window,$route,SessionService) {
+app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$firebaseArray", "$localStorage" , "$timeout", "$window" , "$route" , "SessionService" ,
+  function($scope, $firebaseAuth ,$firebaseObject,$firebaseArray ,$localStorage, $timeout ,$window,$route,SessionService) {
 	if($localStorage.userDetail!=null){
 		$scope.userDetail=$localStorage.userDetail;
 	}
@@ -21,61 +21,36 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$localS
 	$scope.login=function(){
 		$scope.errorMessage=null;
 		var phoneNumber = '+91'+$scope.phoneNumber;
-		console.log('phoneNumber>>',phoneNumber)
 		var appVerifier = window.recaptchaVerifier;
-		console.log("appVerifier>>>>>>>",appVerifier);
 		firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
 			.then(function (confirmationResult) {
-				console.log("$scope.showNumber111",$scope.showNumber);
 				window.confirmationResult = confirmationResult;
-				console.log("sent success");
-				// $scope.showNumber = false;
 				setTimeout(function () {
 					$scope.$apply(function(){
 						$scope.showNumber = false;
 					});
 				}, 1000);
-				console.log("$scope.showNumber222",$scope.showNumber);
 			}).catch(function (error) {
-				console.log("error in sending",error);
 				$scope.errorMessage = error['message'];
 			});
 	}
 	
 	$scope.loginOTPConfirm = function(){
 		$scope.errorMessage=null;
-		// console.log("%%%%%%%%%%%%%%%OTP>>",$scope.otp);
 		var code = $scope.otp;
 		confirmationResult.confirm(code).then(function (result) {
-			// console.log(" User signed in successfully.");
 			var user = result.user;
-			// console.log("userrrr detail >>",user.uid);
-			// $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
-			$scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child('qDYMjsTmHAb38OmF2Y92Qn5Sm7M2'));
-			console.log("$scope.userDetail>>>",$scope.userDetail);
-			// if ($scope.userDetail["email"] != undefined) {
-				$localStorage.userDetail=$scope.userDetail;
-				// console.log("logged in>>>>>>",$localStorage.userDetail);
-				// console.log("logged in SCOPE>>>>>>",$scope.userDetail);
-				$window.location.href = '#/upcomingDonations';
-				SessionService.setUserAuthenticated(true);
-				// window.location.reload(true);
-			// }else{
-			// 	console.log("user not found");
-			// 	$scope.errorMessage = "Mobile number not found. Please Register and try again";
-			// }
-			
-			// $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
-			// $scope.userDetail.$loaded().then(function() {
-			// 	$localStorage.userDetail=$scope.userDetail;
-			// 	$window.location.href = '#/';
-			// 	SessionService.setUserAuthenticated(true);
-			// 	window.location.reload(true);
-			// });
+			firebase.database().ref().child("profiles").orderByChild('mobile').equalTo($scope.phoneNumber).limitToFirst(1).once("value", snapshot => {
+				if (snapshot.exists()){
+					$scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
+					$localStorage.userDetail=$scope.userDetail;
+					SessionService.setUserAuthenticated(true);
+					$window.location.href = '#/upcomingDonations';
+				}else{
+					$scope.errorMessage = "Mobile number not found. Please Register and try again";
+				}
+			});
 		}).catch(function (error) {
-		// User couldn't sign in (bad verification code?)
-		// ...
-			console.error("Authentication failed:", error);
 			$scope.errorMessage = error['message'];
 		});
 	}
@@ -148,34 +123,31 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$localS
 ]);
 app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject" , "$firebaseArray", "$localStorage" , "$timeout", "$window" , "$route" , "SessionService" ,
   function($scope, $firebaseAuth ,$firebaseObject, $firebaseArray ,$localStorage, $timeout ,$window,$route,SessionService) {
+		// $scope.DonationList = [];
 		$scope.userDetail = $localStorage.userDetail;
 		console.log("inside donation controller>>>>",$scope.userDetail);
 
 		var don_cat = firebase.database().ref().child("Donation_category");
 		$scope.donationCategory = $firebaseObject(don_cat);
 		$scope.donationCategory.$loaded().then(function() {
-			console.log("$scope.donationCategory>>>>>",$scope.donationCategory);
-		});
 
-		var rha_city = firebase.database().ref().child("RHA_city");
-		$scope.RHACity = $firebaseObject(rha_city);
-		$scope.RHACity.$loaded().then(function() {
-			console.log("$scope.RHACity>>>>>",$scope.RHACity);
-		});
+			var rha_city = firebase.database().ref().child("RHA_city");
+			$scope.RHACity = $firebaseObject(rha_city);
+			$scope.RHACity.$loaded().then(function() {
 
-		var dbRef = firebase.database().ref().child("donation_details");
-		// $scope.donationList = $firebaseArray(dbRef);
-		// $scope.donationList.$loaded().then(function() {
-		// 	console.log("$scope.donationList>>>>>",$scope.donationList);
-		// });
-
-		dbRef.orderByChild('userId').equalTo(1).on("value", function(snapshot) {
-			$scope.DonationList = snapshot.val();
-			console.log("$scope.DonationList>>>>>",$scope.DonationList);
+				var dbRef = firebase.database().ref().child("donation_details");
+				dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function(snapshot) {
+					if(!$scope.$$phase) {
+						$scope.$apply(function(){
+							$scope.DonationList = Object.values(snapshot.val());
+						});
+					}
+					$scope.DonationList = Object.values(snapshot.val());
+				});
+			});
 		});
 
 		$scope.redirectFunc = function(page){
-			console.log("redirect page>>>>>>>>>", "'#/"+page+"'");
 			$window.location.href = "#/"+page;
 		}
 	}

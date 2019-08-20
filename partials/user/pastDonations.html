@@ -23,10 +23,20 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date }}
               </div>
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Status : </b>{{donation['status']}}
+              </div>
+               <!-- details -->
+            <div>
+                <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+              </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+              </div>
+              <div>
+                <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
             </p>
         </div>
