@@ -15,6 +15,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$fireba
 		}
 	  });
 	},2000);
+	
 
 
 	$scope.showNumber = true;
