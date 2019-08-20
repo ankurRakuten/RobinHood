@@ -1,0 +1,225 @@
+<div class="">
+    <div class="ui-67">
+      <div class="ui-head bg-lblue">
+        <!-- Details -->
+        <div class="ui-details">
+          <!-- Designation -->
+          <h4>Happy Shopping</h4>
+        </div>
+        <!-- Image -->
+        <div class="ui-image">
+          <!-- User Image -->
+          <img src="https://api.adorable.io/avatars/285/abott@adorable.png" alt="Profile Picture" class="img-responsive" width="100" height="100">
+        </div>
+      </div>
+      <div class="ui-content" ng-controller="Login">
+		<div class="">
+          
+          <div class="col-sm-8 col-md-8 col-lg-8 col-lg-offset-2 acc-col">
+			<section>
+              <h3>Order Summary:</h3>
+			  <div class="row" ng-repeat="eachPro in cart['items']" id="orderDiv">
+				<span class = "col-xs-3"><b>{{eachPro['name']}}</b></span>
+				<span class = "col-xs-3"> X {{eachPro['quantity']}}</span>
+				<span class = "col-xs-3"> &#8377; {{eachPro['quantity'] * eachPro['price']}}</span>
+			  </div>
+			  <div class="row">
+				<div class = "col-xs-6"><b>Total Payable Amount</b></div>
+				<div class = "col-xs-3">&#8377;  {{cart.getTotalPrice()}}</div>
+			  </div>			  
+			</section>
+            <section>
+              <h3>Delivery Details:</h3>
+              <form name="form"  ng-submit="checkoutCart()" id="order-form" role="form">
+                <!-- <div class="row"> -->
+                   <div class="col-sm-6 form-group" ng-class="{ 'has-error': form.user_fname.$dirty && form.user_fname.$error.required }">
+                    <label for="user_fname" class="control-label">First Name:</label>
+                      <input type="text" name="user_fname" class="form-control" id="user_fname" ng-model="deliveryDetails.first_name" required/>
+					  <span ng-show="form.user_fname.$dirty && form.user_fname.$error.required" class="help-block">First name is required</span>
+                  </div> 
+				  <div class="col-sm-6 form-group" ng-class="{ 'has-error': form.user_lname.$dirty && form.user_lname.$error.required }">
+                    <label for="user_lname" class="control-label">Last Name:</label>
+                      <input type="text" name="user_lname" class="form-control" id="user_lname" ng-model="deliveryDetails.last_name" required/>
+					  <span ng-show="form.user_lname.$dirty && form.user_lname.$error.required" class="help-block">First name is required</span>
+                  </div>               
+                <!-- </div> -->
+                <div class="row">
+                  <div class="col-sm-6 form-group" ng-class="{ 'has-error': form.user_email.$dirty && form.user_email.$error.required }">
+                    <label for="user_email" class="control-label">Email:</label>
+                      <input type="email" name="user_email" class="form-control" id="user_email" ng-model="deliveryDetails.email" required/>
+					  <span ng-show="form.user_email.$dirty && form.user_email.$error.required" class="help-block">Email is required</span>
+                  </div>
+                  <div class="col-sm-6 form-group" ng-class="{ 'has-error': form.user_mobile.$dirty && form.user_mobile.$error.required }">
+                    <label for="user_mobile" class="control-label">Mobile Number:</label>
+                      <input type="text" name="user_mobile" class="form-control" id="user_mobile" ng-model="deliveryDetails.mobile" required/>
+					  <span ng-show="form.user_mobile.$dirty && form.user_mobile.$error.required" class="help-block">Mobile number is required</span>
+                  </div>  
+                </div>
+				
+				<div class="row form-group" ng-class="{ 'has-error': form.user_pincode.$dirty && form.user_pincode.$error.required }">
+                  <div class="col-sm-6">
+                    <label for="user_pincode" class="control-label">Pincode:</label>
+                      <input type="text" name="user_pincode" ng-change="checkLocality()" class="form-control" id="user_pincode" ng-model="deliveryDetails.pincode" required/>
+					  <span ng-show="form.user_pincode.$dirty && form.user_pincode.$error.required" class="help-block">Pincode is required</span>
+                  </div>
+
+                </div>
+
+                <div class="row form-group" ng-class="{ 'has-error': form.user_useraddress.$dirty && form.user_useraddress.$error.required }">
+                  <div class="col-sm-12">
+                    <label for="user_useraddress" class="control-label">Address:</label>
+                      <input type="text" name="user_useraddress" class="form-control" id="user_useraddress" ng-model="deliveryDetails.address" required/>
+					  <span ng-show="form.user_useraddress.$dirty && form.user_useraddress.$error.required" class="help-block">Address is required</span>
+                  </div>
+                </div>  
+				
+				<div class="row">
+                  <div class="col-sm-6 form-group" ng-class="{ 'has-error': form.user_city.$dirty && form.user_city.$error.required }">
+                    <label for="user_city" class="control-label">City/District/Town:</label>
+                      <input type="text" name="user_city" class="form-control" id="user_city" ng-model="deliveryDetails.city" required/>
+					  <span ng-show="form.user_city.$dirty && form.user_city.$error.required" class="help-block">City is required</span>
+                  </div>
+                  <div class="col-sm-6 form-group" ng-class="{ 'has-error': form.user_state.$dirty && form.user_state.$error.required }">
+                    <label for="user_state" class="control-label">State:</label>
+                      <input type="text" name="user_state" class="form-control" id="user_state" ng-model="deliveryDetails.state" required/>
+					  <span ng-show="form.user_state.$dirty && form.user_state.$error.required" class="help-block">State is required</span>
+                  </div>  
+                </div>
+				
+				<div class="row">
+                  <div class="col-sm-6">
+                    <label for="user_landmark" class="control-label">Landmark:</label>
+                      <input type="text" class="form-control" id="user_landmark" ng-model="deliveryDetails.landmark">
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="user_altmobile" class="control-label">Alternate Number:</label>
+                      <input type="text" class="form-control" id="user_altmobile" ng-model="deliveryDetails.altmobile">
+                  </div>  
+                </div>
+
+                <div class="col-sm-12 form-actions">
+                  <!-- <div class="btn-div"> -->
+                    <button type="submit" class="btn btn-success pull-right defaultBckColor" ng-show="hideButton" ng-disabled="cart.getTotalCount() < 1">Confirm</button>
+                  <!-- </div> -->
+                </div>
+                </form>   
+            </section>
+			  <!-- <div class="modal fade" id="myModal" role="dialog"> -->
+				<!-- <div class="modal-dialog">     -->
+				  <!-- Modal content -->
+				  <!-- <div class="modal-content"> -->
+					<!-- <div class="modal-header"> -->
+					  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button>  -->
+					  <!-- <h4 class="modal-title">{{modalObj.head}}</h4> -->
+					<!-- </div>  -->
+					<!-- <div class="modal-body"> -->
+					  <!-- <p ng-show="message!=null">{{message}}</p> -->
+					  <!-- <p ng-show="errorMessage!=null">{{errorMessage}}</p> -->
+					<!-- </div> -->
+					<!-- <div class="modal-footer"> -->
+					 <!-- <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="gotoShopPage()">Close</button> -->
+					<!-- </div> -->
+				 <!-- </div>       -->
+				<!-- </div> -->
+			  <!-- </div> -->
+			  <script type="text/ng-template" id="myModalContent.html">
+				<div class="modal-header">
+					<h3>Order Successful</h3>
+				</div>
+				<form>
+				  <div class="modal-body">
+					<label>Order will be delivered Soon! Please pay Cash on delivery.</label>
+				  </div>
+				  <div class="modal-footer">
+					  <button class="btn btn-warning" ng-click="gotoShopPage()">Close</button>
+				  </div>
+				</form>
+			</script>
+			<div class="alert alert-success" ng-show="message!=null">{{message}}</div>
+			<div class="alert alert-danger" ng-show="errorMessage!=null">{{errorMessage}}</div>
+          </div>
+          <!-- col-8 -->
+        </div>
+
+      </div>
+      <!-- Content Ends -->
+    </div>
+    <!-- UI - X Ends -->
+</div>
+<style>
+/* Head */
+
+    .acc-col{
+
+
+      min-height: 300px;
+      margin-top: 5%;
+      background-color: #ffffff;
+      padding: 20px;
+/*      border:#333 solid 1px;*/
+
+    }
+    .acc-col > h3{
+      padding-bottom: 20px;
+    }
+    hr{
+      border:solid 1px #d6d6d6;
+    }
+    section > form > div{
+
+      padding: 5px;
+    }
+    .btn-div{
+
+      margin-top:10px;
+      padding-bottom: 10px;
+    }
+
+    
+.ui-67 .ui-head{
+	text-align: center;
+    padding: 1px 0px;
+    position: relative;
+    border-bottom: 2px solid #fff;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    background-color: #0bb7b7;
+}
+/* Details */
+.ui-67 .ui-head .ui-details{
+	margin:0px 0px 74px;
+}
+.ui-67 .ui-head .ui-details h3{
+	color:#fff;
+	font-size:40px;
+	line-height:60px;
+	font-weight:300;
+}
+@media (max-width:400px){
+	.ui-67 .ui-head .ui-details h3{
+		font-size:25px;
+		line-height:40px;
+		font-weight:400;
+	}
+}
+.ui-67 .ui-head .ui-details h4{
+	color:#fff;
+	font-size:18px;
+	line-height:38px;	
+	font-weight:400;
+}
+/* Image */
+.ui-67 .ui-head .ui-image{
+	width:100%;
+	position:absolute;
+	bottom:-55px;
+	z-index: 10;
+}
+.ui-67 .ui-head img{
+	width:120px;
+	border-radius:100%;
+	margin:0px auto;
+	border:4px solid #fff;
+	box-shadow:0px 0px 15px rgba(0,0,0,0.1);
+}
+
+</style>

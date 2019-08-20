@@ -1,0 +1,119 @@
+<div class="col-xs-12" style="margin-top: 5%;">
+	<div class="col-xs-12">
+		/<a href="#/" class="btn btn-link" style="text-align: left;">Home</a>/<a href="#/adminProfile" class="btn btn-link" style="text-align: left;">Admin Profile</a>
+	</div>
+	<div ng-show="showEditWindow">
+		<div class="col-md-6">
+			 <form name="form" ng-submit="editProductFunc()" role="form">
+				<div class="form-group" ng-class="{ 'has-error': form.producttype.$dirty && form.producttype.$error.required }">
+					<label for="producttype">Product Type</label>
+					<select class="form-control"  name="producttype" id="producttype" ng-model="editProduct.category" ng-options="x for x in productType"></select>
+					<span ng-show="form.producttype.$dirty && form.producttype.$error.required" class="help-block">Product Type is required</span>
+				</div>
+				
+				<div class="form-group" ng-class="{ 'has-error': form.productname.$dirty && form.productname.$error.required }">
+					<label for="productname">Product Name</label>
+					<input type="text" name="productname" id="productname" class="form-control" ng-model="editProduct.name" required />
+					<span ng-show="form.productname.$dirty && form.productname.$error.required" class="help-block">Product Name is required</span>
+				</div>
+				
+				<div class="form-group" ng-class="{ 'has-error': form.productcode.$dirty && form.productcode.$error.required }">
+					<label for="editProductname">Product Code</label>
+					<input type="text" name="productcode" id="Text1" class="form-control" ng-model="editProduct.code" required />
+					<span ng-show="form.productcode.$dirty && form.productcode.$error.required" class="help-block">Product Code is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': form.productprice.$dirty && form.productprice.$error.required }">
+					<label for="editProductname">Product Price</label>
+					<input type="number" name="productprice" id="Text1" class="form-control" ng-model="editProduct.price" required />
+					<span ng-show="form.productprice.$dirty && form.productprice.$error.required" class="help-block">Product Price is required</span>
+				</div>
+				
+				<div class="form-group" ng-class="{ 'has-error': form.productdiscount.$dirty && form.productdiscount.$error.required }">
+					<label for="editProductname">Product Discount</label>
+					<input type="number" name="productdiscount" id="Text6" class="form-control" ng-model="editProduct.discount" required />
+					<span ng-show="form.productdiscount.$dirty && form.productdiscount.$error.required" class="help-block">Product Discount is required</span>
+				</div>
+				
+				<div class="form-group" ng-class="{ 'has-error': form.productquantity.$dirty && form.productquantity.$error.required }">
+					<label for="editProductname">Product Quantity</label>
+					<input type="number" name="productquantity" id="Text6" class="form-control" ng-model="editProduct.quantity" required />
+					<span ng-show="form.productquantity.$dirty && form.productquantity.$error.required" class="help-block">Product Quantity is required</span>
+				</div>
+				
+				<div class="form-group" ng-class="{ 'has-error': form.productimage.$dirty && form.productimage.$error.required }">
+					<label for="editProductname">Image Url</label>
+					<input type="text" name="productimage" id="Text7" class="form-control" ng-model="editProduct.src_retro" required />
+					<span ng-show="form.productimage.$dirty && form.productimage.$error.required" class="help-block">Image Url is required</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': form.productdescription.$dirty && form.productdescription.$error.required }">
+					<label for="editProductname">Product Description</label>
+					<input type="text" name="productdescription" id="Text8" class="form-control" ng-model="editProduct.description" required />
+					<span ng-show="form.productdescription.$dirty && form.productdescription.$error.required" class="help-block">Product Description is required</span>
+				</div>
+				
+				
+				<label for="editProductname">Product Focus</label>
+				<span class="form-control"><input type="radio" ng-model="editProduct.class" value="show-up" >  Focus </span>
+				<span class="form-control"><input type="radio" ng-model="editProduct.class" value="show-down"> Normal</span>
+				
+				<label for="editProductname">Product Active</label>
+				<span class="form-control"><input type="radio" ng-model="editProduct.active" value="true" >  True </span>
+				<span class="form-control"><input type="radio" ng-model="editProduct.active" value="false"> False</span>
+
+				
+				<div class="form-group" ng-class="{ 'has-error': form.productkeypoint.$dirty && form.productkeypoint.$error.required }">
+					<label for="editProductname">Product Features</label>
+						<br>Feature 1:<input type="text" name="productkeypoint" id="Text9" class="form-control" ng-model="editProduct.features.point1"  />
+						<br>Feature 2:<input type="text" name="productkeypoint" id="Text2" class="form-control" ng-model="editProduct.features.point2"  />
+						<br>Feature 3:<input type="text" name="productkeypoint" id="Text3" class="form-control" ng-model="editProduct.features.point3"  />
+						<br>Feature 4:<input type="text" name="productkeypoint" id="Text4" class="form-control" ng-model="editProduct.features.point4"  />
+						<br>Feature 5:<input type="text" name="productkeypoint" id="Text5" class="form-control" ng-model="editProduct.features.point5"  />					
+				</div>
+				<div class="alert alert-success" ng-show="message!=null">{{message}}</div>
+				<div class="alert alert-danger" ng-show="errorMessage!=null">{{errorMessage}}</div>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">Save</button>
+					<!-- <button ng-click="deleteProduct()" class="btn btn-danger">Delete Product</button> -->
+					<button ng-click="showEditWindow = !showEditWindow" class="btn btn-primary">Close</button>
+				</div>
+			</form>
+			
+		</div> 
+	</div>
+	<div style="margin-top: 2%;">
+		<table ng-table="tableParams" class="table table-bordered table-striped" show-filter="false">
+			<tr ng-repeat="product in fetchedProduct">
+				<td data-title="'Category'" filter="{ category: 'text'}" sortable="'category'">
+					{{product.category}}</td>
+				<td data-title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+					{{product.name}}</td>
+				<td title="'Code'" filter="{ code: 'text'}" sortable="'code'">
+					{{product.code}}</td>
+				<td title="'Description'" filter="{ description: 'text'}" sortable="'agdescriptione'">
+					{{product.description}}</td>
+				<td title="'Discount'" filter="{ discount: 'number'}" sortable="'discount'">
+					{{product.discount}}</td>
+				<td title="'Quantity'" filter="{ quantity: 'number'}" sortable="'quantity'">
+					{{product.quantity}}</td>
+				<td title="'Active'" filter="{ active: 'number'}" sortable="'active'">
+					{{product.active}}</td>
+				<td title="'Price'" filter="{ price: 'number'}" sortable="'price'">
+					{{product.price}}</td>
+				<!-- <td title="'Image URL'" filter="{ src_retro: 'text'}" sortable="'src_retro'"> -->
+					<!-- {{product.src_retro}}</td> -->
+				<td title="'Image'" >
+					<img ng-src="{{product.src_retro}}" height="100" width="100" alt="URL Error"></td>
+				<td title="''" ng-click="updateProductWindow(product)" ><button type="button" class="btn btn-info">Edit</button></td>
+				
+			</tr>
+		</table>
+	</div>
+</div>
+<style>
+.displayNone {
+	display:none;
+}
+
+</style>

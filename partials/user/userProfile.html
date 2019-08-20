@@ -1,0 +1,181 @@
+<div class="">
+    <div class="ui-67">
+      <div class="ui-head bg-lblue">
+        <!-- Details -->
+        <div class="ui-details">
+          <!-- Name -->
+          <h3 id="name-header">{{userDetail.first_name}} {{userDetail.last_name}}</h3>
+          <!-- Designation -->
+          <h4>My Account</h4>
+        </div>
+        <!-- Image -->
+        <div class="ui-image">
+          <!-- User Image -->
+          <img src="https://api.adorable.io/avatars/285/abott@adorable.png" alt="Profile Picture" class="img-responsive" width="100" height="100">
+        </div>
+      </div>
+      <div class="ui-content">
+		<div class="">
+          
+          <div class="col-sm-8 col-md-8 col-lg-8 col-lg-offset-2 acc-col">
+            <section>
+              <h3>Contact Information</h3>
+              <form class="ng-pristine ng-valid" role="form">
+                <div class="row">
+                   <div class="col-sm-6">
+                    <label for="inputFName" class="control-label">First Name:</label>
+                      <input type="text" class="form-control" id="inputFName" ng-model="userDetail.first_name">
+                  </div> 
+				  <div class="col-sm-6">
+                    <label for="inputLName" class="control-label">Last Name:</label>
+                      <input type="text" class="form-control" id="inputLName" ng-model="userDetail.last_name">
+                  </div>               
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label for="inputEmail3" class="control-label">Email:</label>
+                      <input type="email" class="form-control" id="inputEmail3" ng-model="userDetail.email">
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="inputPassword3" class="control-label">Phone Number:</label>
+                      <input type="text" class="form-control" id="inputPassword3" ng-model="userDetail.mobile">
+                  </div>  
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputEmail4" class="control-label">Address:</label>
+                      <input type="text" class="form-control" id="inputEmail4" ng-model="userDetail.address">
+                  </div>
+                </div>
+
+          
+
+                <div class="col-sm-12">
+                  <div class="btn-div">
+                    <button type="button" class="btn btn-success pull-right defaultBckColo colorWhiter" ng-click="updateProfile()">Update</button>
+                  </div>
+                </div>
+                </form>   
+            </section>
+			<div class="alert alert-success" ng-show="message!=null">{{message}}</div>
+           
+          <!-- <button ng-click="showLoginInfo = !showLoginInfo">Login Information</button>  -->
+		  <button type="button" class="btn btn-info defaultBckColor colorWhite" ng-click="showLoginInfo = !showLoginInfo">Login Information</button>
+		  <!-- <button type="button" class="btn btn-info defaultBckColor" >Your Orders</button> -->
+		  <button type="button" class="btn btn-info defaultBckColor colorWhite">
+				<a href="#/userOrderHistory" style="color: inherit;text-decoration: none !important;">
+					<i class="icon-ok icon-white" /> Your Orders
+				</a>
+			</button>
+		  <!-- <button type="button" class="btn btn-info defaultBckColor" ng-click="showLoginInfo = !showLoginInfo">Login Information</button> -->
+          <section ng-show="showLoginInfo">
+            <form class="" role="form">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="inputEmail31" class="control-label">Password:</label>
+                  <div class="">
+                    <input type="password" class="form-control" id="inputEmail31">
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <label for="inputPassword31" class="control-label">Confirm:</label>
+                  <div class="">
+                    <input type="password" class="form-control" id="inputPassword31">
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="btn-div">
+                    <a href="https://creativethoughtz.com" class="btn btn-success pull-right colorWhite">Update</a>
+                  </div>
+                </div>           
+              </div>
+            </form>  
+          </section>
+
+          </div>
+          <!-- col-8 -->
+        </div>
+
+      </div>
+      <!-- Content Ends -->
+    </div>
+    <!-- UI - X Ends -->
+</div>
+<style>
+/* Head */
+
+    .acc-col{
+
+
+      min-height: 300px;
+      margin-top: 5%;
+      background-color: #ffffff;
+      padding: 20px;
+/*      border:#333 solid 1px;*/
+
+    }
+    .acc-col > h3{
+      padding-bottom: 20px;
+    }
+    hr{
+      border:solid 1px #d6d6d6;
+    }
+    section > form > div{
+
+      padding: 5px;
+    }
+    .btn-div{
+
+      margin-top:10px;
+      padding-bottom: 10px;
+    }
+
+    
+.ui-67 .ui-head{
+	text-align: center;
+    padding: 1px 0px;
+    position: relative;
+    border-bottom: 2px solid #fff;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    background-color: #0bb7b7;
+}
+/* Details */
+.ui-67 .ui-head .ui-details{
+	margin:0px 0px 74px;
+}
+.ui-67 .ui-head .ui-details h3{
+    color: #fff;
+    font-size: 30px;
+    line-height: 0px;
+    font-weight: 300;
+}
+@media (max-width:400px){
+	.ui-67 .ui-head .ui-details h3{
+		font-size:25px;
+		line-height:40px;
+		font-weight:400;
+	}
+}
+.ui-67 .ui-head .ui-details h4{
+	color:#fff;
+	font-size:18px;
+	line-height:38px;	
+	font-weight:400;
+}
+/* Image */
+.ui-67 .ui-head .ui-image{
+	width:100%;
+	position:absolute;
+	bottom:-55px;
+	z-index: 10;
+}
+.ui-67 .ui-head img{
+	width:120px;
+	border-radius:100%;
+	margin:0px auto;
+	border:4px solid #fff;
+	box-shadow:0px 0px 15px rgba(0,0,0,0.1);
+}
+
+</style>

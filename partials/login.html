@@ -1,0 +1,31 @@
+<div class="container">
+<div class="col-md-6 col-md-offset-3 container-slide" style="margin-top: 10%;">
+    <h2>Login</h2>
+    <form ng-show="showNumber" name="form" ng-submit="login()" role="form">
+        <div class="form-group">
+            <label for="phoneNumber">Mobile Number</label>
+            <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" pattern="[6-9]{1}[0-9]{9}" ng-model="phoneNumber" maxlength="10" required /> 
+        </div>
+        <div class="form-actions">
+            <button type="submit"  class="btn btn-primary" id="sign-in-btn">Go</button>
+            <a href="#/register" class="btn btn-link">Register</a>
+            <!-- <a href="#/forgotPassword" class="btn btn-link">Forgot Password</a> -->
+			
+        </div>
+    </form>
+    <form ng-show="!showNumber" name="form" ng-submit="otpConfirm()" role="form">
+        <div class="form-group">
+            <label for="otp">OTP</label>
+            <input type="text" name="otp" id="otp" class="form-control" ng-model="otp" pattern="[0-9]{6}" maxlength="6" required />
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" id="sign-in-btn">Confirm</button>
+            <a ng-show="!showNumber" class="btn btn-link" ng-click="showNumber = !showNumber ">back</a>
+			
+        </div>
+    </form>
+
+    <div class="alert alert-danger" ng-show="errorMessage!=null">{{errorMessage}}</div>
+    <div id="recaptcha-container"></div>
+</div>
+</div>

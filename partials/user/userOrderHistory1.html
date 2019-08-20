@@ -1,0 +1,162 @@
+<div class="">
+    <div class="ui-67">
+      <div class="ui-head bg-lblue">
+        <!-- Details -->
+        <div class="ui-details">
+          <!-- Name -->
+          <h3 id="name-header">{{userDetail.first_name}} {{userDetail.last_name}}</h3>
+          <!-- Designation -->
+          <h4>Order History</h4>
+        </div>
+        <!-- Image -->
+        <!-- <div class="ui-image"> -->
+          <!-- <img src="https://api.adorable.io/avatars/285/abott@adorable.png" alt="Profile Picture" class="img-responsive" width="100" height="100"> -->
+        <!-- </div> -->
+      </div>
+      <div class="ui-content">
+		<div class="{{showDetail == true ? 'col-md-6' : 'col-md-12'}}">
+			<table ng-table="tableParams" class="table table-bordered table-striped{{showDetail == false ? 'col-md-12' : 'col-md-6'}}" show-filter="true">
+				<tr ng-repeat="(date,product) in orderedProducts | orderBy : -date">
+					<td data-title="'Order Date'" filter="{ orderTime: 'text'}" sortable="'orderTime'">
+						{{product.orderTime | date}}</td>
+					<td data-title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+						<img ng-src="{{product.src_retro}}" height="50" width="50" alt="URL Error"> {{product.name}}</td>
+					<td title="'Quantity'" filter="{ quantity: 'number'}" sortable="'quantity'">
+						{{product.quantity}}</td>
+					<td title="'Price'" filter="{ price: 'number'}" sortable="'price'">
+						{{product.price}}</td>
+					<!-- <td title="'Image'" > -->
+						<!-- <img ng-src="{{product.src_retro}}" height="100" width="100" alt="URL Error"></td> -->
+					<td ng-click="showDetailFunc(product)" ><button type="button" class="btn btn-info" ng-disabled="product.cancel == true">{{product.cancel == true ? 'Cancelled' : product.delivered == true ? 'Delivered' : 'Pending'}}</button></td>				
+				</tr>
+			</table>
+		</div>
+		<div class="{{showDetail == true ? 'col-md-6' : 'displayNone'}}">
+			<div class="proDetailContainer">
+				<div style="background-color: #0bb7b7;padding: 3px;">{{productDetailInfo.name}} <i class="fa fa-times pull-right" ng-click="closeDetailWin()" style="padding: 3px;"></i></div>
+				<div>
+					<div class="detaiText">Quantity : {{productDetailInfo.quantity}}</div>
+					<div class="detaiText">Price : {{productDetailInfo.price}}</div>
+					<div class="detaiText">Deliver Address : {{productDetailInfo.address}}, Pincode - {{productDetailInfo.pincode}},
+					City - {{productDetailInfo.city}},State - {{productDetailInfo.state}}
+					</div>
+					<div class="detaiText">Contact Details : {{productDetailInfo.firstName}} {{productDetailInfo.lastName}}<br>{{productDetailInfo.email}}<br>{{productDetailInfo.mobile}}</div>
+					<button type="button" class="btn btn-info" ng-click="cancelOrderFunc(productDetailInfo)" ng-if="productDetailInfo.cancel != true && productDetailInfo.delivered != true" ng-show="updateOrderCond" data-toggle="modal" data-target="#myModal">Cancel Order</button>
+					<!-- <button type="button" class="btn btn-info" ng-click="updateOrderFunc()" ng-show="updateOrderCond">Update Order</button> -->
+				</div>
+			</div>
+		</div>
+      </div>
+    </div>
+    <!-- UI - X Ends -->
+	<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <!-- <div class="modal-header"> -->
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <!-- <h4 class="modal-title">{{modalObj.head}}</h4> -->
+        <!-- </div> -->
+        <div class="modal-body">
+          <p>{{modalObj.body}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>      
+    </div>
+  </div>
+	
+	
+</div>
+<style>
+.detaiText{
+	color:black;
+	padding: 3px;
+}
+.displayNone{
+	display:none;
+}
+.proDetailContainer{
+	padding: 5px;
+    margin: 5px;
+    border: 2px solid #dddddd;
+    color: white;
+}
+/* Head */
+
+    .acc-col{
+
+
+      min-height: 300px;
+      margin-top: 5%;
+      background-color: #ffffff;
+      padding: 20px;
+/*      border:#333 solid 1px;*/
+
+    }
+    .acc-col > h3{
+      padding-bottom: 20px;
+    }
+    hr{
+      border:solid 1px #d6d6d6;
+    }
+    section > form > div{
+
+      padding: 5px;
+    }
+    .btn-div{
+
+      margin-top:10px;
+      padding-bottom: 10px;
+    }
+
+    
+.ui-67 .ui-head{
+	text-align: center;
+    padding: 1px 0px;
+    position: relative;
+    border-bottom: 2px solid #fff;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    background-color: #0bb7b7;
+}
+/* Details */
+.ui-67 .ui-head .ui-details{
+	margin:0px 0px 74px;
+}
+.ui-67 .ui-head .ui-details h3{
+    color: #fff;
+    font-size: 30px;
+    line-height: 0px;
+    font-weight: 300;
+}
+@media (max-width:400px){
+	.ui-67 .ui-head .ui-details h3{
+		font-size:25px;
+		line-height:40px;
+		font-weight:400;
+	}
+}
+.ui-67 .ui-head .ui-details h4{
+	color:#fff;
+	font-size:18px;
+	line-height:38px;	
+	font-weight:400;
+}
+/* Image */
+.ui-67 .ui-head .ui-image{
+	width:100%;
+	position:absolute;
+	bottom:-55px;
+	z-index: 10;
+}
+.ui-67 .ui-head img{
+	width:120px;
+	border-radius:100%;
+	margin:0px auto;
+	border:4px solid #fff;
+	box-shadow:0px 0px 15px rgba(0,0,0,0.1);
+}
+
+</style>

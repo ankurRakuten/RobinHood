@@ -1,0 +1,177 @@
+<script>
+      
+        function SelectOption(option){
+            console.log(window.location);
+            let currentLocation = window.location;
+            let optionPath="#/";
+            switch(option){
+                case "Donate":optionPath+="donate";break
+                case "Volunteer":optionPath+="volunteer";break
+                case "About":optionPath+="about";break;
+                case "Contact":optionPath+="contact";break;
+
+            }
+            console.log(currentLocation.origin+currentLocation.pathname+optionPath)
+            window.location = currentLocation.origin+currentLocation.pathname+optionPath
+        }
+      </script>
+
+
+ <div class="section home">
+    <div class="container">
+        <div class="home-info-desc"  onclick="SelectOption('Donate')">
+                <div><h4><i style="color:aqua; font-size:15px;"class="fas fa-hand-holding-heart"></i>  Donate for Poor</h4></div>
+            </div>
+            <p style="text-align: center">Except money, any kind of donation is accepted!</p>  
+    <div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Volunteer')">
+            <div><h4><i style="color:aqua; font-size:15px;"class="fas fa-hands-helping"></i>  Join Robin Hood Army</h4></div>
+        </div>
+        <div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('About')">
+            <div><h4><i style="color:aqua; font-size:15px;"class="fa fa-info-circle"></i>  About Us</h4>
+            </div>
+    </div>
+        <div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Contact')">
+                <div><h4><i style="color:aqua; font-size:15px;"class="fas fa-phone"></i>  Call Us</h4>
+                </div>
+        </div>
+        </div>
+    </div>
+
+ <!-- <div class="section home">
+
+    <div class="container">
+            <div ng-repeat="ninja in ninjas" ng-click="Donate()">
+                <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px" ng-click="Donate()">
+                            <div class="col-lg-2 col-md-2 icn-con"><span class="icon-heart"></span></div>
+                            <div class="col-lg-10 col-md-10"><h4>Donate for Poor</h4>
+                            <p>If you manage a restaurant or generally want to contribute regular meals from your family or workplace, let’s connect. Except money,any kind of donation is accepted</p>    
+                            </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px" ng-click="Donate()">
+                <div class="col-lg-2 col-md-2 icn-con"><span class="icon-heart"></span></div>
+                <div class="col-lg-10 col-md-10"><h4>Donate for Poor</h4>
+                <p>If you manage a restaurant or generally want to contribute regular meals from your family or workplace, let’s connect. Except money,any kind of donation is accepted</p>    
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px">
+                <div class="col-lg-2 col-md-2 icn-con"><span class="fas fa-hand-holding-heart"></span></div>
+                <div class="col-lg-10 col-md-10"><h3> Join Robin Hood Army</h3>
+                <p>All we need is 3 hours/week at least twice a month to make a real impact. If we have a team in your city looking to grow, a Robin will reach out to you.</p>
+            </div>
+            </div>
+            <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px">
+               <div class="col-lg-2 col-md-2 icn-con"><span class="fas fa-phone-alt"></span></div>
+                <div class="col-lg-10 col-md-10"><h3> Call us</h3>
+                <p>Contact Us for </p>
+            </div>
+            </div>
+
+        </div>
+    </div>
+
+</div> -->
+<!-- /.section -->
+
+<!-- <div id="clients" class="parallax">
+    <div class="black-shadow"></div>
+    <div class="container">
+        <h1 class="section-title">Our <span>Clients</span></h1>
+                <p class="sub-title">Excepteur sint occaecat cupidatat non proident sunt<br>in culpa officia deserunt</p>
+        <ul class="clients">
+            <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Diesel"><a href="#"><img src="http://placehold.it/560x391" alt=""/></a></li>
+            <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Google"><a href="#"><img src="http://placehold.it/560x391" alt=""/></a></li>
+            <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Microsoft"><a href="#"><img src="http://placehold.it/560x391" alt=""/></a></li>
+            <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram"><a href="#"><img src="http://placehold.it/560x391" alt=""/></a></li>
+            <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Sony"><a href="#"><img src="http://placehold.it/560x391" alt=""/></a></li>
+        </ul>
+     </div>
+</div> -->
+
+<!-- /.section-colored -->
+
+<!-- /.section -->
+<!-- <div class="city-bg">
+    <div class="effect-cover"></div>
+      <div class="well">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+
+                    <h4>Modern Business is a ready-to-use, Bootstrap 3 updated, multi-purpose HTML theme!</h4>
+                    <p>For more templates and more page options that you can integrate into this website template, visit Start Bootstrap!</p>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <a class="btn btn-lg btn-primary pull-right" href="#">See More Templates!</a>
+               
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<script>
+    jQuery(document).ready(function () {
+        jQuery('.skillbar').each(function () {
+            jQuery(this).find('.skillbar-bar').animate({
+                width: jQuery(this).attr('data-percent')
+            }, 6000);
+        });
+    });
+</script>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+
+<script>
+    /**************  Animated images portfolio  ************************/
+    $(document).ready(function () {
+        $(".img-prt").hover(function () {
+            $(this).addClass("hover");
+        }, function () {
+            $(this).removeClass("hover");
+        }
+        );
+    });
+</script>
+<!-- Script  SlideShow -->
+<script>
+    new BoxesFx(document.getElementById('boxgallery'));
+</script>
+
+
+  <script>
+      $(document).ready(function () {
+          var widget = SC.Widget(document.getElementById('soundcloud_widget'));
+
+          $('button.playButton').click(function () {
+              widget.toggle();
+          });
+      });
+  </script>
+
+  <script type="text/javascript">
+      $(".fancybox-effects-d").fancybox({
+          padding: 0,
+
+          openEffect: 'elastic',
+          openSpeed: 150,
+
+          closeEffect: 'elastic',
+          closeSpeed: 150,
+
+          closeClick: true,
+
+          helpers: {
+              css: {
+                  'background': 'rgba(238,238,238,0.85)'
+              },
+              overlay: {
+                  locked: false
+              }
+          }
+      });
+</script>
