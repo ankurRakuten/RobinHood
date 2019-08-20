@@ -1,248 +1,79 @@
+<script>
+      
+        function SelectOption(option){
+            console.log(window.location);
+            let currentLocation = window.location;
+            let optionPath="#/";
+            switch(option){
+                case "Donate":optionPath+="donate";break
+                case "Volunteer":optionPath+="volunteer";break
+                case "About":optionPath+="about";break;
+                case "Contact":optionPath+="contact";break;
 
-<!-- Slider -->
-<!-- <div class="container-slide">
-    <div id="boxgallery" class="boxgallery" data-effect="effect-1">
-		<div class="panel"><img src="images/dgmHome1.jpg" alt="Image 1"/></div>
-		<div class="panel"><img src="images/dgmHome2.jpg" alt="Image 2"/></div>
-		<div class="panel"><img src="images/dgmHome3.jpg" alt="Image 3"/></div>
-		<div class="panel"><img src="images/dgmHome4.jpg" alt="Image 4"/></div>	
-	</div>
+            }
+            console.log(currentLocation.origin+currentLocation.pathname+optionPath)
+            window.location = currentLocation.origin+currentLocation.pathname+optionPath
+        }
+      </script>
+
+
+ <div class="section home">
+    <div class="container">
+        <div class="home-info-desc"  onclick="SelectOption('Donate')">
+                <div><h4><i style="color:aqua; font-size:15px;"class="fas fa-hand-holding-heart"></i>  Donate for Poor</h4></div>
+            </div>
+            <p style="text-align: center">Except money, any kind of donation is accepted!</p>  
+    <div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Volunteer')">
+            <div><h4><i style="color:aqua; font-size:15px;"class="fas fa-hands-helping"></i>  Join Robin Hood Army</h4></div>
+        </div>
+        <div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('About')">
+            <div><h4><i style="color:aqua; font-size:15px;"class="fa fa-info-circle"></i>  About Us</h4>
+            </div>
+    </div>
+        <div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Contact')">
+                <div><h4><i style="color:aqua; font-size:15px;"class="fas fa-phone"></i>  Call Us</h4>
+                </div>
+        </div>
+        </div>
+    </div>
+
+ <!-- <div class="section home">
+
+    <div class="container">
+            <div ng-repeat="ninja in ninjas" ng-click="Donate()">
+                <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px" ng-click="Donate()">
+                            <div class="col-lg-2 col-md-2 icn-con"><span class="icon-heart"></span></div>
+                            <div class="col-lg-10 col-md-10"><h4>Donate for Poor</h4>
+                            <p>If you manage a restaurant or generally want to contribute regular meals from your family or workplace, let’s connect. Except money,any kind of donation is accepted</p>    
+                            </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px" ng-click="Donate()">
+                <div class="col-lg-2 col-md-2 icn-con"><span class="icon-heart"></span></div>
+                <div class="col-lg-10 col-md-10"><h4>Donate for Poor</h4>
+                <p>If you manage a restaurant or generally want to contribute regular meals from your family or workplace, let’s connect. Except money,any kind of donation is accepted</p>    
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px">
+                <div class="col-lg-2 col-md-2 icn-con"><span class="fas fa-hand-holding-heart"></span></div>
+                <div class="col-lg-10 col-md-10"><h3> Join Robin Hood Army</h3>
+                <p>All we need is 3 hours/week at least twice a month to make a real impact. If we have a team in your city looking to grow, a Robin will reach out to you.</p>
+            </div>
+            </div>
+            <div class="col-lg-4 col-md-4 home-info-desc" style="height: 250px">
+               <div class="col-lg-2 col-md-2 icn-con"><span class="fas fa-phone-alt"></span></div>
+                <div class="col-lg-10 col-md-10"><h3> Call us</h3>
+                <p>Contact Us for </p>
+            </div>
+            </div>
+
+        </div>
+    </div>
+
 </div> -->
-<!-- <div class="top-well"> -->
-    <!-- <div class="container"> -->
-        <!-- <div class="row"> -->
-            <!-- <div class="col-lg-8 col-md-8"> -->
-                <!-- <h3>Want you need or find out more?</h3> -->
-                <!-- <p class="home2-sub-txt">For more templates and more page options that you can integrate into this website template, visit Start Bootstrap!</p> -->
-            <!-- </div> -->
-            <!-- <div class="col-lg-4 col-md-4"> -->
-                <!-- <a class="btn btn-lg btn-primary pull-right" href="#">See More Templates!</a> -->
-               
-            <!-- </div> -->
-
-        <!-- </div> -->
-    <!-- </div> -->
-<!-- </div> -->
-
-<div class="section-images">
-   
-    <div class="container">
-
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <h2>ABOUT US</h2>
-                <p>The Robin Hood Army is a volunteer based, zero-funds organization that works to get surplus food from restaurants and the community to serve less fortunate people.</p>
-                <p>Our local chapters are run by friends and colleagues, who hope to create a difference in their own unique way. For example, restaurants in the neighbourhood Green Park, will contribute to the homeless of the locality, through volunteers who live in Greek Park. Our “Robins” are largely students and young working professionals – everyone does this in their free time. The lesser fortunate sections of society we serve include homeless families, orphanages, patients from public hospitals, and old age homes.
-                </p> 
-                <p class="personal-phrase"><i class="fa fa-quote-left"></i>Simple really, beat global hunger and bring out the best of humanity using food as a medium.
-
-                    The idea is to create self-sustained chapters across the world who will look after their local community. And in the process, inspire people around us to give back to this who need it most.<i class="fa fa-quote-right"></i>
-                </p>
-            </div>
-            <div id="screenAnimation" class="col-lg-6 col-md-6 device-slide">
-                <div class="animation"  data-animation-step="{{customAttributeValue}}">
-		            <div class="device">
-			            <div class="phone-home-button"></div>
-			            <div class="tablet-home-button"></div>
-			            <div class="screen-stand"><div class="leg"></div><div class="foot"></div></div>
-			            <div class="display">
-				            <div class="slide1"><div>Now we are <em>Online</em></div></div>
-				            <div class="slide2"><div>Free Home <em>Deivery</em></div></div>
-				            <div class="slide3"><div>Order <em>Now</em></div></div>
-			            </div>
-		            </div>
-	            </div>
-               
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="home3-city-bg">
-    <div class="home3-effect-cover"></div>
-      <div class="home3-well">
-        <div class="container">
-            <div class="row row-footer">
-                <div class="col-lg-7 col-md-7">
-                    <p class="home3-advert">We are creating a movement to bring about a cultural change in consumption of dairy products, given the health benefits of Goat Milk, we want everyone to take full advantage of it and lead a healthy life.</p>
-                    <img class="" src="images/dgmDiary.jpg" alt="">
-                </div>
-                <div class="col-lg-5 col-md-5">
-                    <!-- <div class="bt-serv"><a class="btn btn-lg btn-primary pull-right" href="#">See More Templates!</a></div> -->
-                    <div class="txt-circle-content first-ic">
-                        <div class="fact-icon"><i class="fa fa-leaf fa-3x icGreen" aria-hidden="true"></i></div>
-                        <div class="txt-circle"><h3>Natural</h3>
-                            <p>We want our customers to enjoy Goat Milk which is free from any processing and additives. </p>
-                        </div>
-                    </div>
-                    <div class="txt-circle-content">
-                        <div class="fact-icon"><i class="fa fa-flash fa-3x icGreen" aria-hidden="true"></i></div>
-                        <div class="txt-circle"><h3>Fresh</h3>
-                            <p>We want you to enjoy the Fresh milk unlike commercial milk which is consumed up to 60 days.  </p>
-                        </div>
-                    </div>
-                    <div class="txt-circle-content">
-                        <div class="fact-icon"><i class="fa fa-flask fa-3x icGreen" aria-hidden="true"></i></div>
-                        <div class="txt-circle"><h3>No Chemicals</h3>
-                            <p>Delicious goat milk is Natural,Fresh and free from any type of preservatives and chemicals.  </p>
-                        </div>
-                    </div>
-                    <div class="txt-circle-content">
-                        <div class="fact-icon"><i class="fa fa-home fa-3x icGreen" aria-hidden="true"></i></div>
-                        <div class="txt-circle"><h3>Farm to Home</h3>
-                            <p> Our Milk is not stored anywhere and sent directly from Farm to Home in less than 24 hours. </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </div>
-</div>
-
-
-
-<div class="section home">
-
-    <div class="container">
-
-        <div class="row banner-info">
-            <h2>The Benefits of Goat’s Milk</h2>
-            <div class="col-lg-4 col-md-4 home-info-desc">
-                <div class="col-lg-2 col-md-2 icn-con"><span class="icon-lightbulb"></span></div>
-                <div class="col-lg-10 col-md-10"><h3> Reaction to Inflammation</h3>
-                <p>Some research suggests that one of the main benefits of goat’s milk is that it doesn’t cause inflammation. That’s a big reason why it is easier for people with bowel inflammation to drink goat’s milk, instead of cow’s milk.Goat’s milk contains selenium, an essential trace mineral that supports the immune system.</p></div>
-            </div>
-            <div class="col-lg-4 col-md-4 home-info-desc">
-                <div class="col-lg-2 col-md-2 icn-con"><span class="icon-pencil"></span></div>
-                <div class="col-lg-10 col-md-10"><h3> Anti-Mucousal</h3>
-                <p>Cow’s milk is linked to allergies and excess mucous, where as goat’s milk does not cause any of these. Cow’s milk is high in fat, which may increase mucous build-up. Moreover, the fat globules in goat’s milk are one-ninth the size of those in cow’s milk; it’s another possible reason why it does not produce irritation in the gut.</p></div>
-            </div>
-            <div class="col-lg-4 col-md-4 home-info-desc">
-               <div class="col-lg-2 col-md-2 icn-con"><span class="icon-document"></span></div>
-                <div class="col-lg-10 col-md-10"><h3> Supports Metabolism</h3>
-                <p>Studies performed by the USDA and Prairie View A&M University link goat’s milk to an increased ability to metabolize iron and copper, especially among individuals with digestion and absorption limitations. Besides drinking goat’s milk, you can also take digestive enzyme supplements to support digestion.</p></div>
-            </div>
-
-        </div>
-
-        <!-- /.row -->
-        <div class="row banner-info">
-            
-            <div class="col-lg-4 col-md-4 home-info-desc">
-                <div class="col-lg-2 col-md-2 icn-con"><span class="icon-beaker"></span></div>
-                <div class="col-lg-10 col-md-10"><h3> Bio-Availability</h3>
-                <p>A main benefit of goat’s milk is how closely it resembles human breast milk. Because it has a chemical composition that is much closer to human milk than cow’s milk, it is easier to digest and assimilate in the human body.In fact, Gandhi rejuvenated his own health after fasting by drinking raw goat’s milk.</p></div>
-            </div>
-            <div class="col-lg-4 col-md-4 home-info-desc">
-                <div class="col-lg-2 col-md-2 icn-con"><span class="icon-tools"></span></div>
-                <div class="col-lg-10 col-md-10"><h3> Less Toxic Than Cow’s Milk</h3>
-                <p>Whereas most cow’s milk contains bovine growth hormones and bovine somatotropin, a hormone that artificially increases milk production, goats are rarely given these substances. Because of its use on the fringes of big agriculture, goat’s milk is more nutritious and less toxic.</p></div>
-            </div>
-            <div class="col-lg-4 col-md-4 home-info-desc">
-               <div class="col-lg-2 col-md-2 icn-con"><span class="icon-gears"></span></div>
-                <div class="col-lg-10 col-md-10"><h3> High in Fatty Acids</h3>
-                <p>While cow’s milk is about seventeen percent fatty acids, goat’s milk averages thirty-five percent fatty acids, making it more nutritionally wholesome. In fact, up to 50% of people who experience lactose intolerance to cow’s milk find that they can easily digest goat’s milk, especially if it is raw.</p></div>
-            </div>
-
-        </div>
-    </div>
-    <!-- /.container -->
-
-</div>
 <!-- /.section -->
 
-<!-- <div class="section-colored text-center">
-   <div class="section-ground"></div>
-    <div class="container">
-
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="home-middle-parallax">Modern Business: A Clean &amp; Simple Full Website Template</h2>
-                <hr />
-                <p>A complete website design featuring various single page templates from Start Bootstraps library of free HTML starter templates.</p>
-                
-            </div>
-        </div>
-    </div>
-  
-</div> -->
-<!-- /.section-colored -->
-
-<div class="section">
-
-    <div class="container">
-
-        <div class="row img-shadow effect-5">
-            <div class="col-lg-12 text-center">
-                <h1 class="section-title">Recent <span>Work</span></h1>
-                <p class="sub-title">Excepteur sint occaecat cupidatat non proident sunt<br>in culpa officia deserunt</p>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 img-prt">
-                <div class="img">
-                    <img class="img-responsive img-home-portfolio" src="http://placehold.it/700x450" alt=""/>
-                    <div class="overlay">
-                            <a href="images/8.jpg" class="expand fancybox-effects-d" data-fancybox-group="button" >+</a>
-                            <a class="close-overlay hidden">x</a>
-                      </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 img-prt">
-                <div class="img">
-                    <img class="img-responsive img-home-portfolio" src="http://placehold.it/700x450" alt=""/>
-                    <div class="overlay">
-                            <a href="images/8.jpg" class="expand fancybox-effects-d" data-fancybox-group="button" >+</a>
-                            <a class="close-overlay hidden">x</a>
-                      </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 img-prt">
-                <div class="img">
-                    <img class="img-responsive img-home-portfolio" src="http://placehold.it/700x450" alt=""/>
-                    <div class="overlay">
-                            <a href="images/8.jpg" class="expand fancybox-effects-d" data-fancybox-group="button" >+</a>
-                            <a class="close-overlay hidden">x</a>
-                      </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 img-prt">
-                <div class="img">
-                    <img class="img-responsive img-home-portfolio" src="http://placehold.it/700x450" alt=""/>
-                    <div class="overlay">
-                            <a href="images/8.jpg" class="expand fancybox-effects-d" data-fancybox-group="button" >+</a>
-                            <a class="close-overlay hidden">x</a>
-                      </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 img-prt">
-                <div class="img">
-                    <img class="img-responsive img-home-portfolio" src="http://placehold.it/700x450" alt=""/>
-                    <div class="overlay">
-                            <a href="images/8.jpg" class="expand fancybox-effects-d" data-fancybox-group="button" >+</a>
-                            <a class="close-overlay hidden">x</a>
-                      </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 img-prt">
-                <div class="img">
-                    <img class="img-responsive img-home-portfolio" src="http://placehold.it/700x450" alt=""/>
-                    <div class="overlay">
-                            <a href="images/8.jpg" class="expand fancybox-effects-d" data-fancybox-group="button" >+</a>
-                            <a class="close-overlay hidden">x</a>
-                      </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
-</div>
-<!-- /.section -->
-
-<div id="clients" class="parallax">
+<!-- <div id="clients" class="parallax">
     <div class="black-shadow"></div>
     <div class="container">
         <h1 class="section-title">Our <span>Clients</span></h1>
@@ -255,142 +86,10 @@
             <li data-toggle="tooltip" data-placement="top" title="" data-original-title="Sony"><a href="#"><img src="http://placehold.it/560x391" alt=""/></a></li>
         </ul>
      </div>
-</div>
+</div> -->
 
 <!-- /.section-colored -->
 
-<div id="infoCompany" class="section">
-
-    <div class="container">
-
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <!--<img class="img-responsive digital-photo" src="images/digital_photo.jpg">-->
-                <h2>Amazing Elements for you website</h2>
-                <p>The resulting environment is extraordinarily expressive</p>
-                <p class="personal-phrase"><i class="fa fa-quote-left"></i>
-                  AngularJS lets you extend HTML vocabulary for your application<i class="fa fa-quote-right"></i>
-                </p>
-                <p>Check user testimonials to understand why our users have enjoyed using Angula!</p>
-                <iframe id="soundcloud_widget" 
-                  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/281212922&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true;color=0bb7b7"></iframe>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <h2>We are good at:</h2>
-                <div class="skillbar clearfix " data-percent="80%">
-	                <div class="skillbar-title" style="background: #0dc1c1;"><span>Design</span></div>
-	                <div class="skillbar-bar" style="background: #0dc1c1;"></div>
-	                <div class="skill-bar-percent">40%</div>
-                </div> <!-- End Skill Bar -->
-
-                <div class="skillbar clearfix " data-percent="95%">
-	                <div class="skillbar-title" style="background: #10b9b9;"><span>Analysis</span></div>
-	                <div class="skillbar-bar" style="background: #10b9b9;"></div>
-	                <div class="skill-bar-percent">75%</div>
-                </div> <!-- End Skill Bar -->
-
-                <div class="skillbar clearfix " data-percent="85%">
-	                <div class="skillbar-title" style="background: #12b3b3;"><span>SEO</span></div>
-	                <div class="skillbar-bar" style="background: #12b3b3;"></div>
-	                <div class="skill-bar-percent">100%</div>
-                </div> <!-- End Skill Bar -->
-
-                <div class="skillbar clearfix " data-percent="70%">
-	                <div class="skillbar-title" style="background: #12a8a8;"><span>Restyling</span></div>
-	                <div class="skillbar-bar" style="background: #12a8a8;"></div>
-	                <div class="skill-bar-percent">60%</div>
-                </div> <!-- End Skill Bar -->
-
-                <div class="skillbar clearfix " data-percent="65%">
-	                <div class="skillbar-title" style="background: #139e9e;"><span>Perform</span></div>
-	                <div class="skillbar-bar" style="background: #139e9e;"></div>
-	                <div class="skill-bar-percent">45%</div>
-                </div> <!-- End Skill Bar -->
-            </div>
-        </div>
-        <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
-</div>
-<!-- /.section -->
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 team">
-                <h2>MEET THE TEAM</h2>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="team-img">
-                    <figure class="effect-hera">
-	                    <img src="http://placehold.it/300x290" alt="" />
-                        <figcaption>
-							<p>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-								<a href="#"><i class="fa fa-linkedin"></i></a>
-							</p>
-						</figcaption>			
-					</figure>
-                  </div>
-                  <p>Mike Cross</p>
-                </div> 
-
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="team-img">
-                   <figure class="effect-hera">
-	                    <img src="http://placehold.it/300x290" alt="" />
-                        <figcaption>
-							<p>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-								<a href="#"><i class="fa fa-linkedin"></i></a>
-							</p>
-						</figcaption>			
-					</figure>
-                  </div>
-                  <p>Mike Cross</p>
-                </div>
-
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="team-img">
-                  <figure class="effect-hera">
-	                    <img src="http://placehold.it/300x290" alt="" />
-                        <figcaption>
-							<p>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-								<a href="#"><i class="fa fa-linkedin"></i></a>
-							</p>
-						</figcaption>			
-					</figure>
-                  </div>
-                  <p>Mike Cross</p>
-                </div>
-
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="team-img">
-                   <figure class="effect-hera">
-	                    <img src="http://placehold.it/300x290" alt="" />
-                        <figcaption>
-							<p>
-								<a href="#"><i class="fa fa-facebook"></i></a>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-								<a href="#"><i class="fa fa-linkedin"></i></a>
-							</p>
-						</figcaption>			
-					</figure>
-                  </div>
-                  <p>Mike Cross</p>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
-</div>
 <!-- /.section -->
 <!-- <div class="city-bg">
     <div class="effect-cover"></div>

@@ -233,7 +233,7 @@ ul.menu-items li.menu-item:last-child{display:none;}
 }
 .navbar-header, .navbar-collapse {
 	float: left;
-	width: 85%;
+	width: 100%;
 }
 .navbar-inverse .navbar-toggle .icon-bar {
     background-color: #333;

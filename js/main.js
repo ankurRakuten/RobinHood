@@ -4,57 +4,16 @@
  * Main AngularJS Web Application
  */
 var app = angular.module('angula', [
-  'ngRoute', 'ui.bootstrap', 'ngAnimate', 'ngMaterial' , 'firebase' , 'ngStorage' , 'ngTable'
+  'ngRoute', 'ui.bootstrap', 'ngAnimate', 'ngMaterial' , 'firebase' , 'ngStorage' , 'ngTable' , 'mgo-angular-wizard', 'ngFileUpload',
 ]);
-/**
- * Configure the Routes
- */
-// app.config(['$routeProvider', function ($routeProvider) {
-  // $routeProvider
-    // // Home
-    // .when("/", { templateUrl: "partials/home.html", controller: "HomeCtrl" })
-    // .when("/login", { templateUrl: "partials/login.html", controller: "Login" })
-    // .when("/forgotPassword", { templateUrl: "partials/forgotPassword.html", controller: "Login" })
-    // .when("/userProfile", { templateUrl: "partials/userProfile.html", controller: "Login" })
-    // .when("/register", { templateUrl: "partials/register.html", controller: "Register" })
-    // .when("/home2", { templateUrl: "partials/home2.html", controller: "HomeCtrl" })
-    // .when("/home3", { templateUrl: "partials/home3.html", controller: "HomeCtrl" })
-    // .when("/home4", { templateUrl: "partials/home4.html", controller: "HomeCtrl" })
-    // .when("/home5", { templateUrl: "partials/home5.html", controller: "HomeCtrl" })
 
-    // // About
-    // .when("/about", { templateUrl: "partials/about.html", controller: "PageCtrl" })
-    // .when("/about2", { templateUrl: "partials/about2.html", controller: "PageCtrl" })
-    // .when("/about3", { templateUrl: "partials/about3.html", controller: "PageCtrl" })
-    // .when("/about4", { templateUrl: "partials/about4.html", controller: "PageCtrl" })
-    // .when("/meet_team", { templateUrl: "partials/meet_team.html", controller: "PageCtrl" })
-
-    // .when("/shop", { templateUrl: "partials/shop/store.html", controller: "storeController_sound" })
-    // //Shop Sound Obj
-    // .when('/products/:productCode', { templateUrl: 'partials/shop/product.html', controller: "storeController_sound" })
-    // .when('/cart', { templateUrl: 'partials/shop/shoppingCart.html', controller: "storeController_sound" })
-
-    // //Shop Dresses
-    // .when("/shop_dresses", { templateUrl: "partials/shop/store_dresses.html", controller: "storeController" })
-    // .when('/products_dresses/:productCode', { templateUrl: 'partials/shop/product_dresses.html', controller: "storeController" })
-    // .when('/cart_dresses', { templateUrl: 'partials/shop/shoppingCart_dresses.html', controller: "storeController" })
-    
-
-    // .when("/faq", {templateUrl: "partials/faq.html", controller: "PageCtrl"})
-    // .when("/pricing", {templateUrl: "partials/pricing.html", controller: "PageCtrl"})
-    // .when("/services", {templateUrl: "partials/services.html", controller: "PageCtrl"})
-    // .when("/contact", {templateUrl: "partials/contact.html", controller: "PageCtrl"})
-    // // Blog
-    // .when("/blog", {templateUrl: "partials/blog.html", controller: "BlogCtrl"})
-    // .when("/blog/post", {templateUrl: "partials/blog_item.html", controller: "BlogCtrl"})
-
-    // .when("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"})
-    // // else 404
-    // .otherwise("/", {templateUrl: "partials/home.html", controller: "HomeCtrl"});
-// }]);
 window.routes =
 {
     "/": { templateUrl: "partials/home.html", controller: "HomeCtrl" ,requireLogin: false},
+    "/volunteer": { templateUrl: "partials/volunteer.html" ,requireLogin: false},
+    "/donate": { templateUrl: "partials/donate.html", controller: "DonateCtrl" ,requireLogin: false},
+    "/about": { templateUrl: "partials/aboutUs.html" ,requireLogin: false},
+    "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
 	"/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
 	"/adminProfile": { templateUrl: "partials/admin/adminProfile.html", controller: "adminProfile" ,requireLogin: false},
@@ -121,14 +80,196 @@ app.service('SessionService', ['$localStorage','$location','$rootScope',function
     });
 }]);
 
-
+ app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+       restrict: 'A',
+       link: function(scope, element, attrs) {
+          element.bind('change', function(){
+          $parse(attrs.fileModel).assign(scope,element[0].files)
+             scope.$apply();
+          });
+       }
+    };
+ }]);
 
 /**
- * Controls the Blog
+ * Controls the Ananomus Donations 
  */
-app.controller('BlogCtrl', function (/* $scope, $location, $http */) {
-  console.log("Blog Controller reporting for duty.");
+app.controller('DonateCtrl', function ($scope, $firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
+    getRHA_CityList()
+    getDonationCategory()
+    getRHA_capterList()
+    // getDonationKey();
+
+  $scope.donationFormDetails={}
+
+  //Wizard 
+  $scope.canExit = true;
+  $scope.stepActive = true;
+  $scope.finished = function() {
+      alert("Thanks For Donating. Our volunteers will get in touch with you ");
+      sendDonationDetails($scope.donationFormDetails);
+  };
+  $scope.logStep = function(donation) {
+      let stepDetails= angular.copy(donation)
+      $scope.donationFormDetails = {...$scope.donationFormDetails,...stepDetails}
+      console.log($scope.donationFormDetails)
+  };
+  $scope.goBack = function() {
+      WizardHandler.wizard().goTo(0);
+  };
+//   $scope.exitWithAPromise = function() {
+//       var d = $q.defer();
+//       $timeout(function() {
+//           d.resolve(true);
+//       }, 1000);
+//       return d.promise;
+//   };
+//   $scope.exitToggle = function() {
+//       $scope.canExit = !$scope.canExit;
+//   };
+//   $scope.stepToggle = function() {
+//       $scope.stepActive = !$scope.stepActive;
+//   }
+//   $scope.exitValidation = function() {
+//       return $scope.canExit;
+//   };
+
+$scope.onFileSelect = function($files) {
+    //$files: an array of files selected, each file has name, size, and type.
+    for (var i = 0; i < $files.length; i++) {
+      let file = $files[i];
+    //   let path = uploadImage(file,"test")
+      console.log(file)
+    }
+    $scope.uploadedImages=$files
+    console.log($scope.uploadedImages[0])
+    
+}
+
+//Local Functions 
+function sendDonationDetails(donationDetails){
+ console.log(donationDetails);
+ let donationDetailsRef = firebase.database().ref().child("donation_details");
+ let donation = labelToCategory(donationDetails);
+ donation["path"]="";
+ console.log(donation)
+ donationDetailsRef.push().set(donation,function(){
+    console.log("Donation Submitted")
+})
+ donationDetailsRef.orderByKey().limitToLast(1).on("child_added",function(snapshot){
+    $scope.key=snapshot.key;
+    console.log($scope.key)
 });
+let imagePath=[];
+ if($scope.uploadedImages){
+    angular.forEach($scope.uploadedImages,function(image){
+        let path = uploadImage(image,$scope.key);
+        console.log(path)
+        imagePath.push(path)
+    })
+ } 
+ console.log(imagePath);
+ let submittedDonation = $firebaseObject(donationDetailsRef.child($scope.key))
+    console.log(submittedDonation);
+    donationDetailsRef.child($scope.key).child("path").set("https://firebasestorage.googleapis.com/v0/b/rakutenrobin.appspot.com/o/"+$scope.key,function(){
+        console.log("Path Updated")
+    });
+  
+}
+
+async function uploadImage(file,donationId){
+    // Create a Firebase Storage reference
+    let storage = firebase.storage();
+    let storageRef = storage.ref();
+    var filesRef = storageRef.child(donationId);
+ let imagePath
+    await filesRef.child(file.name).put(file).then(async function(snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(snapshot)
+        await snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
+            imagePath=downloadURL
+        });
+        if (progress===100){
+            console.log('Uploaded a blob or file!');
+        }
+        
+      }).catch(function(error){
+          console.log(error)
+      })  
+      return imagePath
+}
+function getDonationKey(){
+    let donationDetailsRef= firebase.database().ref().child("donation_details");
+     donationDetailsRef.orderByKey().limitToLast(1).on("child_added",function(snapshot){
+        $scope.key=snapshot.key;
+        console.log($scope.key)
+    });
+}
+
+function getRHA_CityList(){
+    let RHA_CityRef = firebase.database().ref("RHA_city")
+    let RHA_cityList = $firebaseArray(RHA_CityRef);
+    RHA_cityList.$loaded().then(function() {
+        console.log(RHA_cityList)
+        RHA_cityList = RHA_cityList.filter(item => item.active === "True");
+        angular.forEach(RHA_cityList, function(item) {
+                delete  item["active"];
+                delete item["$priority"];
+        });
+        $scope.cityList=RHA_cityList
+    });
+}
+function getDonationCategory(){
+    let Donation_categoryRef = firebase.database().ref("Donation_category")
+    let Donation_category = $firebaseArray(Donation_categoryRef);
+    Donation_category.$loaded().then(function() {
+        Donation_category = Donation_category.filter(item => item.active === "True");
+        angular.forEach(Donation_category, function(item) {
+                delete  item["active"];
+                delete item["$priority"];
+        });
+        $scope.donationCategory=Donation_category;
+        console.log(Donation_category)
+    });
+}
+function getRHA_capterList(){
+    let RHA_capterRef = firebase.database().ref("RHA_capter")
+    let RHA_capterList = $firebaseArray(RHA_capterRef);
+    RHA_capterList.$loaded().then(function() {
+        $scope.capterList=RHA_capterList;
+        angular.forEach(RHA_capterList, function(item) {
+            delete item["$priority"];
+    });
+    $scope.chapterList=RHA_capterList;
+        console.log(RHA_capterList)
+    });
+}
+
+function labelToCategory(donationDetails){
+    // Label to ID
+        donationDetails["Locality"] = donationDetails["Locality"]["name"];
+        donationDetails["RHA_city_id"] = donationDetails["RHA_city"]["$id"];
+        delete donationDetails["RHA_city"]
+        donationDetails["donation_category_id"] = donationDetails["donation_category"]["$id"];
+        delete donationDetails["donation_category"];
+    // Creation Time and Station 
+        donationDetails["pickup_time"]= donationDetails["pickup_time"].toString();
+        let now = new Date();
+        let created_at = now.getTime();
+        donationDetails["created_at"]=created_at;
+        donationDetails["status"]="Pending";
+       
+        return donationDetails
+    }
+
+});
+
+app.controller('HomeCtrl', function ($scope, $location, $http ) {
+    $scope.confirm = false;
+    
+  });
 
 /**
  * Controls all other Pages
@@ -206,20 +347,25 @@ app.controller('TabsDemoCtrl', function ($scope, $window) {
 });
 
 // monitor animation 
-app.controller('HomeCtrl', function ($scope, $interval) {
+app.controller('HomeCtrl', function ($scope) {
 
-     var duration = 1600, steps = 3, step = 1;
-
-     $scope.customAttributeValue = step;
-
-    var start = $interval(function () {
-        if ($scope.customAttributeValue < steps) {
-            $scope.customAttributeValue += step;
-        }
-        else {
-            $scope.customAttributeValue = step;
-         }
-    }, duration);
+    $scope.optionList=[
+        {
+            name:"Donate For Poor",
+            icon:""
+        },
+        {
+            name:"Join RobinHood Army",
+            icon:""
+        },
+        {
+            name:"About Us",
+            icon:""
+        }, {
+            name:"Call Us",
+            icon:""
+        }]
+    
 
 });
 

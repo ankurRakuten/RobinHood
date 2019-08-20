@@ -1,0 +1,159 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnVCO3ZuHSJt8oBwHQFFKORscFWqIrp_A&callback=myMap"></script>
+<script>
+    function myMap() {
+      var mapProp= {
+        center:new google.maps.LatLng(51.508742,-0.120850),
+        zoom:5,
+      };
+      var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+      google.maps.event.addListener(map, "click", function(event) {
+                // get lat/lon of click
+                var clickLat = event.latLng.lat();
+                var clickLon = event.latLng.lng();
+
+                // show in input box
+                document.getElementById("lat").value = clickLat.toFixed(5);
+                document.getElementById("lon").value = clickLon.toFixed(5);
+
+                  var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(clickLat,clickLon),
+                        map: map
+                     });
+            });
+
+            var geocoder = new google.maps.Geocoder();
+            var address = "india";
+
+            geocoder.geocode( { 'address': address}, function(results, status) {
+
+              if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                alert(latitude);
+              } 
+              var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(latitude,longitude),
+                        map: map
+                     });
+            }); 
+      }
+
+</script>
+
+
+<div class="section home">
+                <div class="container">
+                  <wizard on-finish="finished()">
+                    <wz-step wz-title="Step 1/4">
+                      <!-- <div id="gmap"></div> -->
+                    <form name="donationDetails"> 
+                        <!-- <input type="file" ngf-select="onFileSelect($files)"  multiple> -->
+                        <div class="form-group">
+                        <label for="donationItem">What do you want to donate?</label>
+                        <select class="form-control" name="donationItem" ng-model="donation.donation_category" ng-options="item as item.name for item in donationCategory"></select>
+                              <span ng-show="donationItem.donation_category.$invalid && donationItem.donation_category.$touched" class="small text-danger">* Item is required</span>
+                      </div>
+                        <div class="form-group" required>
+                        <label for="perishable">Perishable ?</label>
+                          <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="True" required> Yes</label>
+                          <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="False" required> No</label>
+                        </div>
+                        <div class="form-group">
+                                <label for="donationItem">Max self Life ? (In case of Perishable item)</label>
+                                <input type="text" name="shelfLife" class="form-control" ng-model="donation.shelf_life" placeholder="2 days / 14 hours etc.."  required/> 
+                                <span ng-show="donationDetails.shelfLife.$invalid && donationDetails.shelfLife.$touched" class="small text-danger">* Max self Life required</span>
+                        </div>
+                      
+                      <div class="form-group">
+                          <label>Describe Item and Quantity</label>
+                          <textarea rows="4" cols="50" name="description" class="form-control" form="donationForm" ng-model="donation.description" placeholder="Rice approx 10kg / 20 peopele" value="" required></textarea>
+                        </div>
+                </form>  
+                  <!-- <pre>donation = {{donation | json}}</pre> -->
+                      <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="donationDetails.$invalid" value="NEXT" />
+                    </wz-step>
+                    <wz-step wz-title="Step 2/4">
+                      <form name="donationLocation">
+                      <div class="form-group">
+                          <label for="exampleFormControlSelect1">Cities</label>
+                      <select class="form-control" name="city" ng-model="donation.RHA_city" ng-options="city as city.name for city in cityList"></select>
+                      <span ng-show="donationLocation.city.$invalid && donationLocation.city.$touched" class="small text-danger">* City is required</span>
+                    </div>    
+                              
+                        <div class="form-group">
+                              <label>Locality / Area</label>
+                              <select class="form-control" name="Locality" ng-model="donation.Locality" ng-options="chapter as chapter.name for chapter in chapterList"></select>
+                              <span ng-show="donationLocation.Locality.$invalid && donationLocation.Locality.$touched" class="small text-danger">* Locality is required</span>
+                            </div>
+                        <div class="form-group">
+                              <label for="donationItem">Landmark</label>
+                              <input type="text" class="form-control" ng-model="donation.Landmark" name="Landmark"/> 
+                        </div>
+                        <div class="form-group">
+                              <label for="donationItem">Map location</label>
+                              <input type="text" class="form-control" ng-model="donation.lat_long" name="lat_long"/> 
+                              <div id="googleMap" style="width:100%;height:400px;"></div>
+                        </div>
+                      </form>
+                        <!-- <pre>donation = {{donation | json}}</pre> -->
+                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
+                      <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="donationLocation.$invalid" value="NEXT" />
+                    </wz-step>
+                    <wz-step wz-title="Step 3/4">
+                      <form  name="doantionExtraDetails">
+                      <div class="form-group" >
+                          <label>Would you be able to share utensils/containers for few hours ?</label>
+                            <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.container_provided" name="container_provided" value="True" required> Yes</label>
+                            <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.container_provided" name="container_provided" value="False" required> No</label>
+                          </div>
+                          <span ng-show="doantionExtraDetails.container_provided.$invalid && doantionExtraDetails.container_provided.$touched" class="small text-danger">* required</span>
+                          <div class="form-group">
+                              <label for="perishable">Would you be able to provide vehicle for few hours ?</label>
+                                <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.transporation_provided" name="transporation_provided" value="True" required> Yes</label>
+                                <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.transporation_provided" name="transporation_provided" value="False" required> No</label>
+                              </div>  
+                              <span ng-show="doantionExtraDetails.transporation_provided.$invalid && doantionExtraDetails.transporation_provided.$touched" class="small text-danger">* required</span>
+                              <div class="form-group">  
+                               <label>Pictures of items</label> 
+                               <input type="file" ngf-select="onFileSelect($files)"  multiple>
+
+                              </div> 
+                            </form>
+                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
+                      <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="doantionExtraDetails.$invalid" value="NEXT" />
+                    </wz-step>
+                    <wz-step wz-title="Step 4/4">
+                        <form name="donarDetails">
+                            <div class="form-group">
+                          <label for="donationItem">Your Name</label>
+                          <input type="text" name="userName"  class="form-control"  ng-model="donation.userName" required /> 
+                          <span ng-show="donarDetails.userName.$invalid && donarDetails.userName.$touched" class="small text-danger">* required</span>
+                        </div>
+                          <div class="form-group">
+                              <label>Contact Number</label>
+                              <input type="number" name="userMobile"  class="form-control" ng-model="donation.userMobile" ng-pattern="/^[0-9]{10}$/"required /> 
+                              <span ng-show="donarDetails.userMobile.$invalid && donarDetails.userMobile.$touched && donarDetails.userMobile.$error.pattern" class="small text-danger">* required</span>
+                            </div>
+                          <div class="form-group">
+                                  <label for="donationItem">Pick Up time</label>
+                                  <input type="time" name="pickup_time"  class="form-control" ng-model="donation.pickup_time" required /> 
+                                  <span ng-show="donarDetails.pickup_time.$invalid && donarDetails.pickup_time.$touched" class="small text-danger">* Pick Up time required</span>
+                          </div>  
+                          
+                          <div class="form-group">
+                              <label>Remarks</label>
+                              <textarea rows="4" cols="50" name="remarks" class="form-control" ng-model="donation.remarks" value=" "></textarea>
+                      </div>  
+                    </form>
+                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
+                      <input type="button" class="btn btn-primary"  ng-disabled="donarDetails.$invalid" wz-next="logStep(donation)" value="Submit"/>
+                      <!-- wz-next="logStep()" -->
+                      <!-- <input type="button" ng-click="goBack()" value="Click here to start again" /> -->
+                      <!-- <input type="button" wz-reset value="Click here to reset" /> -->
+                    </wz-step>
+                  </wizard>
+                </section>
+              </div>
+
+            
+            
