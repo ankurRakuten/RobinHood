@@ -44,7 +44,7 @@
 <div class="section home">
                 <div class="container">
                   <wizard on-finish="finished()">
-                    <wz-step wz-title="Step 1/4">
+                    <wz-step wz-title="1/4">
                       <!-- <div id="gmap"></div> -->
                     <form name="donationDetails"> 
                         <!-- <input type="file" ngf-select="onFileSelect($files)"  multiple> -->
@@ -72,7 +72,7 @@
                   <!-- <pre>donation = {{donation | json}}</pre> -->
                       <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="donationDetails.$invalid" value="NEXT" />
                     </wz-step>
-                    <wz-step wz-title="Step 2/4">
+                    <wz-step wz-title="2/4">
                       <form name="donationLocation">
                       <div class="form-group">
                           <label for="exampleFormControlSelect1">Cities</label>
@@ -99,7 +99,7 @@
                       <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                       <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="donationLocation.$invalid" value="NEXT" />
                     </wz-step>
-                    <wz-step wz-title="Step 3/4">
+                    <wz-step wz-title="3/4">
                       <form  name="doantionExtraDetails">
                       <div class="form-group" >
                           <label>Would you be able to share utensils/containers for few hours ?</label>
@@ -122,7 +122,7 @@
                       <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                       <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="doantionExtraDetails.$invalid" value="NEXT" />
                     </wz-step>
-                    <wz-step wz-title="Step 4/4">
+                    <wz-step wz-title="4/4">
                         <form name="donarDetails">
                             <div class="form-group">
                           <label for="donationItem">Your Name</label>
@@ -134,9 +134,10 @@
                               <input type="number" name="userMobile"  class="form-control" ng-model="donation.userMobile" ng-pattern="/^[0-9]{10}$/"required /> 
                               <span ng-show="donarDetails.userMobile.$invalid && donarDetails.userMobile.$touched && donarDetails.userMobile.$error.pattern" class="small text-danger">* required</span>
                             </div>
+                            
                           <div class="form-group">
-                                  <label for="donationItem">Pick Up time</label>
-                                  <input type="time" name="pickup_time"  class="form-control" ng-model="donation.pickup_time" required /> 
+                            <label for="donationItem">Pick Up time</label>
+                                  <input type="datetime-local" name="pickup_time"  class="form-control" ng-model="donation.pickup_time" required /> 
                                   <span ng-show="donarDetails.pickup_time.$invalid && donarDetails.pickup_time.$touched" class="small text-danger">* Pick Up time required</span>
                           </div>  
                           

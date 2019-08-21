@@ -11,12 +11,21 @@ angular.module("step.html", []).run(["$templateCache", function($templateCache) 
     "<section ng-show=\"selected\" ng-class=\"{current: selected, done: completed}\" class=\"step\" ng-transclude>\n" +
     "</section>");
 }]);
-
+// "<div>\n" +
+// "    <h2 ng-show=\"selectedStep.wzHeadingTitle != ''\">{{ selectedStep.wzHeadingTitle }}</h2>\n" +
+// "\n" +
+// "    <div class=\"steps\" ng-if=\"indicatorsPosition === 'bottom'\" ng-transclude></div>\n" +
+// "    <ul class=\"steps-indicator steps-{{getEnabledSteps().length}}\" ng-if=\"!hideIndicators\">\n" +
+// "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
+// "        <a ng-click=\"goTo(step)\">{{step.title || step.wzTitle}}</a>\n" +
+// "      </li>\n" +
+// "    </ul>\n" +
+// "    <div class=\"steps\" ng-if=\"indicatorsPosition === 'top'\" ng-transclude></div>\n" +
+// "</div>\n" +
+// ""
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("wizard.html",
-    "<div>\n" +
-    "    <h2 ng-show=\"selectedStep.wzHeadingTitle != ''\">{{ selectedStep.wzHeadingTitle }}</h2>\n" +
-    "\n" +
+    "<div>" +
     "    <div class=\"steps\" ng-if=\"indicatorsPosition === 'bottom'\" ng-transclude></div>\n" +
     "    <ul class=\"steps-indicator steps-{{getEnabledSteps().length}}\" ng-if=\"!hideIndicators\">\n" +
     "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
@@ -24,7 +33,7 @@ angular.module("wizard.html", []).run(["$templateCache", function($templateCache
     "      </li>\n" +
     "    </ul>\n" +
     "    <div class=\"steps\" ng-if=\"indicatorsPosition === 'top'\" ng-transclude></div>\n" +
-    "</div>\n" +
+    "</div>\n" +"\n"+
     "");
 }]);
 
@@ -85,7 +94,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
         controller: ['$scope', '$element', '$log', 'WizardHandler', '$q', '$timeout', function ($scope, $element, $log, WizardHandler, $q, $timeout) {
             //setting default step position if none declared.
             if ($scope.indicatorsPosition == undefined) {
-                $scope.indicatorsPosition = 'bottom';
+                $scope.indicatorsPosition = 'top';
             }
             //this variable allows directive to load without having to pass any step validation
             var firstRun = true;
