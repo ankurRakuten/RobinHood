@@ -1,19 +1,19 @@
 <div class="">
     <div class="ui-67">
-      <div class="ui-content" ng-controller="Donar">
+      <div >
     <div class="">
           <div class="col-sm-8 col-md-8 col-lg-8 col-lg-offset-2 acc-col">
             <section>
               <wizard on-finish="finishedWizard()" on-cancel="cancelledWizard()"> 
               <wz-step wz-title="Step 1/4">
                 <label for="name">Full Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Full Name" required>
+                <input type="text" class="form-control" id="name" placeholder="Full Name" ng-model="donar_info.name" required>
                 <label for="dob">DOB</label>
-                <input type="date" class="form-control" id="dob" placeholder="DOB">
+                <input type="date" class="form-control" id="dob" placeholder="DOB" ng-model="donar_info.date">
                 <label for="mobile">Mobile</label>
-                <input type="number" class="form-control" id="number" placeholder="Mobile number">
+                <input type="number" class="form-control" id="number" placeholder="Mobile number" ng-model="donar_info.mobile">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email">
+                <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email">
                 <br>
                 <br>
                 <div class="col-md-4 text-center">
@@ -22,13 +22,16 @@
               </wz-step>
               <wz-step wz-title="Step 2/4">
                 <label for="city">City Name</label>
-                <input type="text" class="form-control" id="city" placeholder="City" required>
+                <input type="text" class="form-control" id="city" placeholder="City" ng-model="donar_info.city" required>
                 <label for="locality">Locality</label>
-                <input type="text" class="form-control" id="locality" placeholder="Locality">
+                <input type="text" class="form-control" id="locality" placeholder="Locality" ng-model="donar_info.locality">
                 <label for="mobile">Landmark</label>
-                <input type="landmark" class="form-control" id="landmark" placeholder="Landmark">
-                <label for="map">Map</label>
-                <input type="text" class="form-control" id="map" placeholder="map">
+                <input type="landmark" class="form-control" id="landmark" placeholder="Landmark" ng-model="donar_info.landmark">
+                <div class="form-group">
+                              <label for="donationItem">Map location</label>
+                              <input type="text" class="form-control" ng-model="donar_info.lat_long" name="lat_long"/> 
+                              <div id="googleMap" style="width:100%;height:400px;"></div>
+                </div>
                 <br>
                 <br>
                 <div class="col-md-4 text-center">
@@ -43,7 +46,7 @@
                 <br>
                 <br>
                 <div class="col-md-4 text-center">
-                <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+                <button type="submit" wz-next value="next" class="btn btn-primary" ng-click="register()">Next</button>
                 </div>
               </wz-step>
               <wz-step wz-title="Finish">
@@ -54,7 +57,7 @@
                 <br>
                 <br>
                 <div class="col-md-4 text-center">
-                <button type="submit" wz-next class="btn btn-primary">Finish</button>
+                <button type="submit" wz-next class="btn btn-primary" ng-click="validateOtp()">Finish</button>
                 </div>
               </wz-step>
               </wizard>

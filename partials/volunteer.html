@@ -5,10 +5,8 @@
             let currentLocation = window.location;
             let optionPath="#/";
             switch(option){
-                case "Donate":optionPath+="donate";break
-                case "Volunteer":optionPath+="volunteer";break
+                case "Volunteer":optionPath+="statistics";break
                 case "About":optionPath+="about";break;
-                case "Contact":optionPath+="contact";break;
 
             }
             console.log(currentLocation.origin+currentLocation.pathname+optionPath)
@@ -21,7 +19,7 @@
 		<div class="container">
 		<h2 style="text-align: center">How would you like to help?</h2>  
 			<div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Volunteer')">
-				<div><h4 style="text-align: center;"> Become a regular Donar</h4></div>
+				<div><h4 style="text-align: center;"> Become a Regular Donar</h4></div>
 			</div>
 			<div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('About')">
 				<div><h4 style="text-align: center;"> Become a volunteer</h4>
