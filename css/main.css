@@ -288,7 +288,7 @@ p.personal-phrase i.fa-quote-left{
 /****************  MENU    ************/
 .navbar-brand {
 	font-weight: 700;
-    padding: 1px 30px;
+    padding: 1px 10px;
     
 }
 .navbar-inverse {
@@ -314,8 +314,8 @@ p.personal-phrase i.fa-quote-left{
 }
 .navbar-header {
     margin-top: 9px;
-    margin-left:20px;
-    max-width: 380px;
+    margin-left:10px;
+    max-width:100%;
 }
 .navbar-collapse {
 	position: relative;
@@ -2207,8 +2207,8 @@ h2.t-title-office {
 .form-control {
 	background: #f2f2f2;
     border-color: #dde1e1;
-    padding: 8px 11px 9px;
-    height: 25px;
+    padding: 2px 4px 2px;
+    height: 30px;
     color: #333;
     font-size: 10px;
     -webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.055);
