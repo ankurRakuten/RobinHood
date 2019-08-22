@@ -29,7 +29,7 @@
               if (status == google.maps.GeocoderStatus.OK) {
                 var latitude = results[0].geometry.location.lat();
                 var longitude = results[0].geometry.location.lng();
-                alert(latitude);
+                // alert(latitude);
               } 
               var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(latitude,longitude),
@@ -39,7 +39,6 @@
       }
 
 </script>
-
 
 <div class="section home">
                 <div class="container">
@@ -76,13 +75,13 @@
                       <form name="donationLocation">
                       <div class="form-group">
                           <label for="exampleFormControlSelect1">Cities</label>
-                      <select class="form-control" name="city" ng-model="donation.RHA_city" ng-options="city as city.name for city in cityList"></select>
+                      <select class="form-control" name="city" ng-model="donation.RHA_city" ng-options="city as city.name for city in cityList" required></select>
                       <span ng-show="donationLocation.city.$invalid && donationLocation.city.$touched" class="small text-danger">* City is required</span>
                     </div>    
                               
                         <div class="form-group">
                               <label>Locality / Area</label>
-                              <select class="form-control" name="Locality" ng-model="donation.Locality" ng-options="chapter as chapter.name for chapter in chapterList"></select>
+                              <select class="form-control" name="Locality" ng-model="donation.Locality" ng-options="chapter as chapter.name for chapter in chapterList" required></select>
                               <span ng-show="donationLocation.Locality.$invalid && donationLocation.Locality.$touched" class="small text-danger">* Locality is required</span>
                             </div>
                         <div class="form-group">
@@ -96,8 +95,8 @@
                         </div>
                       </form>
                         <!-- <pre>donation = {{donation | json}}</pre> -->
-                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                       <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="donationLocation.$invalid" value="NEXT" />
+                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                     </wz-step>
                     <wz-step wz-title="3/4">
                       <form  name="doantionExtraDetails">
@@ -119,8 +118,8 @@
 
                               </div> 
                             </form>
-                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                       <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="doantionExtraDetails.$invalid" value="NEXT" />
+                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                     </wz-step>
                     <wz-step wz-title="4/4">
                         <form name="donarDetails">
@@ -146,8 +145,8 @@
                               <textarea rows="4" cols="50" name="remarks" class="form-control" ng-model="donation.remarks" value=" "></textarea>
                       </div>  
                     </form>
-                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                       <input type="button" class="btn btn-primary"  ng-disabled="donarDetails.$invalid" wz-next="logStep(donation)" value="Submit"/>
+                      <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="BACK" />
                       <!-- wz-next="logStep()" -->
                       <!-- <input type="button" ng-click="goBack()" value="Click here to start again" /> -->
                       <!-- <input type="button" wz-reset value="Click here to reset" /> -->

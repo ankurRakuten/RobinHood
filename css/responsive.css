@@ -159,7 +159,7 @@ to {
 @media only screen and (max-width: 1000px) 
 {
 .nav>li>a {padding: 10px 10px;}
-.home-info-desc{margin:5px 0 0 0;}
+.home-info-desc{margin:10px 0 10px 0;}
 .top-well{padding: 50px 0px 50px 0px;}
 ul.menu-items li.menu-item:last-child{display:none;}
 
