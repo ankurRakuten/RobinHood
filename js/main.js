@@ -11,17 +11,20 @@ window.routes =
 {
     "/": { templateUrl: "partials/home.html", controller: "HomeCtrl" ,requireLogin: false},
     "/volunteer": { templateUrl: "partials/volunteer.html" ,requireLogin: false},
+    "/successful": { templateUrl: "partials/donationSuccessful.html" ,requireLogin: false},
     "/donate": { templateUrl: "partials/donate.html", controller: "DonateCtrl" ,requireLogin: false},
     "/about": { templateUrl: "partials/aboutUs.html" ,requireLogin: false},
     "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
-	"/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
+    "/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
 	"/adminProfile": { templateUrl: "partials/admin/adminProfile.html", controller: "adminProfile" ,requireLogin: false},
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
 	"/updateProduct": { templateUrl: "partials/admin/updateProduct.html", controller: "adminProfile" ,requireLogin: false},
-	"/viewOrders": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
+	"/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
 	"/donarRegister": { templateUrl: "partials/admin/statistics.html", controller: "donarCtrl" ,requireLogin: false},
   "/volunteerRegister": { templateUrl: "partials/volunteerRegister.html", controller: "donarCtrl" ,requireLogin: false},
+	"/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
+	"/statistics": { templateUrl: "partials/admin/statistics.html", controller: "adminProfile" ,requireLogin: false},
 	"/forgotPassword": { templateUrl: "partials/forgotPassword.html", controller: "Login" ,requireLogin: false},
 	"/upcomingDonations": { templateUrl: "partials/user/upcomingDonations.html", controller: "userDonationDetail" ,requireLogin: true},
 	"/pastDonations": { templateUrl: "partials/user/pastDonations.html", controller: "userDonationDetail" ,requireLogin: true},
@@ -96,7 +99,7 @@ app.service('SessionService', ['$localStorage','$location','$rootScope',function
 /**
  * Controls the Ananomus Donations 
  */
-app.controller('DonateCtrl', function ($scope, $firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
+app.controller('DonateCtrl', function ($scope, $window, $firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
     getRHA_CityList()
     getDonationCategory()
     getRHA_capterList()
@@ -108,8 +111,11 @@ app.controller('DonateCtrl', function ($scope, $firebaseObject,$firebaseArray,$f
   $scope.canExit = true;
   $scope.stepActive = true;
   $scope.finished = function() {
-      alert("Thanks For Donating. Our volunteers will get in touch with you ");
+    //   alert("Thanks For Donating. Our volunteers will get in touch with you ");
       sendDonationDetails($scope.donationFormDetails);
+      var landingUrl = "http://" + $window.location.host + "/#/successful";
+      console.log($window.location.host)
+$window.location.href = landingUrl;
   };
   $scope.logStep = function(donation) {
       let stepDetails= angular.copy(donation)
