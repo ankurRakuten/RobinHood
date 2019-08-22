@@ -44,10 +44,12 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$fireba
 			firebase.database().ref().child("profiles").orderByChild('mobile').equalTo($scope.phoneNumber).limitToFirst(1).once("value", snapshot => {
 				if (snapshot.exists()){
 					$scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
-					$localStorage.userDetail=$scope.userDetail;
-					$window.location.href = '#/upcomingDonations';
-					SessionService.setUserAuthenticated(true);
-					window.location.reload(true);
+					$timeout(function () {
+						$localStorage.userDetail=$scope.userDetail;
+						SessionService.setUserAuthenticated(true);
+						$window.location.href = '#/upcomingDonations';
+					},2000);
+					// window.location.reload(true);
 				}else{
 					$scope.errorMessage = "Mobile number not found. Please Register and try again";
 				}
@@ -64,8 +66,8 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$fireba
 				if($scope.adminDetail['admin'] == true){
 					console.log("adminDetail",$scope.adminDetail);
 					$localStorage.adminDetail=$scope.adminDetail;
-					window.location.reload(true);			
 					$window.location.href = '#/adminProfile';
+					window.location.reload(true);			
 				}else{
 					$window.location.href = '#/login';
 				}

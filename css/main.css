@@ -71,7 +71,7 @@ h1 {
 	font-weight: 700;
 	font-size: 26px;
 	line-height:20px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	margin-bottom: 20px;
 }
 h2 {
@@ -79,7 +79,7 @@ h2 {
     font-weight: 400;
     margin-bottom: 20px;
     font-size: 20px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     border-bottom: 1px solid #ddd;
 	padding-bottom: 6px;
 	margin-top: 0;
@@ -305,7 +305,7 @@ p.personal-phrase i.fa-quote-left{
 .navbar-inverse .navbar-nav>li>a {
 	color: rgb(8, 8, 8);
 	text-shadow:0 0 0 rgb(241, 238, 238);
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
     letter-spacing: 1px;
     font-weight: 500;
 }
