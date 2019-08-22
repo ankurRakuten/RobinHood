@@ -20,7 +20,8 @@ window.routes =
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
 	"/updateProduct": { templateUrl: "partials/admin/updateProduct.html", controller: "adminProfile" ,requireLogin: false},
 	"/viewOrders": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
-	"/statistics": { templateUrl: "partials/admin/statistics.html", controller: "donarCtrl" ,requireLogin: false},
+	"/donarRegister": { templateUrl: "partials/admin/statistics.html", controller: "donarCtrl" ,requireLogin: false},
+  "/volunteerRegister": { templateUrl: "partials/volunteerRegister.html", controller: "donarCtrl" ,requireLogin: false},
 	"/forgotPassword": { templateUrl: "partials/forgotPassword.html", controller: "Login" ,requireLogin: false},
 	"/upcomingDonations": { templateUrl: "partials/user/upcomingDonations.html", controller: "userDonationDetail" ,requireLogin: true},
 	"/pastDonations": { templateUrl: "partials/user/pastDonations.html", controller: "userDonationDetail" ,requireLogin: true},
@@ -299,63 +300,98 @@ $scope.images_work = [
 
 });
 
-app.controller("donarCtrl", function ($scope, $firebaseAuth, $firebaseArray ,$firebaseObject ,$localStorage ,$window,$route,SessionService) {
+app.controller("donarCtrl", function ($scope, $firebaseAuth, $firebaseArray ,$firebaseObject ,$localStorage ,$window,$route,SessionService,WizardHandler) {
 $scope.donar_info = {};
+$scope.otp="";
 console.log("check");
+var authObj = $firebaseAuth();
+  setTimeout(function() {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    'size': 'invisible',
+    'callback': function(response) {
+      // reCAPTCHA solved, allow signInWithPhoneNumber.
+      console.log(response);
+    }
+    });
+  },2000);
 
 $scope.register=function(){
     $scope.errorMessage=null;
     $scope.message=null;
-
-    setTimeout(function() {
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-      'size': 'invisible',
-      'callback': function(response) {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-      }
-      });
-    },2000);
-
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
-    firebase.database().ref().child("profiles").orderByChild('mobile').equalTo($scope.donar_info.mobile).limitToFirst(1).once("value", snapshot => {
-      if (snapshot.exists()){
-         console.log("user exists!");
-         $scope.errorMessage = "Mobile Number already used";
-         var element = angular.element($('#errorMessageId'));
-        element.scope().$apply();
-      }else if(reg.test($scope.donar_info.email) == false) 
-      {
-        $scope.errorMessage = "Incorrect Email Address";
-      }else{
-
+    // firebase.database().ref().child("profiles").orderByChild('mobile').equalTo($scope.donar_info.mobile).limitToFirst(1).once("value", snapshot => {
+    //   if (snapshot.exists()){
+    //      console.log("user exists!");
+    //      $scope.errorMessage = "Mobile Number already used";
+    //      var element = angular.element($('#errorMessageId'));
+    //     element.scope().$apply();
+    //   }else if(reg.test($scope.donar_info.email) == false) 
+    //   {
+    //     $scope.errorMessage = "Incorrect Email Address";
+    //   }else{
       var phoneNumber = '+91'+$scope.donar_info.mobile;
-      console.log('phoneNumber>>',phoneNumber)
       var appVerifier = window.recaptchaVerifier;
-      console.log("appVerifier>>>>>>>",appVerifier);
+      console.log(appVerifier,"here");
       firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
         .then(function (confirmationResult) {
-          console.log("$scope.showForm111",$scope.showForm);
           window.confirmationResult = confirmationResult;
           console.log("sent success");
           // $scope.showForm = false;
           setTimeout(function () {
             $scope.$apply(function(){
-              $scope.showForm = false;
+              WizardHandler.wizard().next();
             });
           }, 1000);
           
-          console.log("$scope.showshowForm222",$scope.showForm);
         }).catch(function (error) {
           console.log("error in sending",error);
           $scope.errorMessage = error['message'];
         });
-      }
-     });
+     //  }
+     // });
 
   }
-$scope.finish=function(){
-  console.log("finished",$scope.donar_info);
+$scope.validateOtp=function(p){
+  console.log("finished",p);
+  $scope.errorMessage=null;
+    console.log("%%%%%%%%%%%%%%%OTP>>",p);
+    var code = p;
+    confirmationResult.confirm(code).then(function (result) {
+      console.log(" User signed in successfully.");
+      var user = result.user;
+      console.log("userrrr detail >>",user.uid);
+      console.log("form detail>>",$scope.donar_info);
+      // $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
+      var profileRef=firebase.database().ref().child("profiles")
+      profileRef.child(user.uid).set({
+        first_name: $scope.donar_info.firstName,
+        last_name: $scope.donar_info.lastName,
+        mobile: $scope.donar_info.mobile,
+        email: $scope.donar_info.email,
+        signupDate: (new Date).getTime(),
+        address:$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
+      });
+
+      $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
+      console.log("$scope.userDetail>>>",$scope.userDetail);
+      $scope.user='';
+      if ($scope.userDetail.hasOwnProperty('email')) {
+        // $scope.errorMessage = "Try again after sometime";
+      }else{
+        WizardHandler.wizard().next();
+        // $localStorage.userDetail=$scope.userDetail;
+        // $window.location.href = '#/';
+        // SessionService.setUserAuthenticated(true);
+        // window.location.reload(true);
+      }
+
+    }).catch(function (error) {
+    // User couldn't sign in (bad verification code?)
+    // ...
+      console.error("Authentication failed:", error);
+      $scope.errorMessage = error['message'];
+    });
 }
 
 });

@@ -23,11 +23,11 @@
                 </div>
               </wz-step>
               <wz-step wz-title="Step 2/4">
-                <label for="city">City Name</label>
+                <label for="city">RHA City Name</label>
                 <input type="text" class="form-control" id="city" placeholder="City" ng-model="donar_info.city" required>
                 <label for="locality">Locality</label>
                 <input type="text" class="form-control" id="locality" placeholder="Locality" ng-model="donar_info.locality">
-                <label for="mobile">Landmark</label>
+                <label for="mobile">RHA Chapter</label>
                 <input type="landmark" class="form-control" id="landmark" placeholder="Landmark" ng-model="donar_info.landmark">
                 <!-- <div class="form-group">
                               <label for="donationItem">Map location</label>
@@ -61,7 +61,7 @@
                 <br>
                 <br>
                 <div class="col-md-4 text-center">
-                <button type="submit" wz-next class="btn btn-primary" ng-click="validateOtp(otp,false)">Finish</button>
+                <button type="submit" wz-next class="btn btn-primary" ng-click="validateOtp(otp,true)">Finish</button>
                 </div>
               </wz-step>
               <wz-step wz-title="Finish">
@@ -71,13 +71,12 @@
               </wz-step>
               </wizard>
             </section>
-          <!-- col-8 -->
-        </div>
-      </div>
-      <!-- Content Ends -->
-    </div>
-    <!-- UI - X Ends -->
+          </div>
+     </div>
+   </div>
 </div>
+</div>
+<div id="recaptcha-container"></div>
 <style>
 /* Head */
 
