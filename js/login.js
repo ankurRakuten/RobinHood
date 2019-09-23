@@ -45,9 +45,19 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$fireba
 				if (snapshot.exists()){
 					$scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
 					$timeout(function () {
-						$localStorage.userDetail=$scope.userDetail;
-						SessionService.setUserAuthenticated(true);
-						$window.location.href = '#/upcomingDonations';
+						if($scope.userDetail['role'] == 2){ //Volunteer login
+							console.log("333333333333",$scope.userDetail);
+							console.log("44444444444",$scope.userDetail['role']);
+							$localStorage.userDetail=$scope.userDetail;
+							SessionService.setUserAuthenticated(true);
+							$window.location.href = '#/volunteerUpcomingDonations';
+						}else{
+							console.log("333333333333",$scope.userDetail);
+							console.log("5555555555",$scope.userDetail['role']);
+							$localStorage.userDetail=$scope.userDetail;
+							SessionService.setUserAuthenticated(true);
+							$window.location.href = '#/upcomingDonations';
+						}
 					},2000);
 					// window.location.reload(true);
 				}else{
@@ -140,7 +150,7 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 			$scope.RHACity.$loaded().then(function() {
 
 				var dbRef = firebase.database().ref().child("donation_details");
-				dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function(snapshot) {
+				dbRef.orderByChild('userMobile').equalTo($scope.userDetail['mobile']).on("value", function(snapshot) {
 					if(!$scope.$$phase) {
 						$scope.$apply(function(){
 							$scope.DonationList = Object.values(snapshot.val());
@@ -150,6 +160,59 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 				});
 			});
 		});
+
+		$scope.redirectFunc = function(page){
+			$window.location.href = "#/"+page;
+		}
+	}
+]);
+app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject" , "$firebaseArray", "$localStorage" , "$timeout", "$window" , "$route" , "SessionService" ,
+  function($scope, $firebaseAuth ,$firebaseObject, $firebaseArray ,$localStorage, $timeout ,$window,$route,SessionService) {
+		// $scope.DonationList = [];
+		$scope.showUpcomingTab = true;
+		$scope.showPastTab = false;
+		$scope.userDetail = $localStorage.userDetail;
+		console.log("inside volunteer donation controller>>>>",$scope.userDetail);
+
+		var don_cat = firebase.database().ref().child("Donation_category");
+		$scope.donationCategory = $firebaseObject(don_cat);
+		$scope.donationCategory.$loaded().then(function() {
+
+			var rha_city = firebase.database().ref().child("RHA_city");
+			$scope.RHACity = $firebaseObject(rha_city);
+			$scope.RHACity.$loaded().then(function() {
+
+				var dbRef = firebase.database().ref().child("donation_details");
+				dbRef.orderByChild('status').equalTo('Pending').on("value", function(snapshot) {
+					if(!$scope.$$phase) {
+						$scope.$apply(function(){
+							$scope.DonationList = Object.values(snapshot.val());
+							console.log("###########>>>",$scope.DonationList);
+						});
+					}
+					$scope.DonationList = Object.values(snapshot.val());
+				});
+				dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function(snapshot) {
+					if(!$scope.$$phase) {
+						$scope.$apply(function(){
+							$scope.myDonationList = Object.values(snapshot.val());
+							console.log("###########>>>",$scope.myDonationList);
+						});
+					}
+					$scope.myDonationList = Object.values(snapshot.val());
+				});
+			});
+		});
+
+		$scope.showDonationTab = function(tab){
+			if(tab == 'Upcoming'){
+				$scope.showUpcomingTab = true;
+				$scope.showPastTab = false;
+			}else{
+				$scope.showUpcomingTab = false;
+				$scope.showPastTab = true;
+			}
+		}
 
 		$scope.redirectFunc = function(page){
 			$window.location.href = "#/"+page;
