@@ -1,0 +1,185 @@
+<div class="">
+    <div id="profileHead">
+        <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3>
+        <button class="col-xs-4" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
+        <button class="col-xs-4" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
+        <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button>
+    </div>
+    <div ng-show="myDonationList.length > 0 && showUpcomingTab" class="card col-md-4" ng-repeat="donation in myDonationList | filter:{status:'Pending'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              <i ng-class="{'fa fa-cutlery': donationCategory[donation['donation_category_id']]['name'] == 'Food',
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+            }" aria-hidden="true"></i>
+              {{donationCategory[donation['donation_category_id']]['name']}}
+            </h3>
+            <!-- <h3 class="card-heading pull-right">
+              <i class="fa fa-gift" aria-hidden="true"></i>
+              <a href="#/donate">Donate Again</a>
+            </h3> -->
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+              </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date }}
+              </div>
+              <div>
+                <b><i class="fa fa-info" aria-hidden="true"></i> Status : </b>{{donation['status']}}
+              </div>
+               <!-- details -->
+            <div>
+                <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+              </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+              </div>
+              <div>
+                <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div ng-show="myDonationList.length > 0 && showPastTab" class="card col-md-4" ng-repeat="donation in myDonationList | filter:{status:'Success'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              <i ng-class="{'fa fa-cutlery': donationCategory[donation['donation_category_id']]['name'] == 'Food',
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+            }" aria-hidden="true"></i>
+              {{donationCategory[donation['donation_category_id']]['name']}}
+            </h3>
+            <h3 class="card-heading pull-right">
+              <i class="fa fa-gift" aria-hidden="true"></i>
+              <a href="#/donate">Donate Again</a>
+            </h3>
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+              </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date }}
+              </div>
+              <div>
+                <b><i class="fa fa-info" aria-hidden="true"></i> Status : </b>{{donation['status']}}
+              </div>
+               <!-- details -->
+            <div>
+                <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+              </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+              </div>
+              <div>
+                <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div ng-show="DonationList.length == 0">
+      <h2>No Past Donation</h2>    
+      <h2>Donate Now</h2>    
+    </div>
+  </div>
+  <style>
+  .activeTab{
+    background-color: #0eb7b7;
+    color: white;
+  }
+  .nonActiveTab{
+    /* background-color: #0eb7b7; */
+    color: black;
+  }
+  #profileHead{
+    padding-top: 1.5rem;
+  }
+  .card-heading {
+      display: block;
+      font-size: 15px;
+      line-height: 5px;
+      margin-bottom: 18px;
+      margin-left: 1em;
+      margin-right: 1em;
+      border-bottom: 1px #00612b;
+      color: #fff;
+  }
+  .card {
+      background:#FFF;
+      display: block;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      border:1px solid #AAA;
+      border-bottom:3px solid #BBB;
+      padding:0px;
+      cursor: pointer;
+      margin-top:1em;
+      overflow:hidden;
+      font-family: 'Roboto', sans-serif;
+      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-body{
+   margin:1em;   
+  }
+  
+  .pull-left {
+    float: left;
+  }
+  
+  .pull-none {
+    float: none !important;
+  }
+  
+  .pull-right {
+    float: right;
+  }
+  
+  .card-header{
+      width:100%;
+    color:#2196F3;
+      border-bottom:3px solid #BBB;
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      font-family: 'Roboto', sans-serif;
+      padding:0px;
+      margin-top:0px;
+      overflow:hidden;
+      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+  }
+  .card-header-green{
+      background-color:#00622b;
+      color:#FFFFFF;
+      border-bottom:3px solid #BBB;
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      font-family: 'Roboto', sans-serif;
+      padding:0px;
+      margin-top:0px;
+      overflow:hidden;
+      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-header-btn{
+      border: 0.5rem solid white;
+      padding: 0.5rem;
+      background-color:#00622b;
+      color:#FFFFFF;
+      cursor: pointer;
+  }
+  .p-1{
+    padding: 0.5rem;
+  }
+  .card:hover{ 
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  </style>
