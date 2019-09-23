@@ -1,8 +1,8 @@
-<div class="">
+<div>
     <div class="ui-67">
       <div >
-    <div class="">
-          <div class="col-sm-8 col-md-8 col-lg-8 col-lg-offset-2 acc-col" >
+    <div class="container">
+          <div class="col-md-12 col-lg-12 acc-col">
             <section>
               <wizard on-finish="finishedWizard()" on-cancel="cancelledWizard()"> 
               <wz-step wz-title="Step 1/4">
@@ -18,7 +18,7 @@
                 <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email">
                 <br>
                 <br>
-                <div class="col-md-4 text-center">
+                <div class="pull-right text-center">
                 <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
                 </div>
               </wz-step>
@@ -36,7 +36,7 @@
                 </div> -->
                 <br>
                 <br>
-                <div class="col-md-4 text-center">
+                <div class="pull-right text-center">
                 <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
                 </div>
               </wz-step>
@@ -48,7 +48,7 @@
                 <br>
                 <div class="alert alert-danger" id ="errorMessageId" ng-show="errorMessage!=null">{{errorMessage}}</div>
                 <br>
-                <div class="col-md-4 text-center">
+                <div class="pull-right text-center">
                 <button type="submit"  class="btn btn-primary" ng-click="register()">Next</button>
                 </div>
               </wz-step>
@@ -60,7 +60,7 @@
                 <div id="recaptcha-container"></div>
                 <br>
                 <br>
-                <div class="col-md-4 text-center">
+                <div class="pull-right text-center">
                 <button type="submit" wz-next class="btn btn-primary" ng-click="validateOtp(otp,true)">Finish</button>
                 </div>
               </wz-step>
@@ -81,14 +81,8 @@
 /* Head */
 
     .acc-col{
-
-
-      min-height: 300px;
       margin-top: 5%;
-      background-color: #ffffff;
       padding: 20px;
-/*      border:#333 solid 1px;*/
-
     }
     .acc-col > h3{
       padding-bottom: 20px;
