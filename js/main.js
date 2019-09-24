@@ -102,6 +102,7 @@ app.controller('DonateCtrl', function ($scope, $window, $firebaseObject,$firebas
     getRHA_capterList()
     // getDonationKey();
 
+    $scope.perishableTime=["2 Hours","4 Hours","6 Hours","8 Hours","10 Hours","12 Hours","24 Hours","48 Hours","72 Hours"]
   $scope.donationFormDetails={}
 
   //Wizard 
@@ -122,25 +123,8 @@ $window.location.href = landingUrl;
   $scope.goBack = function() {
       WizardHandler.wizard().goTo(0);
   };
-//   $scope.exitWithAPromise = function() {
-//       var d = $q.defer();
-//       $timeout(function() {
-//           d.resolve(true);
-//       }, 1000);
-//       return d.promise;
-//   };
-//   $scope.exitToggle = function() {
-//       $scope.canExit = !$scope.canExit;
-//   };
-//   $scope.stepToggle = function() {
-//       $scope.stepActive = !$scope.stepActive;
-//   }
-//   $scope.exitValidation = function() {
-//       return $scope.canExit;
-//   };
 
 $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type.
     for (var i = 0; i < $files.length; i++) {
       let file = $files[i];
     //   let path = uploadImage(file,"test")
