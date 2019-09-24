@@ -1,4 +1,30 @@
+<script>
+      
+        function SelectOption(option){
+            console.log(window.location);
+            let currentLocation = window.location;
+            let optionPath="#/";
+            switch(option){
+                case "Donar":optionPath+="donarRegister";break
+                case "Volunteer":optionPath+="volunteerRegister";break;
 
- <div class="section home">
-        <div class="container"><p>Volunteer Wizard</p></div>
-</div>
+            }
+            console.log(currentLocation.origin+currentLocation.pathname+optionPath)
+            window.location = currentLocation.origin+currentLocation.pathname+optionPath
+        }
+      </script>
+
+
+	<div class="section home">
+		<div class="container">
+		<h2 style="text-align: center">How would you like to help?</h2>  
+			<div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Donar')">
+				<div><h4 style="text-align: center;"> Become a Regular Donar</h4></div>
+			</div>
+			<div class="col-lg-4 col-md-4 home-info-desc"  onclick="SelectOption('Volunteer')">
+				<div><h4 style="text-align: center;"> Become a volunteer</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+
