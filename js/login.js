@@ -151,7 +151,7 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 
 				var dbRef = firebase.database().ref().child("donation_details");
 				// console.log(dbRef);
-				dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function(snapshot) {
+				dbRef.orderByChild('userMobile').equalTo($scope.userDetail['mobile']).on("value", function(snapshot) {
 					if(!$scope.$$phase) {
 						$scope.$apply(function(){
 							$scope.DonationList = Object.values(snapshot.val());
