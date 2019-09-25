@@ -101,15 +101,20 @@ app.service('SessionService', ['$localStorage','$location','$rootScope',function
 /**
  * Controls the Ananomus Donations 
  */
-app.controller('DonateCtrl', function ($scope, $window, $firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
+app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
     getRHA_CityList()
     getDonationCategory()
     getRHA_capterList()
-    // getDonationKey();
 
     $scope.perishableTime=["2 Hours","4 Hours","6 Hours","8 Hours","10 Hours","12 Hours","24 Hours","48 Hours","72 Hours"]
-  $scope.donationFormDetails={}
-
+    $scope.donationFormDetails={}
+    
+    if ($rootScope.reDonationDetails){
+        $scope.donation=$rootScope.reDonationDetails;
+        ts = new Date($rootScope.reDonationDetails["pickup_time"]);
+        $scope.donation["pickup_time"]= ts.toJSON();
+        $scope.donation["path"]="";
+    }
   //Wizard 
   $scope.canExit = true;
   $scope.stepActive = true;
@@ -118,7 +123,7 @@ app.controller('DonateCtrl', function ($scope, $window, $firebaseObject,$firebas
       sendDonationDetails($scope.donationFormDetails);
       var landingUrl = "http://" + $window.location.host + "/#/successful";
       console.log($window.location.host)
-$window.location.href = landingUrl;
+      $window.location.href = landingUrl;
   };
   $scope.logStep = function(donation) {
       let stepDetails= angular.copy(donation)
@@ -148,6 +153,7 @@ function sendDonationDetails(donationDetails){
  donation["path"]="";
  console.log(donation)
  donationDetailsRef.push().set(donation,function(){
+     $rootScope.reDonationDetails=null;
     console.log("Donation Submitted")
 })
  donationDetailsRef.orderByKey().limitToLast(1).on("child_added",function(snapshot){
@@ -168,6 +174,7 @@ let imagePath=[];
     donationDetailsRef.child($scope.key).child("path").set("https://firebasestorage.googleapis.com/v0/b/rakutenrobin.appspot.com/o/"+$scope.key,function(){
         console.log("Path Updated")
     });
+
   
 }
 
@@ -202,6 +209,10 @@ function getDonationKey(){
 }
 
 function getRHA_CityList(){
+
+    var rha_city = firebase.database().ref().child("RHA_city");
+            $scope.RHACity = $firebaseObject(rha_city);
+            
     let RHA_CityRef = firebase.database().ref("RHA_city")
     let RHA_cityList = $firebaseArray(RHA_CityRef);
     RHA_cityList.$loaded().then(function() {
@@ -242,18 +253,17 @@ function getRHA_capterList(){
 
 function labelToCategory(donationDetails){
     // Label to ID
-        donationDetails["Locality"] = donationDetails["Locality"]["name"];
-        donationDetails["RHA_city_id"] = donationDetails["RHA_city"]["$id"];
-        delete donationDetails["RHA_city"]
-        donationDetails["donation_category_id"] = donationDetails["donation_category"]["$id"];
-        delete donationDetails["donation_category"];
+        // donationDetails["Locality"] = donationDetails["Locality"]["name"];
+        // donationDetails["RHA_city_id"] = donationDetails["RHA_city"]["$id"];
+        // delete donationDetails["RHA_city"]
+        // donationDetails["donation_category_id"] = donationDetails["donation_category"]["$id"];
+        // delete donationDetails["donation_category"];
     // Creation Time and Station 
-        donationDetails["pickup_time"]= donationDetails["pickup_time"].toString();
         let now = new Date();
         let created_at = now.getTime();
         donationDetails["created_at"]=created_at;
+        donationDetails["pickup_time"]= new Date(donationDetails["pickup_time"]).getTime();
         donationDetails["status"]="Pending";
-       
         return donationDetails
     }
 
