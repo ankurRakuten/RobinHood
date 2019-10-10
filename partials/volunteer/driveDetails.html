@@ -1,0 +1,70 @@
+<style>
+    .container{
+        align-items: center;
+        margin-left:0 auto;
+        left:20%;
+        /* display: inline-block; */
+    }
+    .row{
+        display: flex;
+        width: 100%;
+        margin: 0 auto;
+        align-self: center;
+    }
+    .columnright{
+        width:50%;
+        display: flex;
+        align-items: stretch;
+        float: right;
+    }
+    .columnleft{
+        width:50%;
+        float:left;
+    }
+    .button{
+        background-color:#0dc1c1;
+        border: 1px solid #09b1b9;
+        width:100%;
+    }
+</style>
+<div class="section home">
+        <div class="container">
+            <div class="row">
+                        <h2 style="text-align: center">{{driveDetails.driveTitle}}</h2>
+            </div>
+            <div class="row">
+                    <div class="columnleft">
+                        <h3>  ID : {{driveDetails.$id}}</h3>
+                    </div>
+                    <div class="columnright">
+                        <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date }}</span></h3>
+                    </div>
+            </div>
+            <div class="row">
+                    <div class="columnleft">
+                        <p><i class="fa fa-user"></i><span> {{driveDetails.PIC}}</span></p>
+                    </div>
+                    <div class="columnright">
+                        <p><i class="fa fa-phone"></i><span> {{driveDetails.contactNumber}}</span></p>
+                    </div>
+            </div>
+                <button class="button" style="widows: 100%;" ng-click="updateAttendeeList(joinOrQuit)"><b>{{joinOrQuit}}</b></button>
+            <h5><b>Chapters</b></h5>
+            <div ng-repeat="chapter in chapterList">
+                <i class="fa fa-map-marker"></i>  {{chapter}} 
+            </div>
+                <h5><b>Donations</b></h5>
+               <div ng-repeat="donation in driveDetails.donations">
+                   <i class="fas fa-hand-holding-heart"></i>  {{donation}} 
+               </div>
+               <h5><b>Atendees</b><span>{{driveDetails.attendees.length}}</span></h5>
+               <div ng-repeat="(key, value) in driveDetails.attendees">
+                    <i class="fa fa-user"></i>  {{key}}
+                </div>
+                <h5><b>Comments</b><span>{{driveDetails.attendees.length}}</span></h5>
+                <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%">
+                <br>
+                <button class="btn btn-primary">Add Comment</button>
+            
+        </div>
+</div>

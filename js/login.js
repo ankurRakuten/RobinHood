@@ -142,8 +142,8 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject" , "$fireba
   
   }
 ]);
-app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject" , "$firebaseArray", "$localStorage" , "$timeout", "$window" , "$route" , "SessionService" ,
-  function($scope, $firebaseAuth ,$firebaseObject, $firebaseArray ,$localStorage, $timeout ,$window,$route,SessionService) {
+app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject" , "$firebaseArray", "$localStorage" , "$timeout", "$window" , "$rootScope", "$route" , "SessionService" ,
+  function($scope,$firebaseAuth ,$firebaseObject, $firebaseArray ,$localStorage, $timeout ,$window,$rootScope,$route,SessionService) {
 		// $scope.DonationList = [];
 		$scope.userDetail = $localStorage.userDetail;
 		console.log("inside donation controller>>>>",$scope.userDetail);
@@ -157,6 +157,7 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 			$scope.RHACity.$loaded().then(function() {
 
 				var dbRef = firebase.database().ref().child("donation_details");
+				// console.log(dbRef);
 				dbRef.orderByChild('userMobile').equalTo($scope.userDetail['mobile']).on("value", function(snapshot) {
 					if(!$scope.$$phase) {
 						$scope.$apply(function(){
@@ -164,12 +165,20 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 						});
 					}
 					$scope.DonationList = Object.values(snapshot.val());
+					console.log($scope.DonationList)
 				});
 			});
 		});
 
+		$scope.reDonationData = function(donation){
+			$rootScope.reDonationDetails = donation;
+			console.log($rootScope.reDonationDetails);
+			$scope.redirectFunc('donate')
+		}
 		$scope.redirectFunc = function(page){
+			console.log($window.location.href)
 			$window.location.href = "#/"+page;
+			console.log($window.location.href)
 		}
 	}
 ]);
