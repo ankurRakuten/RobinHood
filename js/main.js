@@ -397,9 +397,6 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
             $scope.attendeeList= {}
           }
           console.log($scope.attendeeList)
-          
-          
-          $scope.driveDetails.status="Successful"
 
 
       });

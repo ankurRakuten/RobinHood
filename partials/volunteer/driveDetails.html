@@ -21,12 +21,6 @@
         width:50%;
         float:left;
     }
-    .button{
-        background-color:#0dc1c1;
-        border: 1px solid #09b1b9;
-        color: white;
-        width:100%;
-    }
     .datetime{
         font-size: 5fr;
         color: grey;
@@ -72,7 +66,7 @@
                         <p><i class="fa fa-phone"></i><span> {{driveDetails.contactNumber}}</span></p>
                     </div>
             </div>
-                <button ng-if="driveDetails.status=='Pending'" class="button" style="widows: 100%;" ng-click="updateAttendeeList(joinOrQuit)"><b>{{joinOrQuit}}</b></button>
+                <button ng-if="driveDetails.status=='Pending'" class="drivePlanButton" style="widows: 100%;" ng-click="updateAttendeeList(joinOrQuit)">{{joinOrQuit}}</button>
             <h5><b>Chapters</b></h5>
             <div ng-repeat="chapter in chapterList">
                 <i class="fa fa-map-marker"></i>  {{chapter}} 
@@ -87,7 +81,7 @@
                <div ng-repeat="attendee in attendeeList">
                     <i class="fa fa-user"></i>  {{attendee.$id}}
                 </div>
-                <button ng-if="driveDetails.status=='Successful'" class="button" style="widows: 100%;" ng-click="redirect('attendanceList')"><b>Mark Attendance</b></button>
+                <button ng-if="driveDetails.status=='Successful'" class="drivePlanButton" style="widows: 100%;" ng-click="redirect('attendanceList')">Mark Attendance</button>
                 <h5><b>Comments</b><span class="length">  <b>{{comments.length}}</b></span></h5>
                 <textarea rows="3" class="form-control" ng-model="comment"></textarea>
                 <!-- <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%"> -->

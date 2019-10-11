@@ -16,12 +16,6 @@
         width: 20%;
         align-self: right;
     }
-    .button{
-        background-color:#0dc1c1;
-        border: 1px solid #09b1b9;
-        color: white;
-        width:100%;
-    }
 </style>
 <div class="section home">
     <div class="container">
@@ -32,6 +26,6 @@
             </div>
             
             </div>
-            <button ng-if="driveDetails.status=='Successful'&& accessToMarkAttendance" class="button" style="widows: 100%;" ng-click="updateAttendance()"><b>Submit</b></button>
-            <button  class="button" style="widows: 100%;" ng-click="redirect('driveDetails')"><b>Drive Details</b></button>
+            <button ng-if="driveDetails.status=='Successful'&& accessToMarkAttendance" class="drivePlanButton" ng-click="updateAttendance()">Submit</button>
+            <button  class="drivePlanButton"  ng-click="redirect('driveDetails')">Drive Details</button>
     </div></div>
