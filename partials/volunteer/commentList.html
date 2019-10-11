@@ -1,0 +1,25 @@
+<style>
+.button{
+        background-color:#0dc1c1;
+        border: 1px solid #09b1b9;
+        color: white;
+        width:100%;
+    }</style>
+<div class="section home">
+        <div class="container">
+            <h5><b>Comments</b><span class="length">  <b>{{comments.length}}</b></span></h5>
+            <textarea rows="3" class="form-control" ng-model="comment"></textarea>
+            <!-- <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%"> -->
+            <br>
+            <button ng-if="comment.length > 0"class="btn btn-primary" ng-click=postComment(comment) ng-disabled="comment.$invalid">Post</button>
+            <br>
+            <div ng-repeat="comment in comments| orderBy:'$id':true ">
+                <div ng-if="comment.commentDetails"><i class="fas fa-user-circle"></i>  {{comment.commentBy}}
+                    <div>{{comment.commentDetails}}</div>
+                    <div class="datetime">{{comment.$id | date:'MM/dd/yyyy @ h:mma'}}</div>
+                </div>
+                </div>
+                <br>
+                <button  class="button" style="widows: 100%;" ng-click="redirect('driveDetails')"><b>Drive Details</b></button>
+        </div>
+    </div>
