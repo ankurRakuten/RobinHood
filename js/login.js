@@ -273,6 +273,21 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		$scope.redirectFunc = function(page){
 			$window.location.href = "#/"+page;
 		}
+
+		$scope.showImages = function(donationID){
+			console.log("innn showImages");
+			let storage =firebase.storage();
+			let storageRef = storage.ref();
+			var listRef = storageRef.child(donationID);
+			listRef.listAll().then(function(res) {
+				console.log("images",res);
+			});
+			// listRef.once('value').then(function(snapshot){
+			// 	var value = snapshot.val();
+			// 	console.log("images value",value);
+			//   })
+
+		}
 	}
 ]);
 app.controller("orderDetail", ["$scope", "$firebaseAuth", "$firebaseObject" , "$localStorage" , "$timeout", "$window" , "$route" , "SessionService" ,"$firebaseArray",
