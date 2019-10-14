@@ -16,6 +16,8 @@ window.routes =
     "/about": { templateUrl: "partials/aboutUs.html" ,requireLogin: false},
     "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
     "/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
+    // Drive 
+  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: false},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
 	"/adminProfile": { templateUrl: "partials/admin/adminProfile.html", controller: "adminProfile" ,requireLogin: false},
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
@@ -43,7 +45,8 @@ window.routes =
 	"/404": {templateUrl: "partials/404.html", controller: "PageCtrl" ,requireLogin: false},
 	"/services": {templateUrl: "partials/services.html", controller: "PageCtrl" ,requireLogin: false},
 	"/pricing": {templateUrl: "partials/pricing.html", controller: "PageCtrl" ,requireLogin: false},
-	"/checkout": {templateUrl: "partials/shop/checkout.html", controller: "checkout" ,requireLogin: true}
+  "/checkout": {templateUrl: "partials/shop/checkout.html", controller: "checkout" ,requireLogin: true}
+  
 	
 };
  
@@ -101,14 +104,21 @@ app.service('SessionService', ['$localStorage','$location','$rootScope',function
 /**
  * Controls the Ananomus Donations 
  */
-app.controller('DonateCtrl', function ($scope, $window, $firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
+app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
     getRHA_CityList()
     getDonationCategory()
-    getRHA_capterList()
-    // getDonationKey();
+    // getRHA_capterList()
+    getRHA_LocalityList()
 
-  $scope.donationFormDetails={}
-
+    $scope.perishableTime=["2 Hours","4 Hours","6 Hours","8 Hours","10 Hours","12 Hours","24 Hours","48 Hours","72 Hours"]
+    $scope.donationFormDetails={}
+    
+    if ($rootScope.reDonationDetails){
+        $scope.donation=$rootScope.reDonationDetails;
+        ts = new Date($rootScope.reDonationDetails["pickup_time"]);
+        $scope.donation["pickup_time"]= ts.toJSON();
+        $scope.donation["path"]="";
+    }
   //Wizard 
   $scope.canExit = true;
   $scope.stepActive = true;
@@ -117,7 +127,7 @@ app.controller('DonateCtrl', function ($scope, $window, $firebaseObject,$firebas
       sendDonationDetails($scope.donationFormDetails);
       var landingUrl = "http://" + $window.location.host + "/#/successful";
       console.log($window.location.host)
-$window.location.href = landingUrl;
+      $window.location.href = landingUrl;
   };
   $scope.logStep = function(donation) {
       let stepDetails= angular.copy(donation)
@@ -127,25 +137,8 @@ $window.location.href = landingUrl;
   $scope.goBack = function() {
       WizardHandler.wizard().goTo(0);
   };
-//   $scope.exitWithAPromise = function() {
-//       var d = $q.defer();
-//       $timeout(function() {
-//           d.resolve(true);
-//       }, 1000);
-//       return d.promise;
-//   };
-//   $scope.exitToggle = function() {
-//       $scope.canExit = !$scope.canExit;
-//   };
-//   $scope.stepToggle = function() {
-//       $scope.stepActive = !$scope.stepActive;
-//   }
-//   $scope.exitValidation = function() {
-//       return $scope.canExit;
-//   };
 
 $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type.
     for (var i = 0; i < $files.length; i++) {
       let file = $files[i];
     //   let path = uploadImage(file,"test")
@@ -153,8 +146,35 @@ $scope.onFileSelect = function($files) {
     }
     $scope.uploadedImages=$files
     console.log($scope.uploadedImages[0])
-    
 }
+
+// Search Dropdown 
+// $scope.locality='';
+// $scope.complete=function(string){
+//   console.log(string)
+//   var output=[];
+//   angular.forEach($scope.localityList,function(locality){
+//     console.log(locality.name)
+//     if(locality.name.toLowerCase().indexOf(string.toLowerCase())>=0){
+      
+//       output.push(locality);
+//     }
+//   });
+//   $scope.filterLocality=output;
+// }
+// $scope.fillTextbox=function(selectedLocality){
+//   console.log(selectedLocality.name);
+//    $rootScope.locality = selectedLocality.name;
+//    $scope.selectedLocality=selectedLocality.name;
+//   //  delete selectedLocality["name"];
+//    $scope.donationFormDetails.locality=selectedLocality;
+//   //  $scope.donation.locality =selectedLocality.name;
+//   console.log($scope.locality);
+//   $scope.filterLocality=null;
+// }
+// console.log($scope.selectedLocality);
+
+// $scope.locality=$scope.selectedLocality;
 
 //Local Functions 
 function sendDonationDetails(donationDetails){
@@ -164,6 +184,7 @@ function sendDonationDetails(donationDetails){
  donation["path"]="";
  console.log(donation)
  donationDetailsRef.push().set(donation,function(){
+     $rootScope.reDonationDetails=null;
     console.log("Donation Submitted")
 })
  donationDetailsRef.orderByKey().limitToLast(1).on("child_added",function(snapshot){
@@ -184,6 +205,7 @@ let imagePath=[];
     donationDetailsRef.child($scope.key).child("path").set("https://firebasestorage.googleapis.com/v0/b/rakutenrobin.appspot.com/o/"+$scope.key,function(){
         console.log("Path Updated")
     });
+
   
 }
 
@@ -218,6 +240,10 @@ function getDonationKey(){
 }
 
 function getRHA_CityList(){
+
+    var rha_city = firebase.database().ref().child("RHA_city");
+            $scope.RHACity = $firebaseObject(rha_city);
+            
     let RHA_CityRef = firebase.database().ref("RHA_city")
     let RHA_cityList = $firebaseArray(RHA_CityRef);
     RHA_cityList.$loaded().then(function() {
@@ -243,6 +269,18 @@ function getDonationCategory(){
         console.log(Donation_category)
     });
 }
+function getRHA_LocalityList(){
+  let RHA_LocalityRef = firebase.database().ref("RHA_Locality")
+let RHA_LocalityList = $firebaseArray(RHA_LocalityRef);
+RHA_LocalityList.$loaded().then(function() {
+  angular.forEach(RHA_LocalityList, function(item) {
+    delete item["$priority"];
+  });
+  $scope.localityList=RHA_LocalityList;
+  // console.log(RHA_LocalityList)
+});
+}
+
 function getRHA_capterList(){
     let RHA_capterRef = firebase.database().ref("RHA_capter")
     let RHA_capterList = $firebaseArray(RHA_capterRef);
@@ -258,18 +296,19 @@ function getRHA_capterList(){
 
 function labelToCategory(donationDetails){
     // Label to ID
-        donationDetails["Locality"] = donationDetails["Locality"]["name"];
-        donationDetails["RHA_city_id"] = donationDetails["RHA_city"]["$id"];
-        delete donationDetails["RHA_city"]
-        donationDetails["donation_category_id"] = donationDetails["donation_category"]["$id"];
-        delete donationDetails["donation_category"];
+    delete donationDetails["Locality"]["name"];
+        // donationDetails["Locality"] = donationDetails["Locality"]["name"];
+        // donationDetails["RHA_city_id"] = donationDetails["RHA_city"]["$id"];
+        // delete donationDetails["RHA_city"]
+        // donationDetails["donation_category_id"] = donationDetails["donation_category"]["$id"];
+        // delete donationDetails["donation_category"];
+
     // Creation Time and Station 
-        donationDetails["pickup_time"]= donationDetails["pickup_time"].toString();
         let now = new Date();
         let created_at = now.getTime();
         donationDetails["created_at"]=created_at;
+        donationDetails["pickup_time"]= new Date(donationDetails["pickup_time"]).getTime();
         donationDetails["status"]="Pending";
-       
         return donationDetails
     }
 
@@ -279,6 +318,80 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     $scope.confirm = false;
     
   });
+
+
+  app.controller('DriveCtrl', function ($scope, $window,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
+
+    // Set Item 
+    // $localStorage.userDetail={
+    //   first_name:"nikitha",
+    //   last_name :"nimbalkar"
+    // }
+    getDriveDetails()
+    getRHA_capterList()
+    $scope.driveDetails={}
+    let userName= $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
+    console.log(userName)
+    console.log($localStorage)
+
+    $scope.updateAttendeeList= function(action){
+      console.log(action)
+      if (action=="Join"){
+        $scope.driveDetails["attendees"][userName]={attended:"False"};
+      }else if (action=="Quit"){
+        delete $scope.driveDetails["attendees"][userName];
+      }
+      checkJoinStatus($scope.driveDetails["attendees"]);
+
+    }
+    $scope.joinOrQuit="";
+    function checkJoinStatus(attendeeList){
+      if (userName in attendeeList){
+        $scope.joinOrQuit="Quit"
+      }
+      else{
+        $scope.joinOrQuit = "Join"
+      }
+    }
+      
+    function getDriveDetails(){
+      let driveDetailsRef = firebase.database().ref("drive_details/1")
+      let driveDetails = $firebaseObject(driveDetailsRef);
+      driveDetails.$loaded().then(function() {
+          console.log(driveDetails)
+          delete driveDetails["$priority"]
+          let time = new Date(driveDetails["schedule"])
+          console.log(time)
+          checkJoinStatus(driveDetails["attendees"]);
+          $scope.driveDetails = driveDetails;
+      });
+    }
+
+    function getRHA_capterList(){
+      let RHA_capterRef = firebase.database().ref("RHA_capter")
+      let RHA_capterList = $firebaseArray(RHA_capterRef);
+      RHA_capterList.$loaded().then(function() {
+          angular.forEach(RHA_capterList, function(item) {
+              delete item["$priority"];
+      });
+      // $scope.chapterList=RHA_capterList;
+          console.log(RHA_capterList);
+          console.log($scope.driveDetails.chapter)
+          let chapterList=[]
+          angular.forEach($scope.driveDetails.chapter,function(chapterId){
+            
+            RHA_capterList.filter(x=>{
+              if (x["$id"]==chapterId){
+                chapterList.push(x["name"])
+              }
+            });          
+          })
+          $scope.chapterList=chapterList
+      });
+  }
+
+  });
+ 
 
 /**
  * Controls all other Pages
@@ -293,20 +406,6 @@ app.controller('PageCtrl', function ( /*$scope, $location, $http */) {
     });
 });
 
-
-
-/*Controller Porfolio and filter Images*/
-
-app.controller("dataImagesWork", function ($scope) {
-$scope.images_work = [
-          { num: 1, code: 'APL', category: 'mac', name: 'Nature Pro', src: "1.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
-          { num: 2, code: 'AVC', category: 'ipad', name: 'Boat NC', src: "2.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
-          { num: 3, code: 'BAN', category: 'phone', name: 'Creative', src: "3.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
-          { num: 4, code: 'CTP', category: 'mac', name: 'Room Pro', src: "4.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
-          { num: 5, code: 'FIG', category: 'ipad', name: 'Office Airs', src: "5.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. ' },
-          { num: 6, code: 'FIG', category: 'sound', name: 'Dancing', src: "6.jpg", description: 'Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. '}];
-
-});
 
 app.controller("donarCtrl", function ($scope, $firebaseAuth, $firebaseArray ,$firebaseObject ,$localStorage ,$window,$route,SessionService,WizardHandler) {
 $scope.donar_info = {};

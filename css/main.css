@@ -1018,7 +1018,6 @@ a.close-overlay.hidden {
     cursor: pointer;
     background: url(../assets/blank.gif) no-repeat;
 }
-
 .arrow.prev {
     opacity: 0.2;
     left: 20px;
