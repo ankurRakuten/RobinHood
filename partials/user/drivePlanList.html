@@ -1,0 +1,275 @@
+<div class="" style="margin-top: 40px;">
+    <h3><a href="#/">Home</a>/<a href="#/volunteerUpcomingDonations">Donation List</a></h3>
+    <div class="row">
+      <div class="col-xs-10 pd-0">
+        <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
+        <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
+      </div>
+      <div class="col-xs-2 pd-0">
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a ng-class="statusDriveFilter == 'all' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('all')">All</a></li>
+              <li><a ng-class="statusDriveFilter == 'Volunteered' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('Volunteered')">Volunteered</a></li>
+              <li><a ng-class="statusDriveFilter == 'mydrive' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('mydrive')">My Drive</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:{status:'Pending'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              {{drive['driveTitle']}}
+            </h3>
+            <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a ng-href="#//driveDetails?driveId={{drive['id']}}">Volunteer</a>
+            </h3>
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:{status:'Success'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              {{drive['driveTitle']}}
+            </h3>
+            <!-- <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a href="#/volunteer">Volunteer</a>
+            </h3> -->
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:{status:'Pending'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              {{drive['driveTitle']}}
+            </h3>
+            <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a href="#/volunteer">Volunteer</a>
+            </h3>
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:{status:'Success'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              {{drive['driveTitle']}}
+            </h3>
+            <!-- <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a href="#/volunteer">Volunteer</a>
+            </h3> -->
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Pending'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              {{drive['driveTitle']}}
+            </h3>
+            <!-- <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a href="#/volunteer">Volunteer</a>
+            </h3> -->
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Success'}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              {{drive['driveTitle']}}
+            </h3>
+            <!-- <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a href="#/volunteer">Volunteer</a>
+            </h3> -->
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+   
+    <div ng-show="DonationList.length == 0">
+      <h2>No Upcoming Donation</h2>    
+      <h2>Donate Now</h2>    
+    </div>
+  </div>
+  <style>
+  .pd-0{
+    padding: 0px;
+  }
+  .mr-10{
+    margin-right: 10px;
+  }
+  .profileHead{
+    padding-top: 1.5rem;
+  }
+  .nonActiveTab{
+    /* background-color: #0eb7b7; */
+    color: black;
+  }
+  .activeFilterclass{
+    background-color: #5ba56a;
+    color: white;
+  }
+  .card-heading {
+      display: block;
+      font-size: 15px;
+      line-height: 5px;
+      margin-bottom: 18px;
+      margin-left: 1em;
+      border-bottom: 1px #00612b;
+      color: #fff;
+  }
+  .card {
+      background:#FFF;
+      display: block;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      border:1px solid #AAA;
+      border-bottom:3px solid #BBB;
+      padding:0px;
+      cursor: pointer;
+      margin-top:1em;
+      overflow:hidden;
+      font-family: 'Roboto', sans-serif;
+      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-body{
+   margin:1em;   
+  }
+  
+  .pull-left {
+    float: left;
+  }
+  
+  .pull-none {
+    float: none !important;
+  }
+  
+  .pull-right {
+    float: right;
+  }
+  
+  .card-header{
+      width:100%;
+      color:#2196F3;
+      border-bottom:3px solid #BBB;
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      font-family: 'Roboto', sans-serif;
+      padding:0px;
+      margin-top:0px;
+      overflow:hidden;
+      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+  }
+  .card-header-green{
+      background-color:#00622b;
+      color:#FFFFFF;
+      border-bottom:3px solid #BBB;
+      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      font-family: 'Roboto', sans-serif;
+      padding:0px;
+      margin-top:0px;
+      overflow:hidden;
+      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-header-btn{
+      border: 0.5rem solid white;
+      padding: 0.5rem;
+      background-color:#00622b;
+      color:#FFFFFF;
+      cursor: pointer;
+  }
+  .p-1{
+    padding: 0.5rem;
+  }
+  .card:hover{ 
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .whiteback{
+    background-color: white;
+    color: black;
+  }
+  .mb-0{
+    margin-bottom: 0;
+  }
+  .m-0{
+    margin: 0;
+  }
+  .btn-green {
+    /* background: #00622b; */
+    border: 1px solid #00622b;
+    /* color: #fff!important; */
+    /* -webkit-box-shadow: inset 0 1px 0 #00622b; */
+    -moz-box-shadow: inset 0 1px 0 #00622b;
+    box-shadow: inset 0 1px 0 #00622b;
+    text-shadow: 0 1px 0 rgba(0,0,0,.1);
+  }
+  .activeTab{
+    background-color: #00622b;
+    color: white;
+  }
+  </style>
