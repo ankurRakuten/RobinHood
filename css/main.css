@@ -176,6 +176,12 @@ ul.scroll-menu {
 
 
 /* General button style (reset) */
+.drivePlanButton{
+    background-color:#155f31;
+    border: 1px solid #155f31;
+    color: white;
+    width:100%;
+}
 .btn {
 	border: none;
 	font-family: inherit;

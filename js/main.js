@@ -17,7 +17,9 @@ window.routes =
     "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
     "/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
     // Drive 
-  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: false},
+  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: true},
+  "/commentList":{templateUrl: "partials/volunteer/commentList.html",controller: "DriveCtrl",requireLogin: true},
+  "/attendanceList":{templateUrl: "partials/volunteer/attendanceList.html",controller: "DriveCtrl",requireLogin: true},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
 	"/adminProfile": { templateUrl: "partials/admin/adminProfile.html", controller: "adminProfile" ,requireLogin: false},
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
@@ -320,31 +322,41 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
   });
 
 
-  app.controller('DriveCtrl', function ($scope, $window,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
+  app.controller('DriveCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
+    var param = $location.search();
+    $scope.driveId=param.driveId;
 
-    // Set Item 
-    // $localStorage.userDetail={
-    //   first_name:"nikitha",
-    //   last_name :"nimbalkar"
-    // }
     getDriveDetails()
     getRHA_capterList()
     $scope.driveDetails={}
-    let userName= $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
+    let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
+    // let userName= "nikitha nimbalkar"
     console.log(userName)
     console.log($localStorage)
 
-    $scope.updateAttendeeList= function(action){
-      console.log(action)
+    $scope.updateAttendeeList = function(action){
+      let driveDetailsRef = firebase.database().ref().child("drive_details").child(driveId).child("attendees")
       if (action=="Join"){
         $scope.driveDetails["attendees"][userName]={attended:"False"};
+        driveDetailsRef.child(userName).set({attended:"False"});
+
       }else if (action=="Quit"){
         delete $scope.driveDetails["attendees"][userName];
+        driveDetailsRef.child(userName).remove()
       }
       checkJoinStatus($scope.driveDetails["attendees"]);
 
     }
     $scope.joinOrQuit="";
+    $scope.commentKeys='';
+
+    $scope.postComment = function(comment){
+      console.log(comment);
+      let commentDetails={}
+      commentDetails["commentBy"]=userName;
+      commentDetails["commentDetails"]= comment;
+      addComment(commentDetails)
+    }
     function checkJoinStatus(attendeeList){
       if (userName in attendeeList){
         $scope.joinOrQuit="Quit"
@@ -353,17 +365,40 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
         $scope.joinOrQuit = "Join"
       }
     }
-      
+
+    function addComment(commentDetails){
+      let driveDetailsRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("comment")
+      let time = (new Date()).getTime();
+      driveDetailsRef.child(time).set(commentDetails)
+      $scope.comment ="";
+      getDriveDetails();
+    }
+    
     function getDriveDetails(){
-      let driveDetailsRef = firebase.database().ref("drive_details/1")
+      let driveListRef = firebase.database().ref("drive_details");
+      let driveDetailsRef = driveListRef.child($scope.driveId);
+      console.log(driveDetailsRef)
       let driveDetails = $firebaseObject(driveDetailsRef);
       driveDetails.$loaded().then(function() {
           console.log(driveDetails)
           delete driveDetails["$priority"]
-          let time = new Date(driveDetails["schedule"])
-          console.log(time)
+          // let time = new Date(driveDetails["schedule"])
           checkJoinStatus(driveDetails["attendees"]);
           $scope.driveDetails = driveDetails;
+          if($firebaseArray(driveDetailsRef.child("comment"))){
+            $scope.comments = $firebaseArray(driveDetailsRef.child("comment"));
+          }else {
+            $scope.comments = {}
+            $scope.driveDetails["attendees"]={}
+          }
+          if($firebaseArray(driveDetailsRef.child("comment"))){
+            $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
+          }else {
+            $scope.attendeeList= {}
+          }
+          console.log($scope.attendeeList)
+
+
       });
     }
 
@@ -374,9 +409,6 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
           angular.forEach(RHA_capterList, function(item) {
               delete item["$priority"];
       });
-      // $scope.chapterList=RHA_capterList;
-          console.log(RHA_capterList);
-          console.log($scope.driveDetails.chapter)
           let chapterList=[]
           angular.forEach($scope.driveDetails.chapter,function(chapterId){
             
@@ -390,7 +422,34 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       });
   }
 
+  ///Comment List Page 
+  $scope.redirect = function(page){
+    var landingUrl = "http://" + $window.location.host + "/#/"+page+"?driveId="+$scope.driveId;
+      $window.location.href = landingUrl;
+  }
+
+  // Attendance Page
+  $scope.changeAttendance = function(id,currentState){
+    console.log(id,currentState)
+    console.log(typeof(currentState))
+    $scope.attendeeList.find(x=>x.$id==id)["attended"]=!currentState;
+    // console.log($scope.attendeeList["max"])
+    // $scope.attendeeList[id]["attended"]=!currentState;
+  }
+ $scope.updateAttendance = function(){
+   console.log($scope.driveId)
+  let attendanceRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
+  $scope.attendeeList.forEach(function(item){
+    console.log(item["$id"],{"attended":item["attended"]})
+    attendanceRef.child(item["$id"]).set({"attended":item["attended"]})
+  })
+  $scope.redirect('driveDetails');
+  
+ }
+ $scope.accessToMarkAttendance = $scope.driveDetails["PIC"]==userName?true:false;
+  
   });
+
  
 
 /**

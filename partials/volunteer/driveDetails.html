@@ -21,16 +21,34 @@
         width:50%;
         float:left;
     }
-    .button{
-        background-color:#0dc1c1;
-        border: 1px solid #09b1b9;
-        width:100%;
+    .datetime{
+        font-size: 5fr;
+        color: grey;
     }
+    .length{
+        color:green;
+    }
+
+    a.notif {
+  position: relative;
+  display: block;
+  height: 30px;
+  width: 30px;
+  background: url('http://i.imgur.com/evpC48G.png');
+  background-size: contain;
+  text-decoration: none;
+}
+.num {
+  position: absolute;
+  right: 11px;
+  top: 6px;
+  color: #fff;
+}
 </style>
 <div class="section home">
         <div class="container">
             <div class="row">
-                        <h2 style="text-align: center">{{driveDetails.driveTitle}}</h2>
+                        <h2 style="text-align: center">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b><i>{{driveDetails.status}}</i></b></span><span style="color: green" ng-if="driveDetails.status=='Successful'"> <b><i>{{driveDetails.status}}</i></b></span></h2>
             </div>
             <div class="row">
                     <div class="columnleft">
@@ -48,7 +66,7 @@
                         <p><i class="fa fa-phone"></i><span> {{driveDetails.contactNumber}}</span></p>
                     </div>
             </div>
-                <button class="button" style="widows: 100%;" ng-click="updateAttendeeList(joinOrQuit)"><b>{{joinOrQuit}}</b></button>
+                <button ng-if="driveDetails.status=='Pending'" class="drivePlanButton" style="widows: 100%;" ng-click="updateAttendeeList(joinOrQuit)">{{joinOrQuit}}</button>
             <h5><b>Chapters</b></h5>
             <div ng-repeat="chapter in chapterList">
                 <i class="fa fa-map-marker"></i>  {{chapter}} 
@@ -57,14 +75,26 @@
                <div ng-repeat="donation in driveDetails.donations">
                    <i class="fas fa-hand-holding-heart"></i>  {{donation}} 
                </div>
-               <h5><b>Atendees</b><span>{{driveDetails.attendees.length}}</span></h5>
-               <div ng-repeat="(key, value) in driveDetails.attendees">
-                    <i class="fa fa-user"></i>  {{key}}
+               <h5><b>Attendees 
+               </b><span class="length"> <b> {{attendeeList.length}}</b></span>
+               </h5>
+               <div ng-repeat="attendee in attendeeList">
+                    <i class="fa fa-user"></i>  {{attendee.$id}}
                 </div>
-                <h5><b>Comments</b><span>{{driveDetails.attendees.length}}</span></h5>
-                <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%">
+                <button ng-if="driveDetails.status=='Successful'" class="drivePlanButton" style="widows: 100%;" ng-click="redirect('attendanceList')">Mark Attendance</button>
+                <h5><b>Comments</b><span class="length">  <b>{{comments.length}}</b></span></h5>
+                <textarea rows="3" class="form-control" ng-model="comment"></textarea>
+                <!-- <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%"> -->
                 <br>
-                <button class="btn btn-primary">Add Comment</button>
-            
+                <button ng-if="comment.length > 0"class="btn btn-primary" ng-click=postComment(comment) ng-disabled="comment.$invalid">Post</button>
+                <button class="btn btn-primary" ng-click="redirect('commentList')">View</button>
+                <br>
+                <div ng-repeat="comment in comments| orderBy:'$id':true | limitTo : 2">
+                    <div ng-if="comment.commentDetails"><i class="fas fa-user-circle"></i>  {{comment.commentBy}}
+                        <div>{{comment.commentDetails}}</div>
+                        <div class="datetime">{{comment.$id | date:'MM/dd/yyyy @ h:mma'}}</div>
+                    </div>
+                    </div>
+
         </div>
 </div>
