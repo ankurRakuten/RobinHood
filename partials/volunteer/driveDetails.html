@@ -47,6 +47,8 @@
 </style>
 <div class="section home">
         <div class="container">
+            {{imageList}}
+            {{files | json}}
             <div class="row">
                         <h2 style="text-align: center">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b><i>{{driveDetails.status}}</i></b></span><span style="color: green" ng-if="driveDetails.status=='Successful'"> <b><i>{{driveDetails.status}}</i></b></span></h2>
             </div>
@@ -81,7 +83,7 @@
                <div ng-repeat="attendee in attendeeList">
                     <i class="fa fa-user"></i>  {{attendee.$id}}
                 </div>
-                <button ng-if="driveDetails.status=='Successful'" class="drivePlanButton" style="widows: 100%;" ng-click="redirect('attendanceList')">Mark Attendance</button>
+                <button ng-if="driveDetails.status=='Successful'" class="drivePlanButton" style="widows: 100%;" ng-click="redirect('attendanceList')">Attendance</button>
                 <h5><b>Comments</b><span class="length">  <b>{{comments.length}}</b></span></h5>
                 <textarea rows="3" class="form-control" ng-model="comment"></textarea>
                 <!-- <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%"> -->

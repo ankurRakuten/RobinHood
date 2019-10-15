@@ -1858,7 +1858,7 @@ h2.t-title-office {
 	padding: 15px 5px 0 5px;
 }
 .list-group-item {
-	padding: 15px 15px;
+	padding: 8px 8px;
 }
 .panel-select {
 	background: #0b9139!important;
@@ -2774,9 +2774,9 @@ padding: 80px 0 80px 0;
     border:1px solid #dedede;
     }
 .filter li:hover, .current li {
-	background: #07ccd4;
+	background: #cad1d2;
     color: #fff;
-    border: 1px solid #07ccd4;
+    border: 1px solid #eceeee;
 }
 .filter li:hover {
 	cursor:pointer;
@@ -4681,7 +4681,7 @@ figure.effect-layla:hover img {
     text-decoration: none; 
     border-bottom:1px solid #dedede;
     }
-.filter-dresses li:hover, .current li { color: #111; border-bottom:1px solid #111;cursor:pointer;}
+.filter-dresses li:hover, .current li { color: #111; border-bottom:1px solid #d4d1d1;cursor:pointer;}
 .filter li:hover {
 	cursor:pointer;
 }

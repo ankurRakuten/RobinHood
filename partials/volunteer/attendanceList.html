@@ -24,7 +24,9 @@
             <div class="nameTab"><i class="fa fa-user"></i> {{attendee.$id}}</div>
             <div class="attendanceTab"><i ng-class="{'fas fa-thumbs-down': !attendee['attended'],'fas fa-thumbs-up':attendee['attended']  }" aria-hidden="true" ng-click="changeAttendance(attendee.$id,attendee['attended'])"></i>
             </div>
-            
+            {{accessToMarkAttendance}}
+            {{driveDetails.status}}
+            {{driveDetails["PIC"]}}
             </div>
             <button ng-if="driveDetails.status=='Successful'&& accessToMarkAttendance" class="drivePlanButton" ng-click="updateAttendance()">Submit</button>
             <button  class="drivePlanButton"  ng-click="redirect('driveDetails')">Drive Details</button>

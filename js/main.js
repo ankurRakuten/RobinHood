@@ -17,9 +17,9 @@ window.routes =
     "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
     "/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
     // Drive 
-  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: true},
-  "/commentList":{templateUrl: "partials/volunteer/commentList.html",controller: "DriveCtrl",requireLogin: true},
-  "/attendanceList":{templateUrl: "partials/volunteer/attendanceList.html",controller: "DriveCtrl",requireLogin: true},
+  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: false},
+  "/commentList":{templateUrl: "partials/volunteer/commentList.html",controller: "DriveCtrl",requireLogin: false},
+  "/attendanceList":{templateUrl: "partials/volunteer/attendanceList.html",controller: "DriveCtrl",requireLogin: false},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
 	"/adminProfile": { templateUrl: "partials/admin/adminProfile.html", controller: "adminProfile" ,requireLogin: false},
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
@@ -27,8 +27,8 @@ window.routes =
 	"/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
 	"/donarRegister": { templateUrl: "partials/admin/statistics.html", controller: "donarCtrl" ,requireLogin: false},
   "/volunteerRegister": { templateUrl: "partials/volunteerRegister.html", controller: "donarCtrl" ,requireLogin: false},
-	"/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
-	"/statistics": { templateUrl: "partials/admin/statistics.html", controller: "adminProfile" ,requireLogin: false},
+	// "/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
+	// "/statistics": { templateUrl: "partials/admin/statistics.html", controller: "adminProfile" ,requireLogin: false},
 	"/forgotPassword": { templateUrl: "partials/forgotPassword.html", controller: "Login" ,requireLogin: false},
 	"/upcomingDonations": { templateUrl: "partials/user/upcomingDonations.html", controller: "userDonationDetail" ,requireLogin: true},
 	"/volunteerUpcomingDonations": { templateUrl: "partials/user/volunteerUpcomingDonations.html", controller: "volunteerDonationDetail" ,requireLogin: true},
@@ -325,17 +325,16 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
   app.controller('DriveCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
     var param = $location.search();
     $scope.driveId=param.driveId;
-
     getDriveDetails()
     getRHA_capterList()
     $scope.driveDetails={}
-    let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
-    // let userName= "nikitha nimbalkar"
+    // let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
+    let userName= "nikitha.nimbalkar"
     console.log(userName)
     console.log($localStorage)
 
     $scope.updateAttendeeList = function(action){
-      let driveDetailsRef = firebase.database().ref().child("drive_details").child(driveId).child("attendees")
+      let driveDetailsRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
       if (action=="Join"){
         $scope.driveDetails["attendees"][userName]={attended:"False"};
         driveDetailsRef.child(userName).set({attended:"False"});
@@ -397,6 +396,8 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
             $scope.attendeeList= {}
           }
           console.log($scope.attendeeList)
+          $scope.driveDetails.status="Successful"
+
 
 
       });
@@ -470,6 +471,10 @@ app.controller("donarCtrl", function ($scope, $firebaseAuth, $firebaseArray ,$fi
 $scope.donar_info = {};
 $scope.otp="";
 console.log("check");
+getRHA_CityList();
+getRHA_CapterList();
+getRHA_LocalityList();
+
 var authObj = $firebaseAuth();
   setTimeout(function() {
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
@@ -558,6 +563,68 @@ $scope.validateOtp=function(p){
       console.error("Authentication failed:", error);
       $scope.errorMessage = error['message'];
     });
+}
+function getRHA_CityList(){
+
+  var rha_city = firebase.database().ref().child("RHA_city");
+          $scope.RHACity = $firebaseObject(rha_city);
+          
+  let RHA_CityRef = firebase.database().ref("RHA_city")
+  let RHA_cityList = $firebaseArray(RHA_CityRef);
+  RHA_cityList.$loaded().then(function() {
+      console.log(RHA_cityList)
+      RHA_cityList = RHA_cityList.filter(item => item.active === "True");
+      angular.forEach(RHA_cityList, function(item) {
+              delete  item["active"];
+              delete item["$priority"];
+      });
+      $scope.cityList=RHA_cityList
+  });
+}
+function getRHA_LocalityList(){
+  let RHA_LocalityRef = firebase.database().ref("RHA_Locality")
+let RHA_LocalityList = $firebaseArray(RHA_LocalityRef);
+RHA_LocalityList.$loaded().then(function() {
+  angular.forEach(RHA_LocalityList, function(item) {
+    delete item["$priority"];
+  });
+  $scope.localityList=RHA_LocalityList;
+  });
+}
+function getRHA_CapterList(){
+  let RHA_capterRef = firebase.database().ref("RHA_capter")
+  let RHA_capterList = $firebaseArray(RHA_capterRef);
+  RHA_capterList.$loaded().then(function() {
+      $scope.capterList=RHA_capterList;
+      angular.forEach(RHA_capterList, function(item) {
+          delete item["$priority"];
+  });
+  $scope.chapterList=RHA_capterList;
+      console.log(RHA_capterList)
+  });
+}
+
+
+// Locality Search Dropdown 
+$scope.complete=function(string){
+  console.log(string)
+  var output=[];
+  angular.forEach($scope.localityList,function(locality){
+    console.log(locality.name)
+    if(locality.name.toLowerCase().indexOf(string.toLowerCase())>=0){
+      
+      output.push(locality);
+    }
+  });
+  $scope.filterLocality=output;
+}
+$scope.fillTextbox=function(selectedLocality){
+  console.log(selectedLocality);
+   $scope.donar_info.locality = selectedLocality.name;
+  $scope.filterLocality=null;
+
+  $scope.donar_info.chapter = $scope.chapterList[selectedLocality.chapter_id]["name"]
+  // console.log($scope.chapterList[selectedLocality.chapter_id])
 }
 
 });

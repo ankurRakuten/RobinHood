@@ -26,20 +26,17 @@
                 </div>
               </wz-step>
               <wz-step wz-title="Step 2/4">
-                <label for="city">City Name</label>
-                <input type="text" class="form-control" id="city" placeholder="City" ng-model="donar_info.city"
-                  required>
-                <label for="locality">Locality</label>
-                <input type="text" class="form-control" id="locality" placeholder="Locality"
-                  ng-model="donar_info.locality">
+                  <label>Cities</label>                                                       
+                  <select class="form-control" name="city" placeholder="City" ng-model="donar_info.city" ng-options="city.name as city.name for city in cityList" required></select>
+                <label> Locality</label>
+                <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.name}}</li>
+                {{locality |json}}
+                </ul>
                 <label for="mobile">Landmark</label>
                 <input type="landmark" class="form-control" id="landmark" placeholder="Landmark"
                   ng-model="donar_info.landmark">
-                <!-- <div class="form-group">
-                              <label for="donationItem">Map location</label>
-                              <input type="text" class="form-control" ng-model="donar_info.lat_long" name="lat_long"/> 
-                              <div id="googleMap" style="width:100%;height:400px;"></div>
-                </div> -->
                 <br>
                 <br>
                 <div class="pull-right text-center">
