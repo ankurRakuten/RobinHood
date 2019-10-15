@@ -328,10 +328,10 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     getDriveDetails()
     getRHA_capterList()
     $scope.driveDetails={}
-    // let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
-    let userName= "nikitha.nimbalkar"
-    console.log(userName)
-    console.log($localStorage)
+    let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
+    // let userName= "nikitha.nimbalkar"
+    // console.log(userName)
+    // console.log($localStorage)
 
     $scope.updateAttendeeList = function(action){
       let driveDetailsRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
@@ -431,22 +431,23 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
 
   // Attendance Page
   $scope.changeAttendance = function(id,currentState){
-    console.log(id,currentState)
-    console.log(typeof(currentState))
-    $scope.attendeeList.find(x=>x.$id==id)["attended"]=!currentState;
-    // console.log($scope.attendeeList["max"])
-    // $scope.attendeeList[id]["attended"]=!currentState;
+    if ($scope.accessToMarkAttendance){
+      let item = $scope.attendeeList.find(x=>x.$id==id);
+      let attendanceRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
+      attendanceRef.child(item.$id).child("attended").set(!currentState)
+      $scope.attendeeList.find(x=>x.$id==id)["attended"]=!currentState;
+    }
   }
- $scope.updateAttendance = function(){
-   console.log($scope.driveId)
-  let attendanceRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
-  $scope.attendeeList.forEach(function(item){
-    console.log(item["$id"],{"attended":item["attended"]})
-    attendanceRef.child(item["$id"]).set({"attended":item["attended"]})
-  })
-  $scope.redirect('driveDetails');
+//  $scope.updateAttendance = function(){
+//    console.log($scope.driveId)
+//   let attendanceRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
+//   $scope.attendeeList.forEach(function(item){
+//     console.log(item["$id"],{"attended":item["attended"]})
+//     attendanceRef.child(item["$id"]).set({"attended":item["attended"]})
+//   })
+//   $scope.redirect('driveDetails');
   
- }
+//  }
  $scope.accessToMarkAttendance = $scope.driveDetails["PIC"]==userName?true:false;
   
   });
