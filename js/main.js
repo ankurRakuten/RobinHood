@@ -17,9 +17,9 @@ window.routes =
     "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
     "/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
     // Drive 
-  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: false},
-  "/commentList":{templateUrl: "partials/volunteer/commentList.html",controller: "DriveCtrl",requireLogin: false},
-  "/attendanceList":{templateUrl: "partials/volunteer/attendanceList.html",controller: "DriveCtrl",requireLogin: false},
+  "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: true},
+  "/commentList":{templateUrl: "partials/volunteer/commentList.html",controller: "DriveCtrl",requireLogin: true},
+  "/attendanceList":{templateUrl: "partials/volunteer/attendanceList.html",controller: "DriveCtrl",requireLogin: true},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
 	"/adminProfile": { templateUrl: "partials/admin/adminProfile.html", controller: "adminProfile" ,requireLogin: false},
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
@@ -47,8 +47,8 @@ window.routes =
 	"/404": {templateUrl: "partials/404.html", controller: "PageCtrl" ,requireLogin: false},
 	"/services": {templateUrl: "partials/services.html", controller: "PageCtrl" ,requireLogin: false},
 	"/pricing": {templateUrl: "partials/pricing.html", controller: "PageCtrl" ,requireLogin: false},
-  "/checkout": {templateUrl: "partials/shop/checkout.html", controller: "checkout" ,requireLogin: true}
-  
+  "/checkout": {templateUrl: "partials/shop/checkout.html", controller: "checkout" ,requireLogin: true},
+
 	
 };
  
@@ -103,13 +103,14 @@ app.service('SessionService', ['$localStorage','$location','$rootScope',function
     };
  }]);
 
+
+
 /**
  * Controls the Ananomus Donations 
  */
 app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
     getRHA_CityList()
     getDonationCategory()
-    // getRHA_capterList()
     getRHA_LocalityList()
 
     $scope.perishableTime=["2 Hours","4 Hours","6 Hours","8 Hours","10 Hours","12 Hours","24 Hours","48 Hours","72 Hours"]
@@ -149,34 +150,6 @@ $scope.onFileSelect = function($files) {
     $scope.uploadedImages=$files
     console.log($scope.uploadedImages[0])
 }
-
-// Search Dropdown 
-// $scope.locality='';
-// $scope.complete=function(string){
-//   console.log(string)
-//   var output=[];
-//   angular.forEach($scope.localityList,function(locality){
-//     console.log(locality.name)
-//     if(locality.name.toLowerCase().indexOf(string.toLowerCase())>=0){
-      
-//       output.push(locality);
-//     }
-//   });
-//   $scope.filterLocality=output;
-// }
-// $scope.fillTextbox=function(selectedLocality){
-//   console.log(selectedLocality.name);
-//    $rootScope.locality = selectedLocality.name;
-//    $scope.selectedLocality=selectedLocality.name;
-//   //  delete selectedLocality["name"];
-//    $scope.donationFormDetails.locality=selectedLocality;
-//   //  $scope.donation.locality =selectedLocality.name;
-//   console.log($scope.locality);
-//   $scope.filterLocality=null;
-// }
-// console.log($scope.selectedLocality);
-
-// $scope.locality=$scope.selectedLocality;
 
 //Local Functions 
 function sendDonationDetails(donationDetails){
@@ -242,15 +215,11 @@ function getDonationKey(){
 }
 
 function getRHA_CityList(){
-
-    var rha_city = firebase.database().ref().child("RHA_city");
-            $scope.RHACity = $firebaseObject(rha_city);
-            
     let RHA_CityRef = firebase.database().ref("RHA_city")
     let RHA_cityList = $firebaseArray(RHA_CityRef);
     RHA_cityList.$loaded().then(function() {
-        console.log(RHA_cityList)
         RHA_cityList = RHA_cityList.filter(item => item.active === "True");
+    
         angular.forEach(RHA_cityList, function(item) {
                 delete  item["active"];
                 delete item["$priority"];
@@ -268,15 +237,16 @@ function getDonationCategory(){
                 delete item["$priority"];
         });
         $scope.donationCategory=Donation_category;
-        console.log(Donation_category)
+        // console.log(Donation_category)
     });
 }
 function getRHA_LocalityList(){
-  let RHA_LocalityRef = firebase.database().ref("RHA_Locality")
+  let RHA_LocalityRef = firebase.database().ref("RHA_locality")
 let RHA_LocalityList = $firebaseArray(RHA_LocalityRef);
 RHA_LocalityList.$loaded().then(function() {
   angular.forEach(RHA_LocalityList, function(item) {
     delete item["$priority"];
+    delete item["$id"];
   });
   $scope.localityList=RHA_LocalityList;
   // console.log(RHA_LocalityList)
@@ -473,7 +443,7 @@ $scope.donar_info = {};
 $scope.otp="";
 console.log("check");
 getRHA_CityList();
-getRHA_CapterList();
+getRHA_ChapterList();
 getRHA_LocalityList();
 
 var authObj = $firebaseAuth();
@@ -536,16 +506,20 @@ $scope.validateOtp=function(p){
       console.log("form detail>>",$scope.donar_info);
       // $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
       var profileRef=firebase.database().ref().child("profiles")
-      profileRef.child(user.uid).set({
+      let userProfileDetails={
         first_name: $scope.donar_info.firstName,
         last_name: $scope.donar_info.lastName,
         mobile: $scope.donar_info.mobile,
         email: $scope.donar_info.email,
         signupDate: (new Date).getTime(),
-        address:$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
-      });
+        chapter: $scope.donar_info.chapter
+      }
+      if (scope.donar_info.landmark){
+        userProfileDetails["address"]=$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
+      }
+      profileRef.child(user.uid).set(userProfileDetails);
 
-      $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
+      $scope.userDetail = $firebaseObject(profileRef.child(user.uid));
       console.log("$scope.userDetail>>>",$scope.userDetail);
       $scope.user='';
       if ($scope.userDetail.hasOwnProperty('email')) {
@@ -583,7 +557,7 @@ function getRHA_CityList(){
   });
 }
 function getRHA_LocalityList(){
-  let RHA_LocalityRef = firebase.database().ref("RHA_Locality")
+  let RHA_LocalityRef = firebase.database().ref("RHA_locality")
 let RHA_LocalityList = $firebaseArray(RHA_LocalityRef);
 RHA_LocalityList.$loaded().then(function() {
   angular.forEach(RHA_LocalityList, function(item) {
@@ -592,9 +566,9 @@ RHA_LocalityList.$loaded().then(function() {
   $scope.localityList=RHA_LocalityList;
   });
 }
-function getRHA_CapterList(){
-  let RHA_capterRef = firebase.database().ref("RHA_capter")
-  let RHA_capterList = $firebaseArray(RHA_capterRef);
+function getRHA_ChapterList(){
+  let RHA_capterRef = firebase.database().ref("RHA_chapters")
+  let RHA_capterList = $firebaseObject(RHA_capterRef);
   RHA_capterList.$loaded().then(function() {
       $scope.capterList=RHA_capterList;
       angular.forEach(RHA_capterList, function(item) {
@@ -608,24 +582,32 @@ function getRHA_CapterList(){
 
 // Locality Search Dropdown 
 $scope.complete=function(string){
-  console.log(string)
+  // console.log(string)
   var output=[];
   angular.forEach($scope.localityList,function(locality){
-    console.log(locality.name)
-    if(locality.name.toLowerCase().indexOf(string.toLowerCase())>=0){
+    // console.log(locality["location_name"])
+    if(locality["location_name"].toLowerCase().indexOf(string.toLowerCase())>=0){
       
       output.push(locality);
     }
   });
   $scope.filterLocality=output;
 }
-$scope.fillTextbox=function(selectedLocality){
-  console.log(selectedLocality);
-   $scope.donar_info.locality = selectedLocality.name;
-  $scope.filterLocality=null;
 
-  $scope.donar_info.chapter = $scope.chapterList[selectedLocality.chapter_id]["name"]
-  // console.log($scope.chapterList[selectedLocality.chapter_id])
+$scope.fillTextbox=function(selectedLocality){
+  // console.log(selectedLocality);
+  $scope.donar_info.chapter=""
+   $scope.donar_info.locality = selectedLocality["location_name"];
+  $scope.filterLocality=null;
+  console.log(selectedLocality.chapter_id)
+  angular.forEach(selectedLocality.chapter_id,function(chapter_id,index){
+    console.log(index,chapter_id)
+    console.log($scope.chapterList[chapter_id]["chapter_name"])
+    $scope.donar_info.chapter+=$scope.chapterList[chapter_id]["chapter_name"]
+    if(!(index===(selectedLocality.chapter_id.length -1))){
+      $scope.donar_info.chapter+=" , "
+    }
+  })
 }
 
 });

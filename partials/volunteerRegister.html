@@ -29,10 +29,9 @@
                   <label> Locality</label>
                 <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.name}}</li>
-                {{locality |json}}
+                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.location_name}}</li>
                 </ul>
-                <label for="mobile">RHA Chapter</label>
+                <label for="mobile">RHA Chapters</label>
                 <input type="text" class="form-control" id="chapter" placeholder="Chapter" ng-model="donar_info.chapter" READONLY>
                 <!-- <label for="city">RHA City Name</label>
                 <input type="text" class="form-control" id="city" placeholder="City" ng-model="donar_info.city" required>
@@ -49,6 +48,7 @@
                 <br>
                 <div class="pull-right text-center">
                 <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+                <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
                 </div>
               </wz-step>
               <wz-step wz-title="Step 3/4">
@@ -61,6 +61,7 @@
                 <br>
                 <div class="pull-right text-center">
                 <button type="submit"  class="btn btn-primary" ng-click="register()">Next</button>
+                <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
                 </div>
               </wz-step>
               <wz-step wz-title="4/4">

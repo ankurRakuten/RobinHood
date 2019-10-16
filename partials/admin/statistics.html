@@ -13,12 +13,12 @@
                 <input type="text" class="form-control" id="name" placeholder="Last Name" ng-model="donar_info.lastName"
                   required>
                 <label for="dob">DOB</label>
-                <input type="date" class="form-control" id="dob" placeholder="DOB" ng-model="donar_info.date">
+                <input type="date" class="form-control" id="dob" placeholder="DOB" ng-model="donar_info.date" required>
                 <label for="mobile">Mobile</label>
                 <input type="number" class="form-control" id="number" placeholder="Mobile number"
-                  ng-model="donar_info.mobile">
+                  ng-model="donar_info.mobile" required>
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email">
+                <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email" required>
                 <br>
                 <br>
                 <div class="pull-right text-center">
@@ -31,8 +31,7 @@
                 <label> Locality</label>
                 <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.name}}</li>
-                {{locality |json}}
+                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.location_name}}</li>
                 </ul>
                 <label for="mobile">Landmark</label>
                 <input type="landmark" class="form-control" id="landmark" placeholder="Landmark"
@@ -41,6 +40,7 @@
                 <br>
                 <div class="pull-right text-center">
                   <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+                  <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
                 </div>
               </wz-step>
               <wz-step wz-title="Step 3/4">
@@ -54,6 +54,7 @@
                 <br>
                 <div class="pull-right text-center">
                   <button type="submit" class="btn btn-primary" ng-click="register()">Next</button>
+                  <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
                 </div>
               </wz-step>
               <wz-step wz-title="4/4">
