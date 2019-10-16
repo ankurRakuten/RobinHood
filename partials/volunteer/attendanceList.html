@@ -1,0 +1,29 @@
+<style>
+    .row{
+        display: flex;
+        width: 100%;
+        margin: 0 auto;
+        align-self: center;
+        font-size: medium;
+
+    }
+    .nameTab{
+        width: 80%;
+        align-self: left;
+
+    }
+    .attendanceTab{
+        width: 20%;
+        align-self: right;
+    }
+</style>
+<div class="section home">
+    <div class="container">
+        <h2>Attendees List</h2>
+            <div class="row" ng-repeat="attendee in attendeeList" style="padding: 5px;">
+            <div class="nameTab"><i class="fa fa-user"></i> {{attendee.$id}}</div>
+            <div class="attendanceTab"><i ng-class="{'fas fa-thumbs-down': !attendee['attended'],'fas fa-thumbs-up':attendee['attended']  }" aria-hidden="true" ng-click="changeAttendance(attendee.$id,attendee['attended'])"></i>
+            </div>
+            </div>
+            <button  class="drivePlanButton"  ng-click="redirect('driveDetails')">Drive Details</button>
+    </div></div>
