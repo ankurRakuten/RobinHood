@@ -238,7 +238,7 @@ function getDonationCategory(){
                 delete item["$priority"];
         });
         $scope.donationCategory=Donation_category;
-        // console.log(Donation_category)
+        console.log(Donation_category)
     });
 }
 function getRHA_LocalityList(){
@@ -298,6 +298,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     $scope.driveId=param.driveId;
     getDriveDetails()
     getRHA_capterList()
+    getRHA_clusterList()
     $scope.driveDetails={}
     let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
     // let userName= "nikitha nimbalkar"
@@ -399,6 +400,29 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
           console.log(chapterList)
           $scope.chapterList=chapterList
       });
+  }
+  function getRHA_clusterList(){
+    let RHA_clusterRef = firebase.database().ref("RHA_clusters")
+      let RHA_clusterList = $firebaseArray(RHA_clusterRef);
+      RHA_clusterList.$loaded().then(function() {
+          angular.forEach(RHA_clusterList, function(item) {
+              delete item["$priority"];
+      });
+          let clusterList=[]
+          console.log($scope.driveDetails.cluster);
+          console.log(RHA_clusterList)
+          angular.forEach($scope.driveDetails.chapter,function(clusterId){
+            RHA_clusterList.find(x=>{
+              // console.log(x)
+              if (parseInt(x["$id"])===clusterId){
+                clusterList.push(x["cluster_name"])
+              }
+            });          
+          })
+          console.log(clusterList)
+          $scope.clusterList=clusterList
+      });
+
   }
 
   ///Comment List Page 
