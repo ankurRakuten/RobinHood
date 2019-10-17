@@ -25,5 +25,7 @@
             <div class="attendanceTab"><i ng-class="{'fas fa-thumbs-down': !attendee['attended'],'fas fa-thumbs-up':attendee['attended']  }" aria-hidden="true" ng-click="changeAttendance(attendee.$id,attendee['attended'])"></i>
             </div>
             </div>
+            <small ng-if="accessToMarkAttendance===false" style="color:brown">You cannot mark Attendance</small>
+            <br>
             <button  class="drivePlanButton"  ng-click="redirect('driveDetails')">Drive Details</button>
     </div></div>

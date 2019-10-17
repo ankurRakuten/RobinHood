@@ -26,7 +26,7 @@
                 <label>Cities</label>                                                       
                   <select class="form-control" name="city" placeholder="City" ng-model="donar_info.city" ng-options="city.name as city.name for city in cityList" required></select>
                   <br>
-                  <label> Locality</label>
+                  <label> Locality</label> 
                 <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.location_name}}</li>
