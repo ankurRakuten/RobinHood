@@ -25,7 +25,7 @@ window.routes =
 	"/addProduct": { templateUrl: "partials/admin/addProduct.html", controller: "adminProfile" ,requireLogin: false},
 	"/updateProduct": { templateUrl: "partials/admin/updateProduct.html", controller: "adminProfile" ,requireLogin: false},
 	"/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
-	"/donarRegister": { templateUrl: "partials/admin/statistics.html", controller: "donarCtrl" ,requireLogin: false},
+	"/donarRegister": { templateUrl: "partials/donarRegister.html", controller: "donarCtrl" ,requireLogin: false},
   "/volunteerRegister": { templateUrl: "partials/volunteerRegister.html", controller: "donarCtrl" ,requireLogin: false},
 	// "/viewOrder": { templateUrl: "partials/admin/viewOrders.html", controller: "viewOrderCntrlr" ,requireLogin: false},
 	// "/statistics": { templateUrl: "partials/admin/statistics.html", controller: "adminProfile" ,requireLogin: false},
@@ -528,16 +528,13 @@ $scope.register=function(){
      // });
 
   }
-$scope.validateOtp=function(p){
-  console.log("finished",p);
+$scope.validateOtp=function(otp,role){
+  console.log("finished",otp,role);
   $scope.errorMessage=null;
-    console.log("%%%%%%%%%%%%%%%OTP>>",p);
-    var code = p;
+    console.log("%%%%%%%%%%%%%%%OTP>>",otp,$scope.donar_info.chapter);
+    var code = otp;
     confirmationResult.confirm(code).then(function (result) {
-      console.log(" User signed in successfully.");
       var user = result.user;
-      console.log("userrrr detail >>",user.uid);
-      console.log("form detail>>",$scope.donar_info);
       // $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
       var profileRef=firebase.database().ref().child("profiles")
       let userProfileDetails={
@@ -546,11 +543,18 @@ $scope.validateOtp=function(p){
         mobile: $scope.donar_info.mobile,
         email: $scope.donar_info.email,
         signupDate: (new Date).getTime(),
-        chapter: $scope.donar_info.chapter
+        // chapter: $scope.donar_info.chapter,
+        role:role
       }
-      if (scope.donar_info.landmark){
+      if($scope.donar_info.chapter) {
+        $scope.donar_info.chapter.id=$scope.donar_info.chapter.$id;
+        delete $scope.donar_info.chapter.$id;
+        userProfileDetails["chapter"] = $scope.donar_info.chapter;
+      }
+      if ($scope.donar_info.landmark){
         userProfileDetails["address"]=$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
       }
+      console.log(user.uid, userProfileDetails);
       profileRef.child(user.uid).set(userProfileDetails);
 
       $scope.userDetail = $firebaseObject(profileRef.child(user.uid));

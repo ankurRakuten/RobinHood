@@ -1,0 +1,191 @@
+<div class="">
+  <div class="ui-67">
+    <div>
+      <div class="container">
+        <div class="col-md-12 col-lg-12 acc-col">
+          <section>
+            <wizard on-finish="finishedWizard()" on-cancel="cancelledWizard()">
+              <wz-step wz-title="1">
+                <form name="donarDetails">
+                  <div class="form-group">
+                    <label for="name">First Name</label>
+                    <input type="text" class="form-control" id="name" name="fname" placeholder="First Name"
+                      ng-model="donar_info.firstName" required>
+                      <span ng-show="donarDetails.fname.$invalid && donarDetails.fname.$touched" class="small text-danger">* Item is required</span>
+                  </div>
+                  <div class="form-group">
+                  <label for="name">Last Name</label>
+                  <input type="text" class="form-control" id="name" name="lname" placeholder="Last Name" ng-model="donar_info.lastName">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="dob">DOB</label>
+                    <input type="date" class="form-control" id="dob" placeholder="DOB" ng-model="donar_info.date">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <input type="number" class="form-control" id="number" name="donarmobile" placeholder="Mobile number"
+                      ng-model="donar_info.mobile" required>
+                    <span ng-show="donarDetails.donarmobile.$invalid && donarDetails.donarmobile.$touched" class="small text-danger">* Item is required</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email" >
+                  </div>
+                  <br>
+                  <br>
+                </form>
+                <div class="pull-right text-center">
+                  <button type="submit" wz-next value="next" class="btn btn-primary" ng-disabled="donarDetails.$invalid">Next</button>
+                </div>
+              </wz-step>
+              <wz-step wz-title="2">
+                <form name="donarLocationDetails">
+                  <div class="form-group">
+                    <label>Cities</label>                                                       
+                    <select class="form-control" name="city" placeholder="City" ng-model="donar_info.city" ng-options="city.name as city.name for city in cityList" required></select>
+                    <span ng-show="donarLocationDetails.city.$invalid && donarLocationDetails.city.$touched" class="small text-danger">* Item is required</span>
+                  </div>
+                  <div class="form-group">
+                    <label> Locality</label>
+                    <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
+                    <ul class="list-group">
+                      <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.location_name}}</li>
+                    </ul>
+                  </div>
+                  <div class="form-group">
+                    <label for="mobile">Landmark</label>
+                    <input type="landmark" class="form-control" id="landmark" placeholder="Landmark"
+                    ng-model="donar_info.landmark">
+                  </div>
+                </form>
+                <div class="pull-right text-center">
+                <button type="submit" wz-next value="next" class="btn btn-primary" ng-disabled="donarLocationDetails.$invalid" >Next</button>
+                <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
+                </div>
+              </wz-step>
+              <wz-step wz-title="3">
+                <label for="city">Principle</label>
+                <div class="checkbox">
+                  <label><input type="checkbox" value="true">By Clicking this box, I agree to follow Robin hood arm's
+                    core principle</label>
+                </div>
+                <br>
+                <div class="alert alert-danger" id="errorMessageId" ng-show="errorMessage!=null">{{errorMessage}}</div>
+                <br>
+                <div class="pull-right text-center">
+                  <button type="submit" class="btn btn-primary" ng-click="register()">Next</button>
+                  <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
+                </div>
+              </wz-step>
+              <wz-step wz-title="4">
+                <form name="donarOtpDetails">
+                  <label for="city">OTP for Mobile</label>
+                  <input type="text" class="form-control" id="oyp_m" placeholder="OTP" ng-model="otp" name="otp"required>
+                  <span ng-show="donarOtpDetails.otp.$invalid && donarOtpDetails.otp.$touched" class="small text-danger">* Item is required</span>
+                  <!-- <label for="locality">OTP for Email</label>
+                  <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
+                  <div id="recaptcha-container"></div>
+                </form>
+                <div class="pull-right text-center">
+                  <button type="submit" wz-next class="btn btn-primary"
+                    ng-click="validateOtp(otp,2)" ng-disabled="donarOtpDetails.$invalid" >Finish</button>
+                </div>
+              </wz-step>
+              <wz-step wz-title="Finish">
+                <br>
+                <br>
+                <h2 style="text-align: center;border-bottom: 0px !important;">Thank You</h2>
+              </wz-step>
+            </wizard>
+          </section>
+          <!-- col-8 -->
+        </div>
+      </div>
+      <!-- Content Ends -->
+    </div>
+    <!-- UI - X Ends -->
+  </div>
+  <style>
+    /* Head */
+
+    .acc-col {
+      margin-top: 5%;
+      padding: 20px;
+
+    }
+
+    .acc-col>h3 {
+      padding-bottom: 20px;
+    }
+
+    hr {
+      border: solid 1px #d6d6d6;
+    }
+
+    section>form>div {
+
+      padding: 5px;
+    }
+
+    .btn-div {
+
+      margin-top: 10px;
+      padding-bottom: 10px;
+    }
+
+
+    .ui-67 .ui-head {
+      text-align: center;
+      padding: 1px 0px;
+      position: relative;
+      border-bottom: 2px solid #fff;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      background-color: #0bb7b7;
+    }
+
+    /* Details */
+    .ui-67 .ui-head .ui-details {
+      margin: 0px 0px 74px;
+    }
+
+    .ui-67 .ui-head .ui-details h3 {
+      color: #fff;
+      font-size: 40px;
+      line-height: 60px;
+      font-weight: 300;
+    }
+
+    @media (max-width:400px) {
+      .ui-67 .ui-head .ui-details h3 {
+        font-size: 25px;
+        line-height: 40px;
+        font-weight: 400;
+      }
+    }
+
+    .ui-67 .ui-head .ui-details h4 {
+      color: #fff;
+      font-size: 18px;
+      line-height: 38px;
+      font-weight: 400;
+    }
+
+    /* Image */
+    .ui-67 .ui-head .ui-image {
+      width: 100%;
+      position: absolute;
+      bottom: -55px;
+      z-index: 10;
+    }
+
+    .ui-67 .ui-head img {
+      width: 120px;
+      border-radius: 100%;
+      margin: 0px auto;
+      border: 4px solid #fff;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
