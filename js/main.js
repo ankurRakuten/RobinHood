@@ -282,6 +282,7 @@ function labelToCategory(donationDetails){
         donationDetails["created_at"]=created_at;
         donationDetails["pickup_time"]= new Date(donationDetails["pickup_time"]).getTime();
         donationDetails["status"]="Pending";
+        donationDetails["PIC"]="";
         return donationDetails
     }
 

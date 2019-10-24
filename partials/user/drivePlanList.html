@@ -1,5 +1,6 @@
 <div class="" style="margin-top: 40px;">
     <h3><a href="#/">Home</a>/<a href="#/volunteerUpcomingDonations">Donation List</a></h3>
+    <h3>Drive List:</h3>
     <div class="row">
       <div class="col-xs-10 pd-0">
         <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
@@ -27,13 +28,22 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-href="#//driveDetails?driveId={{drive['id']}}">Volunteer</a>
+              <a href="#/volunteer">Volunteer</a>
             </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+              </div>
+              <div>
+                  <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+              </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
               </div>
             </p>
         </div>
@@ -52,9 +62,18 @@
           </div>
           <div class="card-body">
             <p class="card-p">
-              <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
-              </div>
+                <div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                  </div>
+                  <div>
+                      <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                    </div>
+                  <div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                  </div>
             </p>
         </div>
       </div>
@@ -73,9 +92,18 @@
           </div>
           <div class="card-body">
             <p class="card-p">
-              <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
-              </div>
+                <div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                  </div>
+                <div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
             </p>
         </div>
       </div>
@@ -94,8 +122,17 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
-              </div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                  </div>
+                <div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
             </p>
         </div>
       </div>
@@ -115,8 +152,17 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
-              </div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                  </div>
+                <div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
             </p>
         </div>
       </div>
@@ -135,8 +181,17 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']}}
-              </div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                  </div>
+                <div>
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
             </p>
         </div>
       </div>

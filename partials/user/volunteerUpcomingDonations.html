@@ -48,17 +48,17 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-if="donation.PIC == ''" href="#/driveplan">PIC</a>
-              <a ng-if="donation.PIC != ''" href="#/driveplan">Volunteer</a>
+              <a ng-if="donation.PIC == ''" href="#/createDrivePlan">PIC</a>
+              <a ng-if="donation.PIC != ''" href="#/createDrivePlan">Volunteer</a>
             </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -71,6 +71,9 @@
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv" ><i class="fa fa-chevron-up"></i></button>
@@ -90,16 +93,16 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/driveplan">PIC</a>
+              <a href="#/createDrivePlan">PIC</a>
             </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
               <div ng-show="showDiv" >
@@ -112,6 +115,9 @@
                 </div>
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -133,16 +139,16 @@
             </h3>
             <!-- <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/driveplan">Volunteer</a>
+              <a href="#/createDrivePlan">Volunteer</a>
             </h3> -->
           </div>
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
               <div ng-show="showDiv" >
@@ -155,6 +161,9 @@
                 </div>
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -174,16 +183,16 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/driveplan">PIC</a>
+              <a href="#/createDrivePlan">PIC</a>
             </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
               <div ng-show="showDiv" >
@@ -196,6 +205,9 @@
                 </div>
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -219,10 +231,10 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -235,6 +247,9 @@
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -259,10 +274,10 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -275,6 +290,9 @@
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -299,10 +317,10 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -315,6 +333,9 @@
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -339,10 +360,10 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -355,6 +376,9 @@
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
