@@ -5,53 +5,70 @@
           <div class="col-md-12 col-lg-12 acc-col">
             <section>
               <wizard on-finish="finishedWizard()" on-cancel="cancelledWizard()"> 
-              <wz-step wz-title="Step 1/4">
-                <label for="name">First Name</label>
-                <input type="text" class="form-control" id="name" placeholder="First Name" ng-model="donar_info.firstName" required>
-                <label for="name">Last Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Last Name" ng-model="donar_info.lastName" required>
-                <label for="dob">DOB</label>
-                <input type="date" class="form-control" id="dob" placeholder="DOB" ng-model="donar_info.date">
-                <label for="mobile">Mobile</label>
-                <input type="number" class="form-control" id="number" placeholder="Mobile number" ng-model="donar_info.mobile">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email">
-                <br>
-                <br>
+              <wz-step wz-title="1">
+                <form name="VolunteerDetails">
+                  <div class="form-group">
+                    <label for="name">First Name</label>
+                    <input type="text" class="form-control" id="name" name="fname" placeholder="First Name" ng-model="donar_info.firstName" required>
+                    <span ng-show="VolunteerDetails.fname.$invalid && VolunteerDetails.fname.$touched" class="small text-danger">* Item is required</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="name">Last Name</label>
+                    <input type="text" class="form-control" id="name" name="lname" placeholder="Last Name" ng-model="donar_info.lastName" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="dob">DOB</label>
+                    <input type="date" class="form-control" id="dob" placeholder="DOB" ng-model="donar_info.date">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <input type="number" class="form-control" id="number" name="mobile" placeholder="Mobile number" ng-model="donar_info.mobile" required>
+                    <span ng-show="VolunteerDetails.mobile.$invalid && VolunteerDetails.mobile.$touched" class="small text-danger">* Item is required</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email">
+                  </div>
+                  <br>
+                  <br>
+                </form>
                 <div class="pull-right text-center">
-                <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+                <button type="submit" wz-next value="next" class="btn btn-primary" ng-disabled="VolunteerDetails.$invalid">Next</button>
                 </div>
               </wz-step>
-              <wz-step wz-title="Step 2/4">
-                <label>Cities</label>                                                       
-                  <select class="form-control" name="city" placeholder="City" ng-model="donar_info.city" ng-options="city.name as city.name for city in cityList" required></select>
+              <wz-step wz-title="2">
+                <form name="VolunteerLocationDetails">
+                  <div class="form-group">
+                    <label>Cities</label>                                                       
+                    <select class="form-control" name="city" placeholder="City" ng-model="donar_info.RHA_city_id" ng-options="city.$id as city.name for city in cityList" required></select>
+                    <span ng-show="VolunteerLocationDetails.city.$invalid && VolunteerLocationDetails.city.$touched" class="small text-danger">* City is required</span>
+                  </div> 
                   <br>
-                  <label> Locality</label>
-                <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.location_name}}</li>
-                </ul>
-                <label for="mobile">RHA Chapters</label>
-                <input type="text" class="form-control" id="chapter" placeholder="Chapter" ng-model="donar_info.chapter" READONLY>
-                <!-- <label for="city">RHA City Name</label>
-                <input type="text" class="form-control" id="city" placeholder="City" ng-model="donar_info.city" required>
-                <label for="locality">Locality</label>
-                <input type="text" class="form-control" id="locality" placeholder="Locality" ng-model="donar_info.locality">
-                <label for="mobile">RHA Chapter</label>
-                <input type="landmark" class="form-control" id="landmark" placeholder="Landmark" ng-model="donar_info.landmark"> -->
-                <!-- <div class="form-group">
-                              <label for="donationItem">Map location</label>
-                              <input type="text" class="form-control" ng-model="donar_info.lat_long" name="lat_long"/> 
-                              <div id="googleMap" style="width:100%;height:400px;"></div>
-                </div> -->
-                <br>
-                <br>
+                  <div class="form-group">
+                    <label> Locality</label>
+                    <input type="text" name="locality" id="locality" placeholder="Locality" ng-model="donar_info.locality" ng-keyup="complete(donar_info.locality)" class="form-control" required/>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.location_name}}</li>
+                    </ul>
+                  </div>
+                  <div class="form-group">
+                    <label>RHA Chapters</label>
+                    <select class="form-control" name="chapter" ng-model="donar_info.chapter" ng-options="locality as locality.location_name for locality in localityList" required></select>
+                    <span ng-show="VolunteerLocationDetails.chapter.$invalid && VolunteerLocationDetails.chapter.$touched" class="small text-danger">* Chapter is required</span>                            
+                  </div>
+                  <br>
+                  <br>
+                </form>
                 <div class="pull-right text-center">
-                <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+                <button type="submit" wz-next value="next" class="btn btn-primary" ng-disabled="VolunteerLocationDetails.$invalid">Next</button>
                 <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
                 </div>
               </wz-step>
-              <wz-step wz-title="Step 3/4">
+              <wz-step wz-title="3">
                 <label for="city">Principle</label>
                 <div class="checkbox">
                   <label><input type="checkbox" value="true">By Clicking this box, I agree to follow Robin hood arm's core principle</label>
@@ -64,16 +81,21 @@
                 <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
                 </div>
               </wz-step>
-              <wz-step wz-title="4/4">
-                <label for="city">OTP for Mobile</label>
-                <input type="text" class="form-control" id="oyp_m" placeholder="OTP" ng-model="otp" required>
-                <!-- <label for="locality">OTP for Email</label>
-                <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
-                <div id="recaptcha-container"></div>
-                <br>
-                <br>
+              <wz-step wz-title="4">
+                <form name="VolunteerOtpDetails">
+                  <div class="form-group">
+                    <label for="city">OTP for Mobile</label>
+                    <input type="text" class="form-control" id="oyp_m" placeholder="OTP" name="otp" ng-model="otp" required>
+                    <span ng-show="VolunteerOtpDetails.otp.$invalid && VolunteerOtpDetails.otp.$touched" class="small text-danger">* Chapter is required</span>
+                  </div>
+                  <!-- <label for="locality">OTP for Email</label>
+                  <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
+                  <div id="recaptcha-container"></div>
+                  <br>
+                  <br>
+                </form>
                 <div class="pull-right text-center">
-                <button type="submit" wz-next class="btn btn-primary" ng-click="validateOtp(otp,true)">Finish</button>
+                <button type="submit" wz-next class="btn btn-primary" ng-disabled="VolunteerOtpDetails.$invalid" ng-click="validateOtp(otp,1)">Finish</button>
                 </div>
               </wz-step>
               <wz-step wz-title="Finish">
