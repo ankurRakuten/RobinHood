@@ -1,274 +1,294 @@
 <div>
-    <div class="ui-67">
-      <form ng-submit="addDrivePlan()">
-        <div class="container">
-          <div class="col-md-12 col-lg-12 acc-col">
-            <section>
-              <wizard on-cancel="cancelledWizard()">
-                <wz-step wz-title="Step 1/2">
-                  <label for="driveTitle">Drive TItle</label>
-                  <input type="text" class="form-control" id="driveTitle" placeholder="Drive TItle"
-                    ng-model="drive_plan.driveTitle" required>
-                  <label for="schedule">Schedule Date</label>
-                  <input type="datetime-local" date='dd-MM-yyyy HH:mm' ng-model="drive_plan.schedule"
-                    class="form-control" />
-                  {{drive_plan.schedule.toString()}}
-                  <label for="email">PIC</label>
-                  <input type="text" class="form-control" id="PIC" placeholder="PIC" ng-model="drive_plan.pic">
-                  <label for="mobile">Mobile</label>
-                  <input type="number" class="form-control" id="number" placeholder="Mobile number"
-                    ng-model="drive_plan.mobile" />
-                  <label for="mobile">Chapter</label>
-                  <div>
-                    <div class="wrapper" z-index="1">
-                      <div class="selected-items-box" z-index="1" ng-click="toggleChapter()">
-                        --- select --- <span class="caret"></span>
-                        <span class="dropdown-icon"></span>
-                      </div>
-                      <div class="list" ng-hide="toggle">
-                        <ul class="items-list">
-                          <li ng-repeat="chapter in chapters">
-                            <input type="checkbox" ng-model="chapter.selected" id="{{chapter.chapter_name}}"
-                              ng-checked="selection.indexOf(chapter.chapter_name) > -1"
-                              ng-click="selectChapter(chapter.$id)" />
-                            <label for={{chapter.chapter_name}}>{{chapter.chapter_name}}</label>
-                          </li>
-                        </ul>
-                      </div>
+  <div class="ui-67">
+    <form ng-submit="addDrivePlan()" name="drive" class="drivePlan" novalidate>
+      <div class="container">
+        <div class="col-md-12 col-lg-12 acc-col">
+          <section>
+            <wizard on-cancel="cancelledWizard()">
+              <wz-step wz-title="Step 1/2">
+                <label for="driveTitle">Drive TItle</label>
+                <input type="text" class="form-control" id="driveTitle" name="driveTitle" placeholder="Drive TItle"
+                  ng-model="drive_plan.driveTitle" required>
+                <span ng-show="drive.driveTitle.$touched && drive.driveTitle.$invalid">The Drive
+                  title is required.</span>
+                <label for="schedule">Schedule Date</label>
+                <input type="datetime-local" min="{{drive_plan.schedule}}" 
+                  ng-model="drive_plan.schedule" class="form-control" value="{{drive_plan.schedule}}"  required="false"/>
+        
+                <label for="email">PIC</label>
+                <input type="text" class="form-control" id="PIC" placeholder="PIC" name="pic" ng-model="drive_plan.pic"
+                  required>
+                <span ng-show="drive.pic.$touched && drive.pic.$invalid">The PIC is
+                  required.</span>
+                <label for="mobile">Mobile</label>
+                <input type="number" class="form-control" id="number" name="mobile" ng-minlength="10" ng-maxlength="10"
+                  placeholder="Mobile number" ng-model="drive_plan.mobile" ng-required="true" />
+                <span class="help-block" ng-show="drive.mobile.$touched && drive.mobile.$invalid || 
+                  drive.mobile.$error.number">
+                  Valid phone number is required
+                </span>
+                <span class="help-block" ng-show="((drive.mobile.$error.minlength ||
+                           rdrive.mobile.$error.maxlength) && 
+                           drive.mobile.$dirty) ">
+                  phone number should be 10 digits
+                </span>
+                <label for="mobile">Chapter</label>
+                <div>
+                  <div class="wrapper" z-index="1">
+                    <div class="selected-items-box" z-index="1" ng-click="toggleChapter()">
+                      --- select --- <span class="caret"></span>
+                      <span class="dropdown-icon"></span>
+                    </div>
+                    <div class="list" ng-hide="toggle">
+                      <ul class="items-list">
+                        <li ng-repeat="chapter in chapters">
+                          <input type="checkbox" ng-model="chapter.selected" id="{{chapter.chapter_name}}"
+                            ng-checked="selection.indexOf(chapter.chapter_name) > -1"
+                            ng-click="selectChapter(chapter.$id)" />
+                          <label for={{chapter.chapter_name}}>{{chapter.chapter_name}}</label>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                  <br>
-                  <br>
-                  <div class="pull-right text-center">
-                    <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
-                  </div>
-                </wz-step>
-                <wz-step wz-title="Step 2/2">
-                  <section class="row">
-                    <label for="city">Clusters</label>
-                    <div class="modal-bg">
-                      <div class="dialog">
-                        <!-- Large modal -->
-                        <a focus-index="1" ng:href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" focus-element="autofocus"
-                          data-target=".clusterModal">Add Cluster</a>
-  
-                        <div class="modal fade clusterModal" focus-group focus-group-head="loop" focus-group-tail="loop"
-                          focus-stacktabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                  aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Clusters</h4>
-                              </div>
-                              <div class="modal-body cluster">
-                                <input type="text" class="form-control" placeholder="Search for Clusters"
-                                  ng-model="allChapters" />
-                                <ul class="list-group">
-                                  <li class="list-group-item" ng-repeat="cluster in clusters |filter:allChapters | selectedTags:selectedChapter"> <input
-                                      type="checkbox" ng-model="cluster.selected" id="{{cluster.cluster_name}}"
-                                      ng-checked="selection.indexOf(cluster.cluster_name) > -1"
-                                      ng-click="selectCluster(cluster.cluster_id)" />
-                                    <label for={{cluster.cluster_name}}><span>Name : {{cluster.cluster_name}}</span><br/><span>Address : {{cluster.cluster_address}}</span></label></li>
-                                </ul>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" focus-element="autofocus"
-                                  data-dismiss="modal">Close</button>
-                              </div>
+                </div>
+                <br>
+                <br>
+                <div class="pull-right text-center">
+                  <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+                </div>
+              </wz-step>
+              <wz-step wz-title="Step 2/2">
+                <section class="row">
+                  <label for="locality">Donations</label>
+                  <div class="modal-bg">
+                    <div class="dialog">
+                      <!-- Large modal -->
+                      <a focus-index="1" ng:href="javascript:void(0);" class="btn btn-primary" data-toggle="modal"
+                        focus-element="autofocus" data-target=".donationModal">Add Donations</a>
+                      <div class="modal fade donationModal" focus-group focus-group-head="loop" focus-group-tail="loop"
+                        focus-stacktabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" id="myModalLabel">Donations</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" placeholder="Search for Donations" ng-model="allDonations" />
+                              <ul class="list-group">
+                                  <!-- filterDonation:selectedDonation -->
+                                <li class="list-group-item"
+                                
+                                  ng-repeat="donation in donation_details |filter: allDonations">
+                                  <input type="checkbox" ng-model="donation.selected" id="{{donation.$id}}"
+                                  ng-checked="selection.indexOf(donation.$id)"
+                                  ng-click="selectDonation(donation.$id)" />
+                                  <label for="{{donation.$id}}">
+                                      Location :
+                                      </b>{{donation.Locality.location_name}},
+                                      {{donation.RHA_city_id.name}}
+                                      Pickup Time :
+                                      </b>{{donation.pickup_time | date:'dd/MM/yyyy, HH:mm:ss'}}
+                                      Description :
+                                      </b>{{donation.description}}
+                                      Shelf Life :
+                                      </b>{{donation.shelf_life}}
+                                      Transporation Provided :
+                                      </b>{{donation.transporation_provided == 'True' && 'Yes' || 'No' }}
+                                  </label>
+                                </li>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" focus-element="autofocus"
+                                data-dismiss="modal">Close</button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </section>
-                  <hr />
-                  <section class="row">
-                    <label for="locality">Donations</label>
-                    <div class="modal-bg">
-                      <div class="dialog">
-                        <!-- Large modal -->
-                        <a focus-index="1" ng:href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" focus-element="autofocus"
-                          data-target=".donationModal">Add Donations</a>
-                        <div class="modal fade donationModal" focus-group focus-group-head="loop" focus-group-tail="loop"
-                          focus-stacktabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                  aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Donations</h4>
-                              </div>
-                              <div class="modal-body cluster">
-                                <div class="card" ng-repeat="donation in donation_details">
-                                  <div class="card-body">
-                                    <p class="card-p">
-                                      <div>
-                                        <b><i class="fa fa-map-marker" aria-hidden="true"></i> Location :
-                                        </b>{{donation.Locality.location}}
-                                        ,
-                                        {{donation.RHA_city_id.name}}
-                                      </div>
-                                      <div>
-                                        <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time :
-                                        </b>{{donation.pickup_time | filter : time}}
-                                      </div>
-                                    </p>
-                                    <div ng-show="showDiv">
-                                      <!-- details -->
-                                      <div>
-                                        <b><i class="fa fa-info" aria-hidden="true"></i> Description :
-                                        </b>{{donation.description}}
-                                      </div>
-                                      <div>
-                                        <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life :
-                                        </b>{{donation.shelf_life}}
-                                      </div>
-                                      <div>
-                                        <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided :
-                                        </b>{{donation.transporation_provided == 'True' && 'Yes' || 'No' }}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" focus-element="autofocus"
-                                  data-dismiss="modal">Close</button>
-                              </div>
+                  </div>
+                </section>
+                <hr />
+                <section class="row">
+                  <label for="city">Clusters</label>
+                  <div class="modal-bg">
+                    <div class="dialog">
+                      <!-- Large modal -->
+                      <a focus-index="1" ng:href="javascript:void(0);" class="btn btn-primary" data-toggle="modal"
+                        focus-element="autofocus" data-target=".clusterModal">Add Cluster</a>
+
+                      <div class="modal fade clusterModal" focus-group focus-group-head="loop" focus-group-tail="loop"
+                        focus-stacktabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" id="myModalLabel">Clusters</h4>
+                            </div>
+                            <div class="modal-body cluster">
+                              <input type="text" class="form-control" placeholder="Search for Clusters"
+                                ng-model="allChapters" />
+                              <ul class="list-group">
+                                <li class="list-group-item"
+                                  ng-repeat="cluster in clusters |filter:allChapters | filterCluster:selectedChapter">
+                                  <input type="checkbox" ng-model="cluster.selected" id="{{cluster.cluster_name}}"
+                                    ng-checked="selection.indexOf(cluster.cluster_name) > -1"
+                                    ng-click="selectCluster(cluster.cluster_id)" />
+                                  <label for={{cluster.cluster_name}}><span>Name :
+                                      {{cluster.cluster_name}}</span><span>Address :
+                                      {{cluster.cluster_address}}</span></label></li>
+                              </ul>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" focus-element="autofocus"
+                                data-dismiss="modal">Close</button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </section>
-                  <br>
-                  <br>
-                  <div class="pull-right text-center">
-                    <button type="submit" class="btn btn-primary">Finish</button>
                   </div>
-                </wz-step>
-  
-              </wizard>
-            </section>
-          </div>
+                </section>
+                <br>
+                <br>
+                <div class="pull-right text-center">
+                  <button type="submit" class="btn btn-primary">Finish</button>
+                </div>
+              </wz-step>
+
+            </wizard>
+          </section>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
-  <style>
-    ul.dropdown-menu li {
-      cursor: pointer;
-    }
-  
-    ul.dropdown-menu li span.red {
-      color: red;
-    }
-  
-    ul.dropdown-menu li span.green {
-      color: green;
-    }
-  
-    .caret {
-      float: right;
-      width: 0;
-      height: 0;
-      margin: 10px;
-      vertical-align: middle;
-      border-top: 4px solid;
-      border-right: 4px solid transparent;
-      border-left: 4px solid transparent;
-    }
-  
-    .card-heading {
-      display: block;
-      font-size: 15px;
-      line-height: 5px;
-      margin-bottom: 18px;
-      margin-left: 1em;
-      border-bottom: 1px #00612b;
-      color: #fff;
-    }
-  
-    .card {
-      background: #FFF;
-      overflow: hidden;
-      font-family: 'Roboto', sans-serif;
-    }
-  
-    .card-body {
-      margin: 1em;
-    }
-  
-    .pull-left {
-      float: left;
-    }
-  
-    .pull-none {
-      float: none !important;
-    }
-  
-    .pull-right {
-      float: right;
-    }
-  
-    .card-header {
-      width: 100%;
-      color: #2196F3;
-      border-bottom: 3px solid #BBB;
-      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-      font-family: 'Roboto', sans-serif;
-      padding: 0px;
-      margin-top: 0px;
-      overflow: hidden;
-      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-    }
-  
-    .card-header-green {
-      background-color: #00622b;
-      color: #FFFFFF;
-      border-bottom: 3px solid #BBB;
-      box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-      font-family: 'Roboto', sans-serif;
-      padding: 0px;
-      margin-top: 0px;
-      overflow: hidden;
-      -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  
-    .card-header-btn {
-      border: 0.5rem solid white;
-      padding: 0.5rem;
-      background-color: #00622b;
-      color: #FFFFFF;
-      cursor: pointer;
-    }
-  
-    .p-1 {
-      padding: 0.5rem;
-    }
-  
-    .card:hover {
-      border: 1px solid #000;
-    }
-  
-    .cluster {
-      max-height: 300px;
-      min-height: 200px;
-      overflow: auto;
-    }
-    .cluster label{
-      vertical-align: middle;
-      margin-left: 10px;
-      width: 90%;
-    }
-  
-    .cluster ul li {
-      background: none !important;
-      border: 0 !important;
-      border-bottom: 1px solid #ddd !important;
-    }
-  </style>
+</div>
+<style>
+  .drivePlan span {
+    display: block;
+    color: red;
+  }
+
+  ul.dropdown-menu li {
+    cursor: pointer;
+  }
+
+  ul.dropdown-menu li span.red {
+    color: red;
+  }
+
+  ul.dropdown-menu li span.green {
+    color: green;
+  }
+
+  .caret {
+    float: right;
+    width: 0;
+    height: 0;
+    margin: 10px;
+    vertical-align: middle;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    color: #000 !important;
+  }
+
+  .card-heading {
+    display: block;
+    font-size: 15px;
+    line-height: 5px;
+    margin-bottom: 18px;
+    margin-left: 1em;
+    border-bottom: 1px #00612b;
+    color: #fff;
+  }
+
+  .card {
+    background: #FFF;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .card-body {
+    margin: 1em;
+  }
+
+  .pull-left {
+    float: left;
+  }
+
+  .pull-none {
+    float: none !important;
+  }
+
+  .pull-right {
+    float: right;
+  }
+
+  .card-header {
+    width: 100%;
+    color: #2196F3;
+    border-bottom: 3px solid #BBB;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Roboto', sans-serif;
+    padding: 0px;
+    margin-top: 0px;
+    overflow: hidden;
+    -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  }
+
+  .card-header-green {
+    background-color: #00622b;
+    color: #FFFFFF;
+    border-bottom: 3px solid #BBB;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Roboto', sans-serif;
+    padding: 0px;
+    margin-top: 0px;
+    overflow: hidden;
+    -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-header-btn {
+    border: 0.5rem solid white;
+    padding: 0.5rem;
+    background-color: #00622b;
+    color: #FFFFFF;
+    cursor: pointer;
+  }
+
+  .p-1 {
+    padding: 0.5rem;
+  }
+
+  .card:hover {
+    border: 1px solid #000;
+  }
+
+  .cluster {
+    max-height: 300px;
+    min-height: 200px;
+    overflow: auto;
+  }
+
+  .cluster label {
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 90%;
+  }
+
+  .cluster label span {
+    color: #000;
+  }
+
+  .cluster ul li {
+    background: none !important;
+    border: 0 !important;
+    border-bottom: 1px solid #ddd !important;
+  }
+</style>

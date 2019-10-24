@@ -6,19 +6,17 @@
         /* display: inline-block; */
     }
     .row{
-        display: flex;
         width: 100%;
         margin: 0 auto;
         align-self: center;
     }
     .columnright{
-        width:50%;
-        display: flex;
+        width:40%;
         align-items: stretch;
         float: right;
     }
     .columnleft{
-        width:50%;
+        width:60%;
         float:left;
     }
     .datetime{
@@ -47,18 +45,17 @@
 </style>
 <div class="section home">
         <div class="container">
-            {{imageList}}
-            {{files | json}}
             <div class="row">
                         <h2 style="text-align: center">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b><i>{{driveDetails.status}}</i></b></span><span style="color: green" ng-if="driveDetails.status=='Successful'"> <b><i>{{driveDetails.status}}</i></b></span></h2>
             </div>
-            <div class="row">
-                    <div class="columnleft">
-                        <h3>  ID : {{driveDetails.$id}}</h3>
-                    </div>
-                    <div class="columnright">
-                        <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date }}</span></h3>
-                    </div>
+            <h3>Drive ID : {{driveDetails.$id}}</h3>
+            <!-- <div class="row">
+            
+            </div> -->
+            <!-- <div class="row"> -->
+                <div class="columnleft">
+                    <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date }}</span></h3>
+                <!-- </div> -->
             </div>
             <div class="row">
                     <div class="columnleft">
@@ -72,6 +69,10 @@
             <h5><b>Chapters</b></h5>
             <div ng-repeat="chapter in chapterList">
                 <i class="fa fa-map-marker"></i>  {{chapter}} 
+            </div>
+            <h5><b>Cluster</b></h5>
+            <div ng-repeat="cluster in clusterList">
+                <i class="fa fa-map-marker"></i>  {{cluster}} 
             </div>
                 <h5><b>Donations</b></h5>
                <div ng-repeat="donation in driveDetails.donations">

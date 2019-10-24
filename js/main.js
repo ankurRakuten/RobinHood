@@ -238,7 +238,7 @@ function getDonationCategory(){
                 delete item["$priority"];
         });
         $scope.donationCategory=Donation_category;
-        // console.log(Donation_category)
+        console.log(Donation_category)
     });
 }
 function getRHA_LocalityList(){
@@ -298,9 +298,10 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     $scope.driveId=param.driveId;
     getDriveDetails()
     getRHA_capterList()
+    getRHA_clusterList()
     $scope.driveDetails={}
     let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
-    // let userName= "nikitha.nimbalkar"
+    // let userName= "nikitha nimbalkar"
     // console.log(userName)
     // console.log($localStorage)
 
@@ -319,6 +320,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     }
     $scope.joinOrQuit="";
     $scope.commentKeys='';
+  
 
     $scope.postComment = function(comment){
       console.log(comment);
@@ -345,29 +347,33 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     }
     
     function getDriveDetails(){
-      let driveListRef = firebase.database().ref("drive_details");
+      let driveListRef = firebase.database().ref().child("drive_details");
       let driveDetailsRef = driveListRef.child($scope.driveId);
-      console.log(driveDetailsRef)
+      console.log($scope.driveId)
+      // console.log(driveDetailsRef)
       let driveDetails = $firebaseObject(driveDetailsRef);
+      console.log(driveDetails)
       driveDetails.$loaded().then(function() {
           console.log(driveDetails)
           delete driveDetails["$priority"]
           // let time = new Date(driveDetails["schedule"])
-          checkJoinStatus(driveDetails["attendees"]);
           $scope.driveDetails = driveDetails;
+          $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
+          checkJoinStatus(driveDetails["attendees"]);
+
           if($firebaseArray(driveDetailsRef.child("comment"))){
             $scope.comments = $firebaseArray(driveDetailsRef.child("comment"));
           }else {
             $scope.comments = {}
-            $scope.driveDetails["attendees"]={}
           }
-          if($firebaseArray(driveDetailsRef.child("comment"))){
-            $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
-          }else {
-            $scope.attendeeList= {}
-          }
-          console.log($scope.attendeeList)
-          $scope.driveDetails.status="Successful"
+         
+          // if($firebaseArray(driveDetailsRef.child("comment"))){
+          //    $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
+          // }else {
+          //   $scope.attendeeList= {}
+          // }
+          // console.log($scope.attendeeList)
+          // $scope.driveDetails.status="Successful"
 
 
 
@@ -375,23 +381,48 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     }
 
     function getRHA_capterList(){
-      let RHA_capterRef = firebase.database().ref("RHA_capter")
+      let RHA_capterRef = firebase.database().ref("RHA_chapters")
       let RHA_capterList = $firebaseArray(RHA_capterRef);
       RHA_capterList.$loaded().then(function() {
           angular.forEach(RHA_capterList, function(item) {
               delete item["$priority"];
       });
           let chapterList=[]
+          console.log($scope.driveDetails.chapter);
+          console.log(RHA_capterList)
           angular.forEach($scope.driveDetails.chapter,function(chapterId){
-            
-            RHA_capterList.filter(x=>{
-              if (x["$id"]==chapterId){
-                chapterList.push(x["name"])
+            RHA_capterList.find(x=>{
+              if (parseInt(x["$id"])===chapterId){
+                chapterList.push(x["chapter_name"])
               }
             });          
           })
+          console.log(chapterList)
           $scope.chapterList=chapterList
       });
+  }
+  function getRHA_clusterList(){
+    let RHA_clusterRef = firebase.database().ref("RHA_clusters")
+      let RHA_clusterList = $firebaseArray(RHA_clusterRef);
+      RHA_clusterList.$loaded().then(function() {
+          angular.forEach(RHA_clusterList, function(item) {
+              delete item["$priority"];
+      });
+          let clusterList=[]
+          console.log($scope.driveDetails.cluster);
+          console.log(RHA_clusterList)
+          angular.forEach($scope.driveDetails.chapter,function(clusterId){
+            RHA_clusterList.find(x=>{
+              // console.log(x)
+              if (parseInt(x["$id"])===clusterId){
+                clusterList.push(x["cluster_name"])
+              }
+            });          
+          })
+          console.log(clusterList)
+          $scope.clusterList=clusterList
+      });
+
   }
 
   ///Comment List Page 
@@ -399,9 +430,11 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     var landingUrl = "http://" + $window.location.host + "/#/"+page+"?driveId="+$scope.driveId;
       $window.location.href = landingUrl;
   }
-
+  
   // Attendance Page
   $scope.changeAttendance = function(id,currentState){
+    $scope.accessToMarkAttendance = $scope.driveDetails["PIC"]===userName?true:false;
+    console.log($scope.accessToMarkAttendance)
     if ($scope.accessToMarkAttendance){
       let item = $scope.attendeeList.find(x=>x.$id==id);
       let attendanceRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
@@ -419,7 +452,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
 //   $scope.redirect('driveDetails');
   
 //  }
- $scope.accessToMarkAttendance = $scope.driveDetails["PIC"]==userName?true:false;
+
   
   });
 
