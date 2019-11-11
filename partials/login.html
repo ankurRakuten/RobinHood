@@ -8,8 +8,10 @@
             <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" pattern="[6-9]{1}[0-9]{9}" ng-model="phoneNumber" maxlength="10" required /> 
         </div>
         <div class="form-actions">
-            <button type="submit"  class="btn btn-primary" id="sign-in-btn">Go</button>
-            <a href="#/register" class="btn btn-link">Register</a>
+            <button type="submit"  ng-show="showSubmitBtn" class="btn btn-primary" id="sign-in-btn">Go</button>
+            <img ng-show="!showSubmitBtn" src="http://wsdesign.in/app/webroot/img/loader/support_load.gif" alt="Loading" height="42" width="42" style="float: right;">
+
+            <a href="#/volunteer" class="btn btn-link">Register</a>
             <!-- <a href="#/forgotPassword" class="btn btn-link">Forgot Password</a> -->
 			
         </div>

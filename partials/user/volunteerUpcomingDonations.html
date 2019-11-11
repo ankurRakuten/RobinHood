@@ -23,7 +23,10 @@
         <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
         <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
       </div>
-
+      <!-- <div class="col-xs-3 pd-0">
+        <select class = "btn btn-primary dropdown-toggle" ng-model="selectedTime" ng-init=" selectedTime = timeRange[0].days" ng-change="updateFilter(selectedTime)"  ng-options="x.days as x.time for x in timeRange">
+        </select>
+      </div> -->
       <div class="col-xs-2 pd-0">
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
