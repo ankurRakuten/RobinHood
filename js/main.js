@@ -475,6 +475,7 @@ app.controller('PageCtrl', function ( /*$scope, $location, $http */) {
 app.controller("donarCtrl", function ($scope, $firebaseAuth, $firebaseArray ,$firebaseObject ,$localStorage ,$window,$route,SessionService,WizardHandler) {
 $scope.donar_info = {};
 $scope.otp="";
+$scope.otpInValid =  false;
 console.log("check");
 getRHA_CityList();
 getRHA_ChapterList();
@@ -523,59 +524,50 @@ $scope.register=function(){
         }).catch(function (error) {
           console.log("error in sending",error);
           $scope.errorMessage = error['message'];
+          $scope.$apply();
         });
      //  }
      // });
 
   }
+  $scope.errorMessagee = "error";
 $scope.validateOtp=function(otp,role){
-  console.log("finished",otp,role);
   $scope.errorMessage=null;
-    console.log("%%%%%%%%%%%%%%%OTP>>",otp,$scope.donar_info.chapter);
-    var code = otp;
-    confirmationResult.confirm(code).then(function (result) {
-      var user = result.user;
-      // $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
-      var profileRef=firebase.database().ref().child("profiles")
-      let userProfileDetails={
-        first_name: $scope.donar_info.firstName,
-        last_name: $scope.donar_info.lastName,
-        mobile: $scope.donar_info.mobile,
-        email: $scope.donar_info.email,
-        signupDate: (new Date).getTime(),
-        // chapter: $scope.donar_info.chapter,
-        role:role
-      }
-      if($scope.donar_info.chapter) {
-        $scope.donar_info.chapter.id=$scope.donar_info.chapter.$id;
-        delete $scope.donar_info.chapter.$id;
-        userProfileDetails["chapter"] = $scope.donar_info.chapter;
-      }
-      if ($scope.donar_info.landmark){
-        userProfileDetails["address"]=$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
-      }
-      console.log(user.uid, userProfileDetails);
-      profileRef.child(user.uid).set(userProfileDetails);
+  var code = otp;
+  confirmationResult.confirm(code).then(function (result) {
+    var user = result.user;
+    // $scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
+    var profileRef=firebase.database().ref().child("profiles")
+    let userProfileDetails={
+      first_name: $scope.donar_info.firstName,
+      last_name: $scope.donar_info.lastName,
+      mobile: $scope.donar_info.mobile,
+      email: $scope.donar_info.email,
+      signupDate: (new Date).getTime(),
+      role:role
+    }
+    if($scope.donar_info.chapter) {
+      $scope.donar_info.chapter.id=$scope.donar_info.chapter.$id;
+      delete $scope.donar_info.chapter.$id;
+      userProfileDetails["chapter"] = $scope.donar_info.chapter;
+    }
+    if ($scope.donar_info.locality){
+      userProfileDetails["locality"] = $scope.donar_info.locality; 
+    }
+    if ($scope.donar_info.landmark){
+      userProfileDetails["address"]=$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
+    }
+    profileRef.child(user.uid).set(userProfileDetails);
 
-      $scope.userDetail = $firebaseObject(profileRef.child(user.uid));
-      console.log("$scope.userDetail>>>",$scope.userDetail);
-      $scope.user='';
-      if ($scope.userDetail.hasOwnProperty('email')) {
-        // $scope.errorMessage = "Try again after sometime";
-      }else{
-        WizardHandler.wizard().next();
-        // $localStorage.userDetail=$scope.userDetail;
-        // $window.location.href = '#/';
-        // SessionService.setUserAuthenticated(true);
-        // window.location.reload(true);
-      }
-
-    }).catch(function (error) {
-    // User couldn't sign in (bad verification code?)
-    // ...
-      console.error("Authentication failed:", error);
-      $scope.errorMessage = error['message'];
-    });
+    $scope.userDetail = $firebaseObject(profileRef.child(user.uid));
+    $scope.user='';
+    console.log($scope.userDetail)
+    WizardHandler.wizard().next();
+  }).catch(function (error) {
+    console.error("Authentication failed:", error['message']);
+    $scope.errorMessage = error['message'];
+    $scope.$apply();
+  });
 }
 function getRHA_CityList(){
 

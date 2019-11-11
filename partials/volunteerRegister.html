@@ -86,7 +86,7 @@
                   <div class="form-group">
                     <label for="city">OTP for Mobile</label>
                     <input type="text" class="form-control" id="oyp_m" placeholder="OTP" name="otp" ng-model="otp" required>
-                    <span ng-show="VolunteerOtpDetails.otp.$invalid && VolunteerOtpDetails.otp.$touched" class="small text-danger">* Chapter is required</span>
+                    <span ng-show="VolunteerOtpDetails.otp.$invalid && VolunteerOtpDetails.otp.$touched" class="small text-danger">* OTP is required</span>
                   </div>
                   <!-- <label for="locality">OTP for Email</label>
                   <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
@@ -94,8 +94,9 @@
                   <br>
                   <br>
                 </form>
+                <div class="alert alert-danger" id ="errorMessageId" ng-show="errorMessage!=null">{{errorMessage}}</div>
                 <div class="pull-right text-center">
-                <button type="submit" wz-next class="btn btn-primary" ng-disabled="VolunteerOtpDetails.$invalid" ng-click="validateOtp(otp,1)">Finish</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="VolunteerOtpDetails.$invalid" ng-click="validateOtp(otp,1)">Finish</button>
                 </div>
               </wz-step>
               <wz-step wz-title="Finish">
