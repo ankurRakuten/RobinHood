@@ -542,7 +542,7 @@ $scope.validateOtp=function(otp,role){
     let userProfileDetails={
       first_name: $scope.donar_info.firstName,
       last_name: $scope.donar_info.lastName,
-      mobile: $scope.donar_info.mobile,
+      mobile: String($scope.donar_info.mobile),
       email: $scope.donar_info.email,
       signupDate: (new Date).getTime(),
       role:role
