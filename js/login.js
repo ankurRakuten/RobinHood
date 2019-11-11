@@ -351,37 +351,46 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 			$scope.RHACity.$loaded().then(function () {
 				// All donations
 				var dbRef = firebase.database().ref().child("donation_details");
-				dbRef.orderByChild('status').on("value", function (snapshot) {
-					if (!$scope.$$phase) {
-						$scope.$apply(function () {
-							$scope.DonationList = Object.values(snapshot.val());
-							console.log("###########>>>", $scope.DonationList);
-						});
-					}
-					$scope.DonationList = Object.values(snapshot.val());
+				$scope.DonationList = $firebaseArray(dbRef);
+				$scope.DonationList.$loaded().then(function() {
+					console.log("====new=====",$scope.DonationList);
 				});
+				// dbRef.orderByChild('status').on("value", function(snapshot) {
+				// 	if(!$scope.$$phase) {
+				// 		$scope.$apply(function(){
+				// 			$scope.DonationList = Object.values(snapshot.val());
+				// 			console.log("######DonationList#####>>>",$scope.DonationList);
+				// 		});
+				// 	}
+				// 	$scope.DonationList = Object.values(snapshot.val());
+				// });
+				
 				// my donations
-				dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function (snapshot) {
-					if (!$scope.$$phase) {
-						$scope.$apply(function () {
-							$scope.myDonationList = Object.values(snapshot.val());
-							console.log("###########>>>", $scope.myDonationList);
-						});
-					}
-					$scope.myDonationList = Object.values(snapshot.val());
-				});
+				// dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function(snapshot) {
+				// 	if(!$scope.$$phase) {
+				// 		$scope.$apply(function(){
+				// 			$scope.myDonationList = Object.values(snapshot.val());
+				// 			console.log("###########>>>",$scope.myDonationList);
+				// 		});
+				// 	}
+				// 	$scope.myDonationList = Object.values(snapshot.val());
+				// });
 
 				//All Drive
 				var drivebRef = firebase.database().ref().child("drive_details");
-				drivebRef.orderByChild('status').on("value", function (snapshot) {
-					if (!$scope.$$phase) {
-						$scope.$apply(function () {
-							$scope.DriveList = Object.values(snapshot.val());
-							console.log("###########>>>", $scope.DriveList);
-						});
-					}
-					$scope.DriveList = Object.values(snapshot.val());
+				$scope.DriveList = $firebaseArray(drivebRef);
+				$scope.DriveList.$loaded().then(function() {
+					console.log("====new drive list=====",$scope.DriveList);
 				});
+				// drivebRef.orderByChild('status').on("value", function(snapshot) {
+				// 	if(!$scope.$$phase) {
+				// 		$scope.$apply(function(){
+				// 			$scope.DriveList = Object.values(snapshot.val());
+				// 			console.log("###########>>>",$scope.DriveList);
+				// 		});
+				// 	}
+				// 	$scope.DriveList = Object.values(snapshot.val());
+				// });
 				// my donations
 				drivebRef.orderByChild('PIC').equalTo('nikitha.nimbalkar').on("value", function (snapshot) {
 					if (!$scope.$$phase) {
