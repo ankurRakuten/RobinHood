@@ -16,17 +16,6 @@
     </div>
     <h3 class="p-1 m-0">Donations:</h3>
     <div class="row">
-      
-      <div class="col-xs-10 pd-0">
-        <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
-        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
-        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
-        <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
-      </div>
-      <!-- <div class="col-xs-3 pd-0">
-        <select class = "btn btn-primary dropdown-toggle" ng-model="selectedTime" ng-init=" selectedTime = timeRange[0].days" ng-change="updateFilter(selectedTime)"  ng-options="x.days as x.time for x in timeRange">
-        </select>
-      </div> -->
       <div class="col-xs-2 pd-0">
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -39,6 +28,18 @@
           </ul>
         </div>
       </div>
+      <div class="col-xs-10">
+        <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
+        
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
+        <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
+      </div>
+      <!-- <div class="col-xs-3 pd-0">
+        <select class = "btn btn-primary dropdown-toggle" ng-model="selectedTime" ng-init=" selectedTime = timeRange[0].days" ng-change="updateFilter(selectedTime)"  ng-options="x.days as x.time for x in timeRange">
+        </select>
+      </div> -->
+      
     </div>
     <div ng-show="DonationList.length > 0 && showUpcomingTab && statusFilter == 'all'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Pending'}">
         <div class="card-content col-xs-12">
@@ -51,8 +52,8 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-if="donation.PIC == ''" href="#/createDrivePlan">PIC</a>
-              <a ng-if="donation.PIC != ''" href="#/createDrivePlan">Volunteer</a>
+              <a ng-if="donation.PIC == ''" href="#/createDrivePlan">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/createDrivePlan">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -76,6 +77,18 @@
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+              </div>
+              <div>
+                <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+              </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
@@ -96,7 +109,7 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">PIC</a>
+              <a href="#/createDrivePlan">Create drive plan</a>
             </h3>
           </div>
           <div class="card-body">
@@ -119,6 +132,18 @@
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
                 </div>
+                <div>
+                    <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div>
+                      <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                    </div>
                 <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
@@ -166,6 +191,18 @@
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
                 </div>
                 <div>
+                  <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                    <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
               </div>
@@ -186,7 +223,7 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">PIC</a>
+              <a href="#/createDrivePlan">Create drive plan</a>
             </h3>
           </div>
           <div class="card-body">
@@ -209,6 +246,18 @@
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
                 </div>
+                <div>
+                  <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                    <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                  </div>
                 <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
@@ -252,6 +301,18 @@
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
@@ -260,7 +321,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'unattended'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'}" ng-if="donation.PIC == ''">
+    <div ng-show="PastDriveList.length > 0 && showPastTab && statusFilter == 'unattended'" class="card col-md-4" ng-repeat="donation in PastDriveList | filter:{status:'Success'}" ng-if="donation.PIC == ''">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -295,6 +356,18 @@
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
@@ -303,7 +376,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'measpic'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'} | filter:{PIC:userDetail.$id}">
+    <div ng-show="PastDriveList.length > 0 && showPastTab && statusFilter == 'measpic'" class="card col-md-4" ng-repeat="donation in PastDriveList | filter:{status:'Success'} | filter:{PIC:userDetail.$id}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -338,6 +411,18 @@
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
             </div>
@@ -346,7 +431,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'mydonation'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'} | filter:{userMobile:userDetail.mobile}">
+    <div ng-show="PastDriveList.length > 0 && showPastTab && statusFilter == 'mydonation'" class="card col-md-4" ng-repeat="donation in PastDriveList | filter:{status:'Success'} | filter:{userMobile:userDetail.mobile}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -380,6 +465,18 @@
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
+              <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
               <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>

@@ -358,19 +358,39 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 				$scope.RHACity.$loaded().then(function () {
 					// All donations
 					var dbRef = firebase.database().ref().child("donation_details");
-					$scope.DonationList = $firebaseArray(dbRef);
-					$scope.DonationList.$loaded().then(function() {
-						console.log("====new=====",$scope.DonationList);
+					var dList = $firebaseArray(dbRef);
+					dList.$loaded().then(function() {
+						console.log("====new=====",dList);
+						$scope.DonationList = dList.filter(function (el) {
+							return el.pickup_time > Date.now() &&
+							el.pickup_time < Date.now()+ 30*24*60*60*1000
+							;
+						});
+						console.log("====new=$scope.DonationList====",$scope.DonationList);
+						$scope.PastDonationList = dList.filter(function (el) {
+							return el.pickup_time < Date.now() &&
+							el.pickup_time > Date.now() - 30*24*60*60*1000;
+						});
 					});
 
 					//All Drive
 					var drivebRef = firebase.database().ref().child("drive_details");
-					$scope.DriveList = $firebaseArray(drivebRef);
-					$scope.DriveList.$loaded().then(function() {
-						console.log("====new drive list=====",$scope.DriveList);
+					var DrList = $firebaseArray(drivebRef);
+					DrList.$loaded().then(function() {
+						console.log("====new drive list=====",DrList);
+						$scope.DriveList = dList.filter(function (el) {
+							return el.schedule > Date.now() &&
+							el.schedule < Date.now()+ 30*24*60*60*1000
+							;
+						});
+						console.log("====$scope.DriveList=====",$scope.DriveList);
+						$scope.PastDriveList = dList.filter(function (el) {
+							return el.schedule < Date.now() &&
+							el.schedule > Date.now()- 30*24*60*60*1000;
+						});
 					});
 
-					// my donations
+					// my drives
 					drivebRef.orderByChild('PIC').equalTo('nikitha.nimbalkar').on("value", function (snapshot) {
 						if (!$scope.$$phase) {
 							$scope.$apply(function () {
@@ -381,14 +401,17 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 						$scope.myDriveList = Object.values(snapshot.val());
 					});
 					// my attended Drive
-					drivebRef.orderByChild('attendees/masdada/attended').on("value", function (snapshot) {
+					drivebRef.orderByChild('schedule').on("value", function (snapshot) {
 						if (!$scope.$$phase) {
 							$scope.$apply(function () {
-								$scope.volDriveList = Object.values(snapshot.val());
-								console.log("########### attendees >>>", $scope.volDriveList);
+								var volDList = Object.values(snapshot.val());
+								$scope.volDriveList = volDList.filter(function (el) {
+									if(el.attendees){
+										return Object.keys(el.attendees).includes($localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name);
+									}
+								});
 							});
 						}
-						$scope.volDriveList = Object.values(snapshot.val());
 					});
 				});
 			});

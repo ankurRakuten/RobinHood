@@ -1,24 +1,25 @@
 <div class="" style="margin-top: 40px;">
-    <h3><a href="#/">Home</a>/<a href="#/volunteerUpcomingDonations">Donation List</a></h3>
+    <p><a href="#/">Home</a>/<a href="#/volunteerUpcomingDonations">Donation List</a></p>
     <h3>Drive List:</h3>
     <div class="row">
-      <div class="col-xs-10 pd-0">
+      <div class="col-xs-2 pd-0">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a ng-class="statusDriveFilter == 'all' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('all')">All</a></li>
+            <li><a ng-class="statusDriveFilter == 'Volunteered' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('Volunteered')">Volunteered</a></li>
+            <li><a ng-class="statusDriveFilter == 'mydrive' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('mydrive')">My Drive</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-10">
         <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
-        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
         <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
+        
         <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
       </div>
-      <div class="col-xs-2 pd-0">
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a ng-class="statusDriveFilter == 'all' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('all')">All</a></li>
-              <li><a ng-class="statusDriveFilter == 'Volunteered' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('Volunteered')">Volunteered</a></li>
-              <li><a ng-class="statusDriveFilter == 'mydrive' ? 'activeFilterclass' : ''" ng-click="selectDriveFilter('mydrive')">My Drive</a></li>
-            </ul>
-          </div>
-        </div>
     </div>
     <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:{status:'Pending'}">
         <div class="card-content col-xs-12">
@@ -49,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:{status:'Success'}">
+    <div ng-show="PastDriveList.length > 0 && showPastTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in PastDriveList | filter:{status:'Success'}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -138,7 +139,7 @@
       </div>
     </div>
 
-    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Pending'}">
+    <div ng-show="volDriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Pending'}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -167,7 +168,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Success'}">
+    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Success'}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
