@@ -48,13 +48,13 @@
             <div class="row">
                         <h2 style="text-align: center">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b><i>{{driveDetails.status}}</i></b></span><span style="color: green" ng-if="driveDetails.status=='Successful'"> <b><i>{{driveDetails.status}}</i></b></span></h2>
             </div>
-            <h3>Drive ID : {{driveDetails.$id}}</h3>
+            <!-- <h3>Drive ID : {{driveDetails.$id}}</h3> -->
             <!-- <div class="row">
             
             </div> -->
             <!-- <div class="row"> -->
                 <div class="columnleft">
-                    <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date }}</span></h3>
+                    <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date:'MMM dd, yyyy @ hh:mm a' }}</span></h3>
                 <!-- </div> -->
             </div>
             <div class="row">
@@ -74,9 +74,12 @@
             <div ng-repeat="cluster in clusterList">
                 <i class="fa fa-map-marker"></i>  {{cluster}} 
             </div>
-                <h5><b>Donations</b></h5>
+                <h5><b>Contributions </b><i class="fas fa-edit" style="color: black;" ng-click="redirect('addDonations')"></i></h5>
+                
                <div ng-repeat="donation in driveDetails.donations">
-                   <i class="fas fa-hand-holding-heart"></i>  {{donation}} 
+                   <i class="fas fa-hand-holding-heart"></i>  {{donation.donation_category}}   
+                   <span><i class="fa fa-arrow-circle-right" style="color: darkgreen;" ng-click="redirectToDonationDetails('donationDetails',donation.$id)" ></i></span>
+                   <p>Pickup from {{donation.Locality.location_name}} at {{donation.pickup_time| date }}</p>
                </div>
                <h5><b>Attendees 
                </b><span class="length"> <b> {{attendeeList.length}}</b></span>
@@ -92,6 +95,7 @@
                 <button ng-if="comment.length > 0"class="btn btn-primary" ng-click=postComment(comment) ng-disabled="comment.$invalid">Post</button>
                 <button class="btn btn-primary" ng-click="redirect('commentList')">View</button>
                 <br>
+                <hr>
                 <div ng-repeat="comment in comments| orderBy:'$id':true | limitTo : 2">
                     <div ng-if="comment.commentDetails"><i class="fas fa-user-circle"></i>  {{comment.commentBy}}
                         <div>{{comment.commentDetails}}</div>

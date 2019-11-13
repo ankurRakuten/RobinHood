@@ -1,0 +1,39 @@
+<style>
+    .container{
+        align-items: center;
+        margin-left:0 auto;
+        left:20%;
+        /* display: inline-block; */
+    }
+    .row{
+        width: 100%;
+        margin: 0 auto;
+        align-self: center;
+    }
+    .fa-check-circle{
+        color: darkgreen;
+    }
+    .fa-times-circle{
+        color: crimson;
+    }
+</style>
+<div class="section home">
+        <div class="container">
+            <div class="row">
+                <h2 style="text-align: center">Contribution Details<span style="color: grey" ng-if="donationDetails.status=='Pending'"> <b><i>{{donationDetails.status}}</i></b></span><span style="color: green" ng-if="donationDetails.status=='Successful'"> <b><i>{{donationDetails.status}}</i></b></span></h2>
+                <!-- <i class="fas fa-hand-holding-heart"></i>  <b> </b> -->
+                <p><b style="color: black;"><i class="fas fa-hand-holding-heart" aria-hidden="true"></i> {{donationDetails.donation_category}}</b></p>
+                <p ng-if="donationDetails.perishable" style="color: firebrick;">Perishable Item with selflife of {{donationDetails.shelf_life}}</p>
+                <p ng-if="donationDetails.PIC"><b style="color: black;"><i class="fas fa-user-circle" style="color: black;"></i> PIC :</b>  {{donationDetails.PIC}}</p>
+                <p><b style="color: black;"><i class="fa fa-info" aria-hidden="true"></i> Description :</b> {{donationDetails.description}} </p>
+                <p>Contribution Belongs to RHA Chapter : {{donationDetails.RHA_chapter}} </p>
+                <p><b>Pickup from</b> {{donationDetails.Locality.location_name}} on {{donationDetails.pickup_time|date:'MMM dd, yyyy @ hh:mm a' }}</p>
+                <p ng-if="donationDetails.Landmark"><b>Landmark : </b>{{donationDetails.Landmark}}</p>
+                <p ng-if="donationDetails.transporation_provided"><b>Transportation provided </b><i ng-class="{'fa fa-check-circle': donationDetails.transporation_provided,'fa fa-times-circle':!donationDetails.transporation_provided }"></i></p>
+                <p ng-if="donationDetails.container_provided"><b>Utensils provided  </b><i ng-class="{'fa fa-check-circle': donationDetails.container_provided,'fa fa-times-circle':!donationDetails.container_provided }"></i></p>
+                <b>Contributer Details</b>
+                <p><i class="fa fa-user" style="color: black;"></i> {{donationDetails.userName}}</p>
+                <p><i class="fa fa-phone"></i> {{donationDetails.userMobile}}</p>
+            </div>
+        </div>
+    </div>

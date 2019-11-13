@@ -1,0 +1,30 @@
+<style>
+        .container{
+            align-items: center;
+            margin-left:0 auto;
+            left:20%;
+            /* display: inline-block; */
+        }
+        .row{
+            width: 100%;
+            margin: 0 auto;
+            align-self: center;
+        }
+        .fa-check-circle{
+            color: darkgreen;
+        }
+        .fa-times-circle{
+            color: crimson;
+        }
+    </style>
+    <div class="section home">
+            <div class="container">
+                <div class="row">
+                    <!-- {{donationCategory['1']['name']}} -->
+                    <div ng-repeat="donation in DonationList">
+                        <i class="fas fa-hand-holding-heart"></i> {{donation|json}}
+
+                    </div>
+                </div>
+            </div>
+        </div>
