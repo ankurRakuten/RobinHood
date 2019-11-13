@@ -19,7 +19,9 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 
 
 		$scope.showNumber = true;
+		$scope.showSubmitBtn = true;
 		$scope.login = function () {
+			$scope.showSubmitBtn = false;
 			$scope.errorMessage = null;
 			var phoneNumber = '+91' + $scope.phoneNumber;
 			var appVerifier = window.recaptchaVerifier;
@@ -49,7 +51,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 						$scope.userDetail = $firebaseObject(firebase.database().ref().child("profiles").child(user.uid));
 						console.log($scope.userDetail, "<===== user detail =====>", user.uid);
 						$timeout(function () {
-							if ($scope.userDetail['role'] == 2) { //Volunteer login
+							if ($scope.userDetail['role'] == 1) { //Volunteer login
 								console.log("333333333333", $scope.userDetail);
 								console.log("44444444444", $scope.userDetail['role']);
 								$localStorage.userDetail = $scope.userDetail;
@@ -62,7 +64,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 								SessionService.setUserAuthenticated(true);
 								$window.location.href = '#/upcomingDonations';
 							}
-							// window.location.reload(true);
+							window.location.reload(true);
 						}, 2000);
 
 					} else {
@@ -341,79 +343,82 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		$scope.statusFilter = 'all';
 		$scope.statusDriveFilter = 'all';
 		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
+		$scope.timeRange = [
+			{time : "1 Week", days : 7},
+			{time : "15 Days", days : 15},
+			{time : "1 Month", days : 30}
+		];
 
-		var don_cat = firebase.database().ref().child("Donation_category");
-		$scope.donationCategory = $firebaseObject(don_cat);
-		$scope.donationCategory.$loaded().then(function () {
-
-			var rha_city = firebase.database().ref().child("RHA_city");
-			$scope.RHACity = $firebaseObject(rha_city);
-			$scope.RHACity.$loaded().then(function () {
-				// All donations
-				var dbRef = firebase.database().ref().child("donation_details");
-				$scope.DonationList = $firebaseArray(dbRef);
-				$scope.DonationList.$loaded().then(function() {
-					console.log("====new=====",$scope.DonationList);
-				});
-				// dbRef.orderByChild('status').on("value", function(snapshot) {
-				// 	if(!$scope.$$phase) {
-				// 		$scope.$apply(function(){
-				// 			$scope.DonationList = Object.values(snapshot.val());
-				// 			console.log("######DonationList#####>>>",$scope.DonationList);
-				// 		});
-				// 	}
-				// 	$scope.DonationList = Object.values(snapshot.val());
-				// });
-				
-				// my donations
-				// dbRef.orderByChild('userMobile').equalTo(9008858220).on("value", function(snapshot) {
-				// 	if(!$scope.$$phase) {
-				// 		$scope.$apply(function(){
-				// 			$scope.myDonationList = Object.values(snapshot.val());
-				// 			console.log("###########>>>",$scope.myDonationList);
-				// 		});
-				// 	}
-				// 	$scope.myDonationList = Object.values(snapshot.val());
-				// });
-
-				//All Drive
-				var drivebRef = firebase.database().ref().child("drive_details");
-				$scope.DriveList = $firebaseArray(drivebRef);
-				$scope.DriveList.$loaded().then(function() {
-					console.log("====new drive list=====",$scope.DriveList);
-				});
-				// drivebRef.orderByChild('status').on("value", function(snapshot) {
-				// 	if(!$scope.$$phase) {
-				// 		$scope.$apply(function(){
-				// 			$scope.DriveList = Object.values(snapshot.val());
-				// 			console.log("###########>>>",$scope.DriveList);
-				// 		});
-				// 	}
-				// 	$scope.DriveList = Object.values(snapshot.val());
-				// });
-				// my donations
-				drivebRef.orderByChild('PIC').equalTo('nikitha.nimbalkar').on("value", function (snapshot) {
-					if (!$scope.$$phase) {
-						$scope.$apply(function () {
-							$scope.myDriveList = Object.values(snapshot.val());
-							console.log("###########>>>", $scope.myDriveList);
+		$scope.updateFilter = function(days){
+			var don_cat = firebase.database().ref().child("Donation_category");
+			$scope.donationCategory = $firebaseObject(don_cat);
+			$scope.donationCategory.$loaded().then(function () {
+				var rha_city = firebase.database().ref().child("RHA_city");
+				$scope.RHACity = $firebaseObject(rha_city);
+				$scope.RHACity.$loaded().then(function () {
+					// All donations
+					var dbRef = firebase.database().ref().child("donation_details");
+					var dList = $firebaseArray(dbRef);
+					dList.$loaded().then(function() {
+						console.log("====new=====",dList);
+						$scope.DonationList = dList.filter(function (el) {
+							return el.pickup_time > Date.now() &&
+							el.pickup_time < Date.now()+ 30*24*60*60*1000
+							;
 						});
-					}
-					$scope.myDriveList = Object.values(snapshot.val());
-				});
-				// my attended Drive
-				drivebRef.orderByChild('attendees/masdada/attended').on("value", function (snapshot) {
-					if (!$scope.$$phase) {
-						$scope.$apply(function () {
-							$scope.volDriveList = Object.values(snapshot.val());
-							console.log("########### attendees >>>", $scope.volDriveList);
+						console.log("====new=$scope.DonationList====",$scope.DonationList);
+						$scope.PastDonationList = dList.filter(function (el) {
+							return el.pickup_time < Date.now() &&
+							el.pickup_time > Date.now() - 30*24*60*60*1000;
 						});
-					}
-					$scope.volDriveList = Object.values(snapshot.val());
+						console.log("====new=$scope.PastDonationList====",$scope.PastDonationList);
+					});
+
+					//All Drive
+					var drivebRef = firebase.database().ref().child("drive_details");
+					var DrList = $firebaseArray(drivebRef);
+					DrList.$loaded().then(function() {
+						console.log("====new drive list=====",DrList);
+						$scope.DriveList = dList.filter(function (el) {
+							return el.schedule > Date.now() &&
+							el.schedule < Date.now()+ 30*24*60*60*1000
+							;
+						});
+						console.log("====$scope.DriveList=====",$scope.DriveList);
+						$scope.PastDriveList = dList.filter(function (el) {
+							return el.schedule < Date.now() &&
+							el.schedule > Date.now()- 30*24*60*60*1000;
+						});
+						console.log("====$scope.PastDriveList=====",$scope.PastDriveList);
+					});
+
+					// my drives
+					drivebRef.orderByChild('PIC').equalTo('nikitha.nimbalkar').on("value", function (snapshot) {
+						if (!$scope.$$phase) {
+							$scope.$apply(function () {
+								$scope.myDriveList = Object.values(snapshot.val());
+								console.log("###########>>>", $scope.myDriveList);
+							});
+						}
+						$scope.myDriveList = Object.values(snapshot.val());
+					});
+					// my attended Drive
+					drivebRef.orderByChild('schedule').on("value", function (snapshot) {
+						if (!$scope.$$phase) {
+							$scope.$apply(function () {
+								var volDList = Object.values(snapshot.val());
+								$scope.volDriveList = volDList.filter(function (el) {
+									if(el.attendees){
+										return Object.keys(el.attendees).includes($localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name);
+									}
+								});
+							});
+						}
+					});
 				});
 			});
-		});
-
+		}
+		$scope.updateFilter(7);
 		$scope.showDonationTab = function (tab) {
 			if (tab == 'Upcoming') {
 				$scope.showUpcomingTab = true;
