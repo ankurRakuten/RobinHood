@@ -371,6 +371,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 							return el.pickup_time < Date.now() &&
 							el.pickup_time > Date.now() - 30*24*60*60*1000;
 						});
+						console.log("====new=$scope.PastDonationList====",$scope.PastDonationList);
 					});
 
 					//All Drive
@@ -388,6 +389,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 							return el.schedule < Date.now() &&
 							el.schedule > Date.now()- 30*24*60*60*1000;
 						});
+						console.log("====$scope.PastDriveList=====",$scope.PastDriveList);
 					});
 
 					// my drives
