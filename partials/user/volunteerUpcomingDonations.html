@@ -46,14 +46,13 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
-            }" aria-hidden="true"></i>
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <a ng-if="donation.PIC == ''" href="#/createDrivePlan">Create drive plan</a>
-              <a ng-if="donation.PIC != ''" href="#/createDrivePlan">Drive Detail</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -70,7 +69,10 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['PIC']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+               </div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
@@ -106,13 +108,13 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
-            }" aria-hidden="true"></i>
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">Create drive plan</a>
+              <a ng-if="donation.PIC = ''" href="#/createDrivePlan">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -129,7 +131,10 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div>
+                <div ng-if="donation['PIC']">
+                    <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                 </div>
+                <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
                 <div>
@@ -167,14 +172,16 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
+            <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">Volunteer</a>
-            </h3> -->
+              <!-- <a href="#/createDrivePlan">Volunteer</a> -->
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
+
+            </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -190,7 +197,7 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div>
+                <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
                 <div>
@@ -226,7 +233,7 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -249,7 +256,7 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div>
+                <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
                 <div>
@@ -284,7 +291,7 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -306,7 +313,7 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
@@ -341,7 +348,7 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -364,7 +371,7 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
@@ -399,7 +406,7 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -422,7 +429,7 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
@@ -457,7 +464,7 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -480,7 +487,7 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>

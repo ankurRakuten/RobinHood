@@ -52,9 +52,9 @@
                           <div>
                             <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                           </div>
-                          <div>
-                                <b ng-if="donation['PIC']"><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
-                              </div>
+                          <div ng-if="donation['PIC']">
+                            <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                         </div>
                           <div>
                             <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                           </div>
