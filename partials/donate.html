@@ -87,9 +87,8 @@
                 <div class="container">
                   <wizard on-finish="finished()" style="margin-top:25px;">
                     <wz-step wz-title="1">
-                      {{donationDetails|json}}
                     <form name="donationDetails"> 
-                        <div class="form-group">
+                      <div class="form-group">
                         <label for="donationItem">What do you want to contribute?</label>
                         <!-- <select class="form-control" name="donationItem" ng-model="donation.donation_category" ng-options="item as item.name for item in donationCategory"></select> -->
                         <select class="form-control" name="donationItem" ng-model="donation.donation_category_id" data-ng-options="item.$id as item.name for item in donationCategory"></select>
@@ -98,11 +97,11 @@
                         <div class="form-group" required>
                         <label for="perishable">Perishable ?</label>
                           <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="True" required> Yes</label>
-                          <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="False" required> No</label>
+                          <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="False" ng-change="notPerishable()" required> No</label>
                         </div>
                         <div class="form-group">
                                 <label for="donationItem">Max self Life ? (In case of Perishable item)</label>
-                                <select class="form-control" name="selfLife" ng-model="donation.self_life" ng-options="time as time for time in perishableTime"  ng-required="donation.perishable=='True'"></select>
+                                <select class="form-control" name="selfLife" ng-model="donation.shelf_life" ng-options="time as time for time in perishableTime"  ng-required="donation.perishable=='True'"></select>
                                 <!-- <input type="text" name="shelfLife" class="form-control" ng-model="donation.shelf_life" placeholder="2 days / 14 hours etc.."  required/>  -->
                                 <span ng-show="donationDetails.shelfLife.$invalid && donationDetails.shelfLife.$touched" class="small text-danger">* Max self Life required</span>
                         </div>
@@ -118,7 +117,7 @@
                       <form name="donationLocation">
                       <div class="form-group">
                           <label>Cities</label>                                                       
-                      <select class="form-control" name="city" ng-model="donation.RHA_city_id" ng-options="city.$id as city.name for city in cityList" value="cityList[0]"required></select>
+                      <select class="form-control" name="city" ng-model="donation.RHA_city_id" ng-options="city.$id as city.name for city in cityList" required></select>
                       <span ng-show="donationLocation.city.$invalid && donationLocation.city.$touched" class="small text-danger">* City is required</span>
                     </div> 
                         <div class="form-group">
@@ -173,7 +172,8 @@
                         </div>
                           <div class="form-group">
                               <label>Contact Number</label>
-                              <input type="number" name="userMobile"  class="form-control" ng-model="donation.userMobile" ng-pattern="/^[0-9]{10}$/"required /> 
+                              <input type="number" name="userMobile"  class="form-control" ng-model="donation.userMobile" ng-maxlength="10"  required /> 
+                              <!-- ng-pattern="/^[0-9]{10}$/" -->
                               <span ng-show="donarDetails.userMobile.$invalid && donarDetails.userMobile.$touched && donarDetails.userMobile.$error.pattern" class="small text-danger">* required</span>
                             </div>
 

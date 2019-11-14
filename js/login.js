@@ -334,9 +334,8 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 		}
 	}
 ]);
-app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebaseArray", "$localStorage", "$timeout", "$window", "$route", "SessionService",
-	function ($scope, $firebaseAuth, $firebaseObject, $firebaseArray, $localStorage, $timeout, $window, $route, SessionService) {
-		// $scope.DonationList = [];
+app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebaseArray","$location", "$localStorage", "$timeout", "$window", "$route", "SessionService",
+	function ($scope, $firebaseAuth, $firebaseObject, $firebaseArray, $localStorage,$location, $timeout, $window, $route, SessionService) {
 		$scope.showUpcomingTab = true;
 		$scope.showPastTab = false;
 		$scope.userDetail = $localStorage.userDetail;
