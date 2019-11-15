@@ -118,7 +118,7 @@
 <div class="section home">
         <div class="container">
             <div class="row">
-                        <h2 style="text-align: left">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b class="pull-right"><i>In Progress</i></b></span><span style="color: green" ng-if="driveDetails.status=='Successful'"> <b><i>{{driveDetails.status}}</i></b></span></h2>
+                        <h2 style="text-align: left">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b class="pull-right"><i>In Progress</i></b></span><span style="color: green" ng-if="driveDetails.status=='Completed'"> <b class="pull-right"><i>{{driveDetails.status}}</i></b></span><span style="color: grey" ng-if="driveDetails.status=='Expired'"> <b class="pull-right"><i>{{driveDetails.status}}</i></b></span></h2>
             </div>
                 <div class="columnleft">
                     <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date:'MMM dd, yyyy @ hh:mm a' }}</span></h3>
@@ -131,7 +131,9 @@
                         <h3><i class="fa fa-mobile"></i><span> {{driveDetails.contactNumber}}</span></h3>
                     </div>
             </div>
-                <button ng-if="driveDetails.status=='Pending'" class="drivePlanButton" style="widows: 100%;" ng-click="updateAttendeeList(joinOrQuit)"><b>{{joinOrQuit}}</b></button>
+                <button ng-if="driveDetails.status=='Pending'&& userName!=driveDetails.PIC" class="drivePlanButton"  ng-click="updateAttendeeList(joinOrQuit)"><b>{{joinOrQuit}}</b></button>
+                <br>
+                <button ng-if="userName==driveDetails.PIC && (now>driveDetails.schedule) && driveDetails.status!='Completed'" class="drivePlanButton"  ng-click="markDriveStatus('Completed')"><b>Mark as Completed</b></button>
             <h5><b>Chapters</b></h5>
             <div ng-repeat="chapter in chapterList">
                 <i class="fa fa-map-marker-alt"></i>  {{chapter}} 
@@ -201,7 +203,8 @@
                <div ng-repeat="attendee in attendeeList">
                     <i class="fa fa-user"></i>  {{attendee.$id}}
                 </div>
-                <button ng-if="driveDetails.status=='Successful'" class="drivePlanButton" style="widows: 100%;" ng-click="redirect('attendanceList')">Attendance</button>
+                <br>
+                <button ng-if="driveDetails.status=='Completed'" class="drivePlanButton" style="widows: 100%;" ng-click="redirect('attendanceList')"><b>Attendance</b></button>
                 <h5><b>Comments</b><span class="length">  <b>{{comments.length}}</b></span></h5>
                 <textarea rows="3" class="form-control" ng-model="comment"></textarea>
                 <!-- <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%"> -->

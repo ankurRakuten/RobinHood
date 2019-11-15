@@ -123,7 +123,7 @@ app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObje
       console.log($scope.cityList)
       // $scope.donation["RHA_city_id"]= $scope.cityList.map(id=>name=="Bangalore");
     }
-    console.log($localStorage);
+
     $scope.perishableTime=["2 Hours","4 Hours","6 Hours","8 Hours","10 Hours","12 Hours","24 Hours","48 Hours","72 Hours"]
     $scope.donationFormDetails={}
     if ($rootScope.reDonationDetails){
@@ -366,6 +366,8 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
   app.controller('DonationDetailsCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
     var param = $location.search();
     $scope.donationId = param.donationId;
+    var don_cat = firebase.database().ref().child("Donation_category");
+			$scope.donationCategory = $firebaseObject(don_cat);
     let donationDetailsRef = firebase.database().ref().child("donation_details").child($scope.donationId);
                let donationDetails = $firebaseObject(donationDetailsRef);
                donationDetails.$loaded().then(function() {
@@ -387,8 +389,15 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
                   })
                 }
                 $scope.donationDetails = donationDetails;
-              })
-              $scope.check=true;
+            });
+
+    $scope.redirect = function(page){
+        console.log(page);
+        if (page=='Home'){
+          var landingUrl = "http://" + $window.location.host + "/#/";
+        }
+          $window.location.href = landingUrl;
+      }          
     
   })
 
@@ -397,12 +406,14 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     var param = $location.search();
     $scope.driveId=param.driveId;
     $scope.donationId = param.donationId;
+    $scope.now = new Date().getTime();
     getDonationCategory();
     getDriveDetails();
     getRHA_capterList();
     getRHA_clusterList();
     $scope.driveDetails={}
     let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
+    $scope.userName = userName;
 
     $scope.updateAttendeeList = function(action){
       let driveDetailsRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
@@ -428,6 +439,22 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       commentDetails["commentDetails"]= comment;
       addComment(commentDetails)
     }
+
+    $scope.markDriveStatus=function(status){
+        firebase.database().ref("drive_details").child($scope.driveId).child("status").set(status);
+        updateDonationStatus(status);
+    }
+    
+    function updateDonationStatus(status){
+      Object.keys($scope.driveDetails.donations).forEach(function(donationId){
+        console.log(donationId,status);
+        firebase.database().ref("donation_details").child(donationId).child("status").set(status);
+      });
+        // $scope.driveDetails.donations.forEach(function(ele){
+        //   console.log(ele);
+        // })
+    }
+
     function checkJoinStatus(attendeeList){
       if (userName in attendeeList){
         $scope.joinOrQuit="Quit"
@@ -455,6 +482,11 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
           delete driveDetails["$priority"]
           // let time = new Date(driveDetails["schedule"])
           $scope.driveDetails = driveDetails;
+          // Check if time has expired and mark 
+          if((driveDetails.schedule+86400000)<($scope.now)){
+            firebase.database().ref("drive_details").child($scope.driveId).child("status").set("Expired");
+            updateDonationStatus("Expired");
+          }
           $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
           checkJoinStatus(driveDetails["attendees"]);
           console.log(driveDetails["attendees"])
@@ -467,11 +499,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
                donationDetails.$loaded().then(function() {
                  console.log(donationDetails)
                 $scope.driveDetails.donations[donationId] = donationDetails;
-                // $firebaseObject(firebase.database().ref().child("Donation_category").child(donationDetails.donation_category_id)).$loaded().then(function(category) {
-                //   $scope.driveDetails.donations[index]["donation_category"]= category.name;
-                // })
               })
-              
             });
           }
 
@@ -480,9 +508,6 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
           }else {
             $scope.comments = {}
           }
-
-
-
       });
     }
 

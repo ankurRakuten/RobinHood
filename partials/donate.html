@@ -172,14 +172,14 @@
                         </div>
                           <div class="form-group">
                               <label>Contact Number</label>
-                              <input type="number" name="userMobile"  class="form-control" ng-model="donation.userMobile" ng-maxlength="10"  required /> 
+                              <input type="number" name="userMobile"  class="form-control" ng-model="donation.userMobile" ng-minlength="10" ng-maxlength="10" required /> 
                               <!-- ng-pattern="/^[0-9]{10}$/" -->
                               <span ng-show="donarDetails.userMobile.$invalid && donarDetails.userMobile.$touched && donarDetails.userMobile.$error.pattern" class="small text-danger">* required</span>
                             </div>
 
                           <div class="form-group">
                             <label for="donationItem">Pick Up time</label>
-                                  <input type="datetime-local" name="pickup_time"  class="form-control" ng-model="donation.pickup_time" min="{{now | date:'yyyy-MM-ddTHH:mm'}}"required /> 
+                                  <input type="datetime-local" name="pickup_time"  class="form-control" ng-model="donation.pickup_time" min="{{now | date:'yyyy-MM-ddTHH:mm'}}" required /> 
                                   <span ng-show="donarDetails.pickup_time.$invalid && donarDetails.pickup_time.$touched" class="small text-danger">* Pick Up time required</span>
                           </div>  
                           
