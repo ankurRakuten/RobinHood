@@ -149,20 +149,6 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	// extract param : donnationId
 	var param = $location.search();
 	$scope.donationId = param.donationId;
-	test();
-	function test(){
-		let driveDetailsRef = firebase.database().ref('drive_details').push();
-		let driveDetails ={"efrg":"afesgrdhtgnfh"}
-		driveDetailsRef.set(driveDetails,function(ele){
-			console.log("Drive Added");
-			let driveId = driveDetailsRef.key;
-			console.log(driveId);
-			$scope.selectedDonation.forEach(function(donationId){
-				firebase.database().ref('donation_details').child(donationId).child("PIC").set($scope.drive_plan.pic);
-				// firebase.database().ref('donation_details').child(donationId).child("driveId").set($scope.drive_plan.pic);
-			});
-		});
-	}
 	$scope.drive_plan = {};
 	$scope.driveChapter = [];
 	$scope.selectedChapter = [];
@@ -315,6 +301,8 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 			$scope.selectedDonation.forEach(function(donationId){
 				firebase.database().ref('donation_details').child(donationId).child("PIC").set($scope.drive_plan.pic);
 				firebase.database().ref('donation_details').child(donationId).child("driveId").set(driveId);
+				var landingUrl = "http://" + $window.location.host + "/#/driveDetails?driveId="+driveId;
+ 				location.href = landingUrl;
 			});
 		});
 	}
