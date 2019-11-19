@@ -436,13 +436,13 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 					var DrList = $firebaseArray(drivebRef);
 					DrList.$loaded().then(function() {
 						console.log("====new drive list=====",DrList);
-						$scope.DriveList = dList.filter(function (el) {
+						$scope.DriveList = DrList.filter(function (el) {
 							return el.schedule > Date.now() &&
 							el.schedule < Date.now()+ 30*24*60*60*1000
 							;
 						});
 						console.log("====$scope.DriveList=====",$scope.DriveList);
-						$scope.PastDriveList = dList.filter(function (el) {
+						$scope.PastDriveList = DrList.filter(function (el) {
 							return el.schedule < Date.now() &&
 							el.schedule > Date.now()- 30*24*60*60*1000;
 						});
