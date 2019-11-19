@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="PastDriveList.length > 0 && showPastTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in PastDriveList | filter:{status:'Success'}">
+    <div ng-show="PastDriveList.length > 0 && showPastTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in PastDriveList">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -109,7 +109,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:{status:'Success'}">
+    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -168,7 +168,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Success'}">
+    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
