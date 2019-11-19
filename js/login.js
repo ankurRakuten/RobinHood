@@ -145,7 +145,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 	}
 ]);
 
-app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$firebaseObject", "dateFilter","$interval","$routeParams", function ($location,$scope, $firebaseArray, $firebaseObject, $interval) {
+app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$firebaseObject","$window", "dateFilter","$interval","$routeParams", function ($location,$scope, $firebaseArray, $firebaseObject,$window, $interval) {
 	// extract param : donnationId
 	var param = $location.search();
 	$scope.donationId = param.donationId;
@@ -161,8 +161,6 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	if(localStorage.getItem('ngStorage-userIsAuthenticated')){
 		$scope.drive_plan["pic"]=userDetail["first_name"]+ " "+userDetail["last_name"];
 		$scope.drive_plan["mobile"]= Number(userDetail["mobile"]);
-		// console.log($scope.cityList)
-		// $scope.donation["RHA_city_id"]= $scope.cityList.map(id=>name=="Bangalore");
 	}
 	// Add selected donationId 
 	$scope.selectedDonation.push($scope.donationId);
@@ -177,12 +175,6 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 		console.log($scope.drive_plan.schedule)
 	}
 	
-
-	// $scope.drive_plan.schedule = new Date();
-
-	// setInterval(function () {
-	// 	$scope.drive_plan.schedule = new Date();
-	// }, 1000);
 
 	let now = new Date().getTime();
 	console.log(now)
@@ -302,7 +294,7 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 				firebase.database().ref('donation_details').child(donationId).child("PIC").set($scope.drive_plan.pic);
 				firebase.database().ref('donation_details').child(donationId).child("driveId").set(driveId);
 				var landingUrl = "http://" + $window.location.host + "/#/driveDetails?driveId="+driveId;
- 				location.href = landingUrl;
+				$window.location.href = landingUrl;
 			});
 		});
 	}
@@ -322,21 +314,6 @@ app.filter('filterCluster', function () {
 		});
 	};
 });
-
-// app.filter('filterDonation', function () {
-// 	// filter to check array of elements
-// 	return function (data, tags) {
-// 		return data.filter(function (d) {
-// 			if (tags.indexOf(d.$id) != -1) {
-// 				return true;
-// 			} else if (tags.length == 0) {
-// 				return true;
-// 			}
-// 			return false;
-
-// 		});
-// 	};
-// });
 app.filter('filterDonation', function () {
 	// filter to check array of elements
 	return function (data, tags) {
@@ -511,148 +488,149 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		}
 	}
 ]);
-app.controller("orderDetail", ["$scope", "$firebaseAuth", "$firebaseObject", "$localStorage", "$timeout", "$window", "$route", "SessionService", "$firebaseArray",
-	function ($scope, $firebaseAuth, $firebaseObject, $localStorage, $timeout, $window, $route, SessionService, $firebaseArray) {
-		if ($localStorage.userDetail != null) {
-			$scope.userDetail = $localStorage.userDetail;
-		}
-		$scope.showDetail = false;
-		$scope.orderedProducts = $firebaseArray(firebase.database().ref().child("orders").child($scope.userDetail['$id']));
 
-		$scope.showDetailFunc = function (product) {
-			$scope.productDetailInfo = product;
-			$scope.showDetail = true;
-			if (Date.now() - $scope.productDetailInfo['orderTime'] > 3600000 * 100) {
-				$scope.updateOrderCond = false;
-			} else {
-				$scope.updateOrderCond = true;
-			}
-		}
+// app.controller("orderDetail", ["$scope", "$firebaseAuth", "$firebaseObject", "$localStorage", "$timeout", "$window", "$route", "SessionService", "$firebaseArray",
+// 	function ($scope, $firebaseAuth, $firebaseObject, $localStorage, $timeout, $window, $route, SessionService, $firebaseArray) {
+// 		if ($localStorage.userDetail != null) {
+// 			$scope.userDetail = $localStorage.userDetail;
+// 		}
+// 		$scope.showDetail = false;
+// 		$scope.orderedProducts = $firebaseArray(firebase.database().ref().child("orders").child($scope.userDetail['$id']));
 
-		$scope.closeDetailWin = function () {
-			$scope.showDetail = false;
-		}
+// 		$scope.showDetailFunc = function (product) {
+// 			$scope.productDetailInfo = product;
+// 			$scope.showDetail = true;
+// 			if (Date.now() - $scope.productDetailInfo['orderTime'] > 3600000 * 100) {
+// 				$scope.updateOrderCond = false;
+// 			} else {
+// 				$scope.updateOrderCond = true;
+// 			}
+// 		}
 
-		$scope.cancelOrderFunc = function (product) {
-			var ref = firebase.database().ref().child("orders").child($scope.userDetail['$id']).child(product['orderTime']);
-			var obj = $firebaseObject(ref);
-			ref.child('cancel').set(true);
-			$scope.showDetail = false;
-			$scope.modalObj = {
-				'head': 'Order Cancelled Successfully',
-				'body': 'Order Cancelled Successfully'
-			};
+// 		$scope.closeDetailWin = function () {
+// 			$scope.showDetail = false;
+// 		}
 
-			/* send mail  */
-			var service_id = "default_service";
-			var template_id = "ordermail123";
-			var template_params = {
-				sender_name: product.firstName + " " + product.lastName,
-				sender_email: product.email,
-				sender_mobile: product.mobile,
-				sender_address: product.address,
-				sender_pincode: product.pincode,
-				sender_city: product.city,
-				sender_state: product.state,
-				sender_landmark: product.landmark,
-				sender_altmobile: product.altMobile,
-				sender_order: "Product Name - " + product.name + " | Quantity - " + product.quantity + "  | Price - " + product.price
-			};
-			emailjs.send(service_id, template_id, template_params)
-				.then(function () {
-					console.log("emaiil js successs");
-				}, function (err) {
-					console.log("error");
-				});
-		}
-	}
-]);
+// 		$scope.cancelOrderFunc = function (product) {
+// 			var ref = firebase.database().ref().child("orders").child($scope.userDetail['$id']).child(product['orderTime']);
+// 			var obj = $firebaseObject(ref);
+// 			ref.child('cancel').set(true);
+// 			$scope.showDetail = false;
+// 			$scope.modalObj = {
+// 				'head': 'Order Cancelled Successfully',
+// 				'body': 'Order Cancelled Successfully'
+// 			};
+
+// 			/* send mail  */
+// 			var service_id = "default_service";
+// 			var template_id = "ordermail123";
+// 			var template_params = {
+// 				sender_name: product.firstName + " " + product.lastName,
+// 				sender_email: product.email,
+// 				sender_mobile: product.mobile,
+// 				sender_address: product.address,
+// 				sender_pincode: product.pincode,
+// 				sender_city: product.city,
+// 				sender_state: product.state,
+// 				sender_landmark: product.landmark,
+// 				sender_altmobile: product.altMobile,
+// 				sender_order: "Product Name - " + product.name + " | Quantity - " + product.quantity + "  | Price - " + product.price
+// 			};
+// 			emailjs.send(service_id, template_id, template_params)
+// 				.then(function () {
+// 					console.log("emaiil js successs");
+// 				}, function (err) {
+// 					console.log("error");
+// 				});
+// 		}
+// 	}
+// ]);
 
 
-app.controller("viewOrderCntrlr", ["$scope", "$firebaseAuth", "$firebaseObject", "$localStorage", "$timeout", "$window", "$route", "$filter", "SessionService", "NgTableParams", "$firebaseArray",
-	function ($scope, $firebaseAuth, $firebaseObject, $localStorage, $timeout, $window, $route, $filter, SessionService, NgTableParams, $firebaseArray) {
-		$scope.showPendingOrder = true;
-		$scope.showDetail = false;
-		$scope.fetchOrderedProductFunc = function () {
-			var dbRef = firebase.database().ref().child("orders");
-			$scope.orderDetail = $firebaseArray(dbRef);
-			$scope.orderDetail.$loaded().then(function () {
-				$scope.pendingOrder = [];
-				$scope.DeliveredOrder = [];
-				for (i = 0; i < $scope.orderDetail.length; i++) {
-					if (Object.keys($scope.orderDetail[i]).length > 0) {
-						angular.forEach($scope.orderDetail[i], function (value, key) {
-							if (value != null && typeof value == 'object') {
-								if (value['cancel'] != false && value['delivered'] != true) {
-									$scope.pendingOrder.push(value);
-								} else if (value['cancel'] != false && value['delivered'] == true) {
-									$scope.DeliveredOrder.push(value);
-								}
-							}
-						});
-					}
-				}
-				$scope.tableData = $scope.pendingOrder;
-			});
-		}
-		$scope.fetchOrderedProductFunc();
+// app.controller("viewOrderCntrlr", ["$scope", "$firebaseAuth", "$firebaseObject", "$localStorage", "$timeout", "$window", "$route", "$filter", "SessionService", "NgTableParams", "$firebaseArray",
+// 	function ($scope, $firebaseAuth, $firebaseObject, $localStorage, $timeout, $window, $route, $filter, SessionService, NgTableParams, $firebaseArray) {
+// 		$scope.showPendingOrder = true;
+// 		$scope.showDetail = false;
+// 		$scope.fetchOrderedProductFunc = function () {
+// 			var dbRef = firebase.database().ref().child("orders");
+// 			$scope.orderDetail = $firebaseArray(dbRef);
+// 			$scope.orderDetail.$loaded().then(function () {
+// 				$scope.pendingOrder = [];
+// 				$scope.DeliveredOrder = [];
+// 				for (i = 0; i < $scope.orderDetail.length; i++) {
+// 					if (Object.keys($scope.orderDetail[i]).length > 0) {
+// 						angular.forEach($scope.orderDetail[i], function (value, key) {
+// 							if (value != null && typeof value == 'object') {
+// 								if (value['cancel'] != false && value['delivered'] != true) {
+// 									$scope.pendingOrder.push(value);
+// 								} else if (value['cancel'] != false && value['delivered'] == true) {
+// 									$scope.DeliveredOrder.push(value);
+// 								}
+// 							}
+// 						});
+// 					}
+// 				}
+// 				$scope.tableData = $scope.pendingOrder;
+// 			});
+// 		}
+// 		$scope.fetchOrderedProductFunc();
 
-		$scope.changeOrderView = function () {
-			$scope.showPendingOrder = !$scope.showPendingOrder;
-			if ($scope.showPendingOrder == true) {
-				$scope.tableParams = new NgTableParams({}, {
-					dataset: $scope.pendingOrder
-				});
-				$scope.tableData = $scope.pendingOrder;
-			} else {
-				$scope.tableParams = new NgTableParams({}, {
-					dataset: $scope.DeliveredOrder
-				});
-				$scope.tableData = $scope.DeliveredOrder;
-			}
-		}
+// 		$scope.changeOrderView = function () {
+// 			$scope.showPendingOrder = !$scope.showPendingOrder;
+// 			if ($scope.showPendingOrder == true) {
+// 				$scope.tableParams = new NgTableParams({}, {
+// 					dataset: $scope.pendingOrder
+// 				});
+// 				$scope.tableData = $scope.pendingOrder;
+// 			} else {
+// 				$scope.tableParams = new NgTableParams({}, {
+// 					dataset: $scope.DeliveredOrder
+// 				});
+// 				$scope.tableData = $scope.DeliveredOrder;
+// 			}
+// 		}
 
-		$scope.showDetailFunc = function (product) {
-			$scope.productDetailInfo = product;
-			$scope.showDetail = !$scope.showDetail;
-			$window.scrollTo(0, 0);
-		}
+// 		$scope.showDetailFunc = function (product) {
+// 			$scope.productDetailInfo = product;
+// 			$scope.showDetail = !$scope.showDetail;
+// 			$window.scrollTo(0, 0);
+// 		}
 
-		$scope.updateStatus = function (product) {
-			var ref = firebase.database().ref().child("orders").child(product['userId']).child(product['orderTime']);
-			var obj = $firebaseObject(ref);
-			ref.child('delivered').set(true);
-			$scope.showDetail = false;
-			$scope.modalObj = {
-				'head': 'Order Updated To delivered Successfully',
-				'body': 'Order Updated To delivered Successfully'
-			};
-			$scope.fetchOrderedProductFunc();
-			/* send mail  
-			var service_id = "default_service";
-			var template_id = "ordermail123";		
-			var template_params = {
-				sender_name:  product.firstName+" "+ product.lastName,
-				sender_email:  product.email,
-				sender_mobile: product.mobile,
-				sender_address: product.address,
-				sender_pincode:  product.pincode,
-				sender_city:  product.city,
-				sender_state:  product.state,
-				sender_landmark:  product.landmark,
-				sender_altmobile:  product.altMobile,
-				sender_order:  "Product Name - "+product.name + " | Quantity - "+product.quantity+"  | Price - "+product.price
-			};
-			emailjs.send(service_id,template_id,template_params)
-			.then(function(){ 
-				console.log("emaiil js successs");
-			}, function(err) {
-				console.log("error");
-			});
-			*/
-		}
-	}
-]);
+// 		$scope.updateStatus = function (product) {
+// 			var ref = firebase.database().ref().child("orders").child(product['userId']).child(product['orderTime']);
+// 			var obj = $firebaseObject(ref);
+// 			ref.child('delivered').set(true);
+// 			$scope.showDetail = false;
+// 			$scope.modalObj = {
+// 				'head': 'Order Updated To delivered Successfully',
+// 				'body': 'Order Updated To delivered Successfully'
+// 			};
+// 			$scope.fetchOrderedProductFunc();
+// 			/* send mail  
+// 			var service_id = "default_service";
+// 			var template_id = "ordermail123";		
+// 			var template_params = {
+// 				sender_name:  product.firstName+" "+ product.lastName,
+// 				sender_email:  product.email,
+// 				sender_mobile: product.mobile,
+// 				sender_address: product.address,
+// 				sender_pincode:  product.pincode,
+// 				sender_city:  product.city,
+// 				sender_state:  product.state,
+// 				sender_landmark:  product.landmark,
+// 				sender_altmobile:  product.altMobile,
+// 				sender_order:  "Product Name - "+product.name + " | Quantity - "+product.quantity+"  | Price - "+product.price
+// 			};
+// 			emailjs.send(service_id,template_id,template_params)
+// 			.then(function(){ 
+// 				console.log("emaiil js successs");
+// 			}, function(err) {
+// 				console.log("error");
+// 			});
+// 			*/
+// 		}
+// 	}
+// ]);
 
 app.controller("adminProfile", ["$scope", "$firebaseAuth", "$firebaseObject", "$localStorage", "$timeout", "$window", "$route", "$filter", "SessionService", "NgTableParams", "$firebaseArray",
 	function ($scope, $firebaseAuth, $firebaseObject, $localStorage, $timeout, $window, $route, $filter, SessionService, NgTableParams, $firebaseArray) {
