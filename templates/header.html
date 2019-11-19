@@ -17,7 +17,7 @@
 				<li class="dropdown menu-small" ng-show="userDetail.first_name != null"><a class="dropdown-toggle" data-toggle="dropdown">
 				<span ng-bind="userDetail.first_name"> </span><b class="caret"></b></a>
                       <ul class="dropdown-menu vertical-li">
-                        <li><a href="#/upcomingDonations"><i class="fa fa-angle-right"></i> Profile</a></li>
+                        <li><a href="{{ userDetail.role == 1 ? '#/volunteerUpcomingDonations' : '#/upcomingDonations'}}"><i class="fa fa-angle-right"></i> Profile</a></li>
                         <li><a ng-click="logout()"><i class="fa fa-angle-right"></i> Logout</a></li>
 					</ul>
 				</li>
@@ -30,7 +30,7 @@
 				</li>
 				<li><a href="#/">Home</a>
                 </li>
-                <li><a href="#/faq">FAQ</a>
+                <li><a href="#/about">About Us</a>
                 </li>
                 <li><a href="#/contact">Contact</a>
                 </li>

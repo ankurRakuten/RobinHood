@@ -16,14 +16,6 @@
     </div>
     <h3 class="p-1 m-0">Donations:</h3>
     <div class="row">
-      
-      <div class="col-xs-10 pd-0">
-        <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
-        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
-        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
-        <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
-      </div>
-
       <div class="col-xs-2 pd-0">
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
@@ -36,20 +28,31 @@
           </ul>
         </div>
       </div>
+      <div class="col-xs-10">
+        <!-- <h3 class="col-xs-12"><a href="#/">Home </a>/<a href="#/volunteerUpcomingDonations"> Donor's upcoming Donations</a></h3> -->
+        
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showPastTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Past')">Past</button>
+        <button class="col-xs-6 btn btn-green m-0 whiteback" ng-class="showUpcomingTab ? 'activeTab' : 'nonActiveTab'" ng-click="showDonationTab('Upcoming')">Upcoming </button>
+        <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
+      </div>
+      <!-- <div class="col-xs-3 pd-0">
+        <select class = "btn btn-primary dropdown-toggle" ng-model="selectedTime" ng-init=" selectedTime = timeRange[0].days" ng-change="updateFilter(selectedTime)"  ng-options="x.days as x.time for x in timeRange">
+        </select>
+      </div> -->
+      
     </div>
     <div ng-show="DonationList.length > 0 && showUpcomingTab && statusFilter == 'all'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Pending'}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
-            }" aria-hidden="true"></i>
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-if="donation.PIC == ''" href="#/createDrivePlan">PIC</a>
-              <a ng-if="donation.PIC != ''" href="#/createDrivePlan">Volunteer</a>
+              <a ng-if="donation.PIC == ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -66,15 +69,33 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['PIC']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+               </div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div ng-show="donation['Landmark']">
+                <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+              </div>
+              <div>
+                <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+              </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
+              <div ng-show="donation['remarks']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv" ><i class="fa fa-chevron-up"></i></button>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv ; showImages('-LmDhx6jsHc9fsPDyZgs/')"><i class="fa fa-chevron-down"></i></button>
@@ -87,13 +108,13 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
-            }" aria-hidden="true"></i>
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">PIC</a>
+              <a ng-if="donation.PIC = ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -110,14 +131,32 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div>
+                <div ng-if="donation['PIC']">
+                    <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                 </div>
+                <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
                 </div>
                 <div>
+                    <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div>
+                      <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                    </div>
+                    <div ng-show="donation['Landmark']">
+                      <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                    </div>
+                <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                </div>
+                <div ng-show="donation['remarks']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
                 </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -133,14 +172,16 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
+            <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">Volunteer</a>
-            </h3> -->
+              <!-- <a href="#/createDrivePlan">Volunteer</a> -->
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
+
+            </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -156,15 +197,30 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div>
+                <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
                 </div>
                 <div>
+                  <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                    <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div ng-show="donation['Landmark']">
+                    <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
+                <div ng-show="donation['remarks']">
+                    <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                  </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
@@ -177,13 +233,14 @@
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/createDrivePlan">PIC</a>
+              <a ng-if="donation.PIC = ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -200,27 +257,42 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div>
+                <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
                 <div>
                   <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
                 </div>
                 <div>
+                  <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div>
+                    <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div ng-show="donation['Landmark']">
+                    <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
                 </div>
+                <div ng-show="donation['remarks']">
+                    <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                  </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'all'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'}">
+    <div ng-show="PastDonationList.length > 0 && showPastTab && statusFilter == 'all'" class="card col-md-4" ng-repeat="donation in PastDonationList ">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -242,70 +314,42 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div ng-show="donation['Landmark']">
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
+              <div ng-show="donation['remarks']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'unattended'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'}" ng-if="donation.PIC == ''">
+    <div ng-show="PastDonationList.length > 0 && showPastTab && statusFilter == 'unattended'" class="card col-md-4" ng-repeat="donation in PastDonationList " ng-if="donation.PIC == ''">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
-            }" aria-hidden="true"></i>
-              {{donationCategory[donation['donation_category_id']]['name']}}
-            </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
-          </div>
-          <div class="card-body">
-            <p class="card-p">
-              <div>
-                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
-              </div>
-              <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
-              </div>
-            </p>
-            <div ng-show="showDiv" >
-              <!-- details -->
-              <div>
-                <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
-              </div>
-              <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
-              </div>
-              <div>
-                <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
-              </div>
-              <div>
-                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
-              </div>
-            </div>
-            <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
-            <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
-        </div>
-      </div>
-    </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'measpic'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'} | filter:{PIC:userDetail.$id}">
-        <div class="card-content col-xs-12">
-          <div class="card-header-green">
-            <h3 class="card-heading pull-left">
-              <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -328,27 +372,100 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div ng-show="donation['Landmark']">
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
+              <div ng-show="donation['remarks']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showPastTab && statusFilter == 'mydonation'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'} | filter:{userMobile:userDetail.mobile}">
+    <div ng-show="PastDonationList.length > 0 && showPastTab && statusFilter == 'measpic'" class="card col-md-4" ng-repeat="donation in PastDonationList  | filter:{PIC:userDetail.$id}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
+            }" aria-hidden="true"></i>
+              {{donationCategory[donation['donation_category_id']]['name']}}
+            </h3>
+            <!-- <h3 class="card-heading pull-right mr-10">
+              <i class="fa fa-hands-helping" aria-hidden="true"></i>
+              <a href="#/volunteer">Volunteer</a>
+            </h3> -->
+          </div>
+          <div class="card-body">
+            <p class="card-p">
+              <div>
+                <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+              </div>
+              <div>
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+              </div>
+            </p>
+            <div ng-show="showDiv" >
+              <!-- details -->
+              <div>
+                <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+              </div>
+              <div ng-if="donation['shelf_life']">
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+              </div>
+              <div>
+                <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div ng-show="donation['Landmark']">
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+              </div>
+              <div ng-show="donation['remarks']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
+            </div>
+            <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
+            <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
+        </div>
+      </div>
+    </div>
+    <div ng-show="PastDonationList.length > 0 && showPastTab && statusFilter == 'mydonation'" class="card col-md-4" ng-repeat="donation in PastDonationList  | filter:{userMobile:userDetail.mobile}">
+        <div class="card-content col-xs-12">
+          <div class="card-header-green">
+            <h3 class="card-heading pull-left">
+              <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
+              'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
@@ -371,15 +488,30 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div>
+              <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
               <div>
                 <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
               </div>
               <div>
+                <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+              </div>
+              <div>
+                  <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                </div>
+                <div ng-show="donation['Landmark']">
+                  <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                </div>
+                <div>
+                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                </div>
+              <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
               </div>
+              <div ng-show="donation['remarks']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>

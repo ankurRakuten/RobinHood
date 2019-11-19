@@ -11,13 +11,15 @@ window.routes =
 {
     "/": { templateUrl: "partials/home.html", controller: "HomeCtrl" ,requireLogin: false},
     "/volunteer": { templateUrl: "partials/volunteer.html" ,requireLogin: false},
-    "/successful": { templateUrl: "partials/donationSuccessful.html" ,requireLogin: false},
+    "/successful": { templateUrl: "partials/donationSuccessful.html" , controller:"DonateCtrl",requireLogin: false},
     "/donate": { templateUrl: "partials/donate.html", controller: "DonateCtrl" ,requireLogin: false},
     "/about": { templateUrl: "partials/aboutUs.html" ,requireLogin: false},
     "/contact": { templateUrl: "partials/contact.html",requireLogin: false},
     "/login": { templateUrl: "partials/login.html", controller: "Login" ,requireLogin: false},
     // Drive 
   "/driveDetails":{templateUrl: "partials/volunteer/driveDetails.html", controller: "DriveCtrl" ,requireLogin: true},
+  "/donationDetails":{templateUrl: "partials/volunteer/donationDetails.html", controller: "DonationDetailsCtrl" ,requireLogin: true},
+  "/addDonations":{templateUrl: "partials/volunteer/addDonations.html", controller: "addDonationsToDriveCtrl" ,requireLogin: true},
   "/commentList":{templateUrl: "partials/volunteer/commentList.html",controller: "DriveCtrl",requireLogin: true},
   "/attendanceList":{templateUrl: "partials/volunteer/attendanceList.html",controller: "DriveCtrl",requireLogin: true},
 	"/adminLogin": { templateUrl: "partials/admin/adminLogin.html", controller: "Login" ,requireLogin: false},
@@ -32,7 +34,7 @@ window.routes =
 	"/forgotPassword": { templateUrl: "partials/forgotPassword.html", controller: "Login" ,requireLogin: false},
 	"/upcomingDonations": { templateUrl: "partials/user/upcomingDonations.html", controller: "userDonationDetail" ,requireLogin: true},
   "/volunteerUpcomingDonations": { templateUrl: "partials/user/volunteerUpcomingDonations.html", controller: "volunteerDonationDetail" ,requireLogin: true},
-  "/createDrivePlan": { templateUrl: "partials/user/createDrivePlan.html", controller: "createDrivePlan" ,requireLogin: false},
+  "/createDrivePlan": { templateUrl: "partials/user/createDrivePlan.html", controller: "createDrivePlan" ,requireLogin: true},
 	"/pastDonations": { templateUrl: "partials/user/pastDonations.html", controller: "userDonationDetail" ,requireLogin: true},
 	"/drivePlanList": { templateUrl: "partials/user/drivePlanList.html", controller: "volunteerDonationDetail" ,requireLogin: true},
 	"/userProfile": { templateUrl: "partials/user/userProfile.html", controller: "Login" ,requireLogin: true},
@@ -109,20 +111,31 @@ app.service('SessionService', ['$localStorage','$location','$rootScope',function
 /**
  * Controls the Ananomus Donations 
  */
-app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObject,$firebaseArray,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
+app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObject,$firebaseArray,$localStorage,$firebaseStorage, $location, $http, $q, $timeout, WizardHandler) {
     getRHA_CityList()
     getDonationCategory()
     getRHA_LocalityList()
+    $scope.donation={};
+    $scope.isAuthenticated = $localStorage.userIsAuthenticated;
+    if($localStorage.userIsAuthenticated){
+      $scope.donation["userName"]=$localStorage.userDetail["first_name"]+ " "+$localStorage.userDetail["last_name"];
+      $scope.donation["userMobile"]= Number($localStorage.userDetail["mobile"]);
+      console.log($scope.cityList)
+      // $scope.donation["RHA_city_id"]= $scope.cityList.map(id=>name=="Bangalore");
+    }
 
     $scope.perishableTime=["2 Hours","4 Hours","6 Hours","8 Hours","10 Hours","12 Hours","24 Hours","48 Hours","72 Hours"]
     $scope.donationFormDetails={}
-    
     if ($rootScope.reDonationDetails){
         $scope.donation=$rootScope.reDonationDetails;
-        ts = new Date($rootScope.reDonationDetails["pickup_time"]);
+        ts = new Date($rootScope.reDonationDetails["pickup_time"]);   
         $scope.donation["pickup_time"]= ts.toJSON();
         $scope.donation["path"]="";
     }
+
+    $scope.now = new Date();
+    console.log($scope.now);
+
   //Wizard 
   $scope.canExit = true;
   $scope.stepActive = true;
@@ -152,11 +165,15 @@ $scope.onFileSelect = function($files) {
     console.log($scope.uploadedImages[0])
 }
 
+$scope.notPerishable=function(){
+  $scope.donation["shelf_life"]="";
+}
 //Local Functions 
 function sendDonationDetails(donationDetails){
  console.log(donationDetails);
  let donationDetailsRef = firebase.database().ref().child("donation_details");
  let donation = labelToCategory(donationDetails);
+ 
  donation["path"]="";
  console.log(donation)
  donationDetailsRef.push().set(donation,function(){
@@ -222,10 +239,14 @@ function getRHA_CityList(){
         RHA_cityList = RHA_cityList.filter(item => item.active === "True");
     
         angular.forEach(RHA_cityList, function(item) {
+          if(item["name"]=="Bangalore"){
+            $scope.donation["RHA_city_id"]= item["$id"];
+          }
                 delete  item["active"];
                 delete item["$priority"];
         });
         $scope.cityList=RHA_cityList
+        console.log($scope.cityList)
     });
 }
 function getDonationCategory(){
@@ -250,38 +271,23 @@ RHA_LocalityList.$loaded().then(function() {
     delete item["$id"];
   });
   $scope.localityList=RHA_LocalityList;
-  // console.log(RHA_LocalityList)
 });
 }
 
-function getRHA_capterList(){
-    let RHA_capterRef = firebase.database().ref("RHA_capter")
-    let RHA_capterList = $firebaseArray(RHA_capterRef);
-    RHA_capterList.$loaded().then(function() {
-        $scope.capterList=RHA_capterList;
-        angular.forEach(RHA_capterList, function(item) {
-            delete item["$priority"];
-    });
-    $scope.chapterList=RHA_capterList;
-        console.log(RHA_capterList)
-    });
-}
 
 function labelToCategory(donationDetails){
     // Label to ID
     delete donationDetails["Locality"]["name"];
-        // donationDetails["Locality"] = donationDetails["Locality"]["name"];
-        // donationDetails["RHA_city_id"] = donationDetails["RHA_city"]["$id"];
-        // delete donationDetails["RHA_city"]
-        // donationDetails["donation_category_id"] = donationDetails["donation_category"]["$id"];
-        // delete donationDetails["donation_category"];
-
     // Creation Time and Station 
         let now = new Date();
         let created_at = now.getTime();
         donationDetails["created_at"]=created_at;
         donationDetails["pickup_time"]= new Date(donationDetails["pickup_time"]).getTime();
+        console.log(donationDetails["userMobile"]);
+        console.log(typeof(donationDetails["userMobile"]))
+        donationDetails["userMobile"]=(donationDetails["userMobile"]).toString();
         donationDetails["status"]="Pending";
+        donationDetails["driveId"]="";
         donationDetails["PIC"]="";
         return donationDetails
     }
@@ -292,19 +298,122 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     $scope.confirm = false;
     
   });
+  app.controller('addDonationsToDriveCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
+    var param = $location.search();
+    $scope.driveId = param.driveId;
+    $scope.showNoDonations=false;
+    let now = new Date().getTime();
+    console.log(now)
+    $scope.addDonationsList={};
+    $scope.addDonationToDrive =function(){
+      Object.keys($scope.addDonationsList).forEach((key)=>{
+        if($scope.addDonationsList[key]){
+          console.log(key)
+          // Add Donation ID to the drive
+          let driveRef = firebase.database().ref("drive_details").child($scope.driveId);
+          $scope.DonationList.forEach(function(donation){
+            if(donation["$id"]==key){
+              driveRef.child("donations").child(key).set(donation["userName"])
+            }
+          });         
+
+          // Add Drive ID and PIC to the donation 
+           let donationRef= firebase.database().ref("donation_details").child(key);
+           donationRef.child("driveId").set($scope.driveId);
+           $firebaseObject(driveRef.child("PIC")).$loaded().then(function(PIC){
+             donationRef.child("PIC").set(PIC["$value"]);
+           });
+        }
+      })      
+      $scope.redirect("driveDetails");
+    }
+    $scope.redirect = function(page){
+      console.log(page);
+        var landingUrl = "http://" + $window.location.host + "/#/"+page+"?driveId="+$scope.driveId;
+      $window.location.href = landingUrl;
+    }
+
+    $scope.updateFilter = function(days){
+			var don_cat = firebase.database().ref().child("Donation_category");
+			$scope.donationCategory = $firebaseObject(don_cat);
+			$scope.donationCategory.$loaded().then(function () {
+				var rha_city = firebase.database().ref().child("RHA_city");
+				$scope.RHACity = $firebaseObject(rha_city);
+				$scope.RHACity.$loaded().then(function () {
+					// All donations
+					var dbRef = firebase.database().ref().child("donation_details");
+					var dList = $firebaseArray(dbRef);
+					dList.$loaded().then(function() {
+						$scope.DonationList = dList.filter(function (el) {
+              return el.pickup_time > now && el.PIC=="";
+							// ;
+						});
+            console.log("====new=$scope.DonationList====",$scope.DonationList);
+            if(!$scope.DonationList>0){
+              $scope.showNoDonations = true;
+            }
+					});
+				});
+			});
+		}
+    $scope.updateFilter(7);
+    
+
+
+  })
+
+
+  app.controller('DonationDetailsCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
+    var param = $location.search();
+    $scope.donationId = param.donationId;
+    var don_cat = firebase.database().ref().child("Donation_category");
+			$scope.donationCategory = $firebaseObject(don_cat);
+    let donationDetailsRef = firebase.database().ref().child("donation_details").child($scope.donationId);
+               let donationDetails = $firebaseObject(donationDetailsRef);
+               donationDetails.$loaded().then(function() {
+                 console.log(donationDetails)
+                $scope.donationDetails = donationDetails;
+                $firebaseObject(firebase.database().ref().child("Donation_category").child(donationDetails.donation_category_id)).$loaded().then(function(category) {
+                  donationDetails["donation_category"]= category.name;
+                })
+                
+                if (donationDetails.Locality["chapter_id"]){
+                  donationDetails.Locality["chapter_id"].forEach(function(chapter_id,index){
+                    donationDetails["RHA_chapter"]= "";
+                    $firebaseObject(firebase.database().ref().child("RHA_chapters").child(chapter_id)).$loaded().then(function(chapterDetails) {
+                      donationDetails["RHA_chapter"]+=chapterDetails.chapter_name;
+                      if(donationDetails.Locality["chapter_id"].length > index+1){
+                        donationDetails["RHA_chapter"]+=" , ";
+                      }
+                    })
+                  })
+                }
+                $scope.donationDetails = donationDetails;
+            });
+
+    $scope.redirect = function(page){
+        console.log(page);
+        if (page=='Home'){
+          var landingUrl = "http://" + $window.location.host + "/#/";
+        }
+          $window.location.href = landingUrl;
+      }          
+    
+  })
 
 
   app.controller('DriveCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
     var param = $location.search();
     $scope.driveId=param.driveId;
-    getDriveDetails()
-    getRHA_capterList()
-    getRHA_clusterList()
+    $scope.donationId = param.donationId;
+    $scope.now = new Date().getTime();
+    getDonationCategory();
+    getDriveDetails();
+    getRHA_capterList();
+    getRHA_clusterList();
     $scope.driveDetails={}
     let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
-    // let userName= "nikitha nimbalkar"
-    // console.log(userName)
-    // console.log($localStorage)
+    $scope.userName = userName;
 
     $scope.updateAttendeeList = function(action){
       let driveDetailsRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
@@ -330,6 +439,22 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       commentDetails["commentDetails"]= comment;
       addComment(commentDetails)
     }
+
+    $scope.markDriveStatus=function(status){
+        firebase.database().ref("drive_details").child($scope.driveId).child("status").set(status);
+        updateDonationStatus(status);
+    }
+    
+    function updateDonationStatus(status){
+      Object.keys($scope.driveDetails.donations).forEach(function(donationId){
+        console.log(donationId,status);
+        firebase.database().ref("donation_details").child(donationId).child("status").set(status);
+      });
+        // $scope.driveDetails.donations.forEach(function(ele){
+        //   console.log(ele);
+        // })
+    }
+
     function checkJoinStatus(attendeeList){
       if (userName in attendeeList){
         $scope.joinOrQuit="Quit"
@@ -346,40 +471,59 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       $scope.comment ="";
       getDriveDetails();
     }
-    
     function getDriveDetails(){
       let driveListRef = firebase.database().ref().child("drive_details");
       let driveDetailsRef = driveListRef.child($scope.driveId);
       console.log($scope.driveId)
       // console.log(driveDetailsRef)
       let driveDetails = $firebaseObject(driveDetailsRef);
-      console.log(driveDetails)
       driveDetails.$loaded().then(function() {
           console.log(driveDetails)
           delete driveDetails["$priority"]
           // let time = new Date(driveDetails["schedule"])
           $scope.driveDetails = driveDetails;
+          // Check if time has expired and mark 
+          if((driveDetails.schedule+86400000)<($scope.now)){
+            firebase.database().ref("drive_details").child($scope.driveId).child("status").set("Expired");
+            updateDonationStatus("Expired");
+          }
           $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
           checkJoinStatus(driveDetails["attendees"]);
+          console.log(driveDetails["attendees"])
+          console.log($scope.driveDetails.donations)
+          if (driveDetails.donations){
+            Object.keys($scope.driveDetails.donations).forEach(function(donationId){
+              console.log(donationId)
+               let donationDetailsRef = firebase.database().ref().child("donation_details").child(donationId);
+               let donationDetails = $firebaseObject(donationDetailsRef);
+               donationDetails.$loaded().then(function() {
+                 console.log(donationDetails)
+                $scope.driveDetails.donations[donationId] = donationDetails;
+              })
+            });
+          }
 
           if($firebaseArray(driveDetailsRef.child("comment"))){
             $scope.comments = $firebaseArray(driveDetailsRef.child("comment"));
           }else {
             $scope.comments = {}
           }
-         
-          // if($firebaseArray(driveDetailsRef.child("comment"))){
-          //    $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
-          // }else {
-          //   $scope.attendeeList= {}
-          // }
-          // console.log($scope.attendeeList)
-          // $scope.driveDetails.status="Successful"
-
-
-
       });
     }
+
+    function getDonationCategory(){
+      let Donation_categoryRef = firebase.database().ref("Donation_category")
+      let Donation_category = $firebaseObject(Donation_categoryRef);
+      Donation_category.$loaded().then(function() {
+          // Donation_category = Donation_category.filter(item => item.active === "True");
+          // angular.forEach(Donation_category, function(item) {
+          //         // delete  item["active"];
+          //         delete item["$priority"];
+          // });
+          $scope.donationCategory=Donation_category;
+          // console.log(Donation_category)
+      });
+  }
 
     function getRHA_capterList(){
       let RHA_capterRef = firebase.database().ref("RHA_chapters")
@@ -398,7 +542,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
               }
             });          
           })
-          console.log(chapterList)
+          // console.log(chapterList)
           $scope.chapterList=chapterList
       });
   }
@@ -420,7 +564,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
               }
             });          
           })
-          console.log(clusterList)
+          // console.log(clusterList)
           $scope.clusterList=clusterList
       });
 
@@ -428,9 +572,19 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
 
   ///Comment List Page 
   $scope.redirect = function(page){
-    var landingUrl = "http://" + $window.location.host + "/#/"+page+"?driveId="+$scope.driveId;
-      $window.location.href = landingUrl;
+    console.log(page);
+      var landingUrl = "http://" + $window.location.host + "/#/"+page+"?driveId="+$scope.driveId;
+    $window.location.href = landingUrl;
+    
   }
+
+  $scope.redirectToDonationDetails = function(page,donationId){
+    console.log(page,donationId)
+    var landingUrl = "http://" + $window.location.host + "/#/"+page+"?donationId="+donationId;
+    $window.location.href = landingUrl;
+  }
+
+
   
   // Attendance Page
   $scope.changeAttendance = function(id,currentState){
@@ -443,18 +597,9 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       $scope.attendeeList.find(x=>x.$id==id)["attended"]=!currentState;
     }
   }
-//  $scope.updateAttendance = function(){
-//    console.log($scope.driveId)
-//   let attendanceRef = firebase.database().ref().child("drive_details").child($scope.driveId).child("attendees")
-//   $scope.attendeeList.forEach(function(item){
-//     console.log(item["$id"],{"attended":item["attended"]})
-//     attendanceRef.child(item["$id"]).set({"attended":item["attended"]})
-//   })
-//   $scope.redirect('driveDetails');
-  
-//  }
+  // Add Donation Page 
 
-  
+
   });
 
  

@@ -6,20 +6,29 @@
           <section>
             <wizard on-cancel="cancelledWizard()">
               <wz-step wz-title="Step 1/2">
-                <label for="driveTitle">Drive TItle</label>
+                <div class="form-group">
+                <label for="driveTitle">Drive Title</label>
                 <input type="text" class="form-control" id="driveTitle" name="driveTitle" placeholder="Drive TItle"
                   ng-model="drive_plan.driveTitle" required>
                 <span ng-show="drive.driveTitle.$touched && drive.driveTitle.$invalid">The Drive
                   title is required.</span>
+                </div>
+                <div class="form-group">
                 <label for="schedule">Schedule Date</label>
-                <input type="datetime-local" min="{{drive_plan.schedule}}" 
-                  ng-model="drive_plan.schedule" class="form-control" value="{{drive_plan.schedule}}"  required="false"/>
-        
-                <label for="email">PIC</label>
+                <!-- value="{{drive_plan.schedule}}"  -->
+                {{drive_plan.schedule}}
+                <input type="datetime-local" class="form-control" name="schedule" id="schedule" ng-model="drive_plan.schedule" ng-change="checkTime()" required/>
+                <span class="help-block" ng-show="drive.schedule.$touched && drive.schedule.$invalid">
+                Valid Schedule Date is required
+                </span>
+                </div>
+                <div class="form-group">
+                <label for="PIC">PIC</label>
                 <input type="text" class="form-control" id="PIC" placeholder="PIC" name="pic" ng-model="drive_plan.pic"
                   required>
                 <span ng-show="drive.pic.$touched && drive.pic.$invalid">The PIC is
-                  required.</span>
+                  required.</span></div>
+                <div class="form-group">
                 <label for="mobile">Mobile</label>
                 <input type="number" class="form-control" id="number" name="mobile" ng-minlength="10" ng-maxlength="10"
                   placeholder="Mobile number" ng-model="drive_plan.mobile" ng-required="true" />
@@ -31,7 +40,8 @@
                            rdrive.mobile.$error.maxlength) && 
                            drive.mobile.$dirty) ">
                   phone number should be 10 digits
-                </span>
+                </span></div>
+                <div class="form-group">
                 <label for="mobile">Chapter</label>
                 <div>
                   <div class="wrapper" z-index="1">
@@ -44,22 +54,31 @@
                         <li ng-repeat="chapter in chapters">
                           <input type="checkbox" ng-model="chapter.selected" id="{{chapter.chapter_name}}"
                             ng-checked="selection.indexOf(chapter.chapter_name) > -1"
-                            ng-click="selectChapter(chapter.$id)" />
+                            ng-click="selectChapter(chapter.$id)" required/>
                           <label for={{chapter.chapter_name}}>{{chapter.chapter_name}}</label>
                         </li>
                       </ul>
                     </div>
+                    <br>
+                    <b ng-if="selectedChapter.length>0">Selected Chapters :</b>
+                <div ng-repeat="chapter in selectedChapter">
+                    <span style="color:black"><i class="fa fa-map-marker-alt"></i> {{chapters[chapter-1]["chapter_name"]}}</span>
+                </div>
                   </div>
                 </div>
-                <br>
-                <br>
+              </div>
                 <div class="pull-right text-center">
-                  <button type="submit" wz-next value="next" class="btn btn-primary">Next</button>
+               <!-- || drive.schedule.$invalid  -->
+               <span class="help-block" ng-if="drive_plan.schedule.$touched && validTime">Schedule Date is in past </span>
+                  <button type="submit" wz-next value="next" ng-disabled=" drive.driveTitle.$invalid || !validTime || drive.pic.$invalid || drive.mobile.$invalid || (!selectedChapter.length>0) " class="btn btn-primary">Next</button>
                 </div>
               </wz-step>
               <wz-step wz-title="Step 2/2">
                 <section class="row">
                   <label for="locality">Donations</label>
+                  <div ng-if="selectedDonation.length>0" ng-repeat="donationId in selectedDonation">
+                  <span style="padding:4px;"><a ng-href="#/donationDetails?donationId={{donationId}}"><i class="fas fa-hand-holding-heart fa-2x"></i></a></span>
+                  </div>
                   <div class="modal-bg">
                     <div class="dialog">
                       <!-- Large modal -->
@@ -75,29 +94,72 @@
                               <h4 class="modal-title" id="myModalLabel">Donations</h4>
                             </div>
                             <div class="modal-body">
-                                <input type="text" class="form-control" placeholder="Search for Donations" ng-model="allDonations" />
-                              <ul class="list-group">
-                                  <!-- filterDonation:selectedDonation -->
-                                <li class="list-group-item"
-                                
-                                  ng-repeat="donation in donation_details |filter: allDonations">
-                                  <input type="checkbox" ng-model="donation.selected" id="{{donation.$id}}"
-                                  ng-checked="selection.indexOf(donation.$id)"
-                                  ng-click="selectDonation(donation.$id)" />
-                                  <label for="{{donation.$id}}">
-                                      Location :
-                                      </b>{{donation.Locality.location_name}},
-                                      {{donation.RHA_city_id.name}}
-                                      Pickup Time :
-                                      </b>{{donation.pickup_time | date:'dd/MM/yyyy, HH:mm:ss'}}
-                                      Description :
-                                      </b>{{donation.description}}
-                                      Shelf Life :
-                                      </b>{{donation.shelf_life}}
-                                      Transporation Provided :
-                                      </b>{{donation.transporation_provided == 'True' && 'Yes' || 'No' }}
-                                  </label>
-                                </li>
+                                <!-- <input type="text" class="form-control" placeholder="Search for Donations" ng-model="allDonations" /> -->
+                                <br>
+                                <div
+                                  ng-repeat="donation in donation_details">
+                                  <div ng-if="donation['$id']!=donationId"class="card-content col-xs-12">
+                                      <div class="card-header-green">
+                                        <h3 class="card-heading pull-left">
+                                          <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
+                                          'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
+                                          {{donationCategory[donation['donation_category_id']]['name']}}
+                                        </h3>
+                                        <h3 class="card-heading pull-right mr-10">
+                                            <input type="checkbox" ng-model="donation.selected" id="{{donation.$id}}"
+                                            ng-checked="selection.indexOf(donation.$id)"
+                                            ng-click="selectDonation(donation.$id)" />
+                                            <!-- <input type="checkbox" ng-change="getDonationId(donation['$id'])" ng-model="addDonationsList[donation.$id]"> -->
+                                        </h3>
+                                      </div>
+                                      <div class="card-body">
+                                        <p class="card-p">
+                                          <div>
+                                            <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                                          </div>
+                                          <div>
+                                            <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'yyyy-MM-dd HH:mm'}}
+                                          </div>
+                                        </p>
+                                        <div ng-show="showDiv" >
+                                          <!-- details -->
+                                          <div>
+                                            <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+                                          </div>
+                                          <div ng-if="donation['PIC']">
+                                            <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                                         </div>
+                                          <div>
+                                            <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+                                          </div>
+                                          <div>
+                                            <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+                                          </div>
+                                          <div>
+                                            <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                                          </div>
+                                          <div>
+                                            <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                                          </div>
+                                          <div ng-show="donation['Landmark']">
+                                            <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                                          </div>
+                                          <div>
+                                            <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                                          </div>
+                                          <div>
+                                            <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                                          </div>
+                                          <div ng-show="donation['remarks']">
+                                              <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                                            </div>
+                                        </div>
+                                        <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv" ><i class="fa fa-chevron-up"></i></button>
+                                        <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv ; showImages('-LmDhx6jsHc9fsPDyZgs/')"><i class="fa fa-chevron-down"></i></button>
+                                    </div>
+                                </div>
+                              </div>
+
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default" focus-element="autofocus"
@@ -111,7 +173,14 @@
                 </section>
                 <hr />
                 <section class="row">
-                  <label for="city">Clusters</label>
+                  <label for="city">Clusters</label><br>
+
+                  <b ng-if="selectedCluster.length>0">Selected Clusters : </b>
+                  
+                  <div ng-repeat="cluster in selectedCluster">
+                    <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}">
+                    <i ng-class="{'fa fa-home':clusters[cluster-1]['cluster_type']=='HOME','fa fa-map-marked-alt':clusters[cluster-1]['cluster_type']=='CLUSTER'}"></i> <b>{{clusters[cluster-1]["cluster_name"]}} :</b></a> {{clusters[cluster-1]["cluster_address"]}}
+                  </div>
                   <div class="modal-bg">
                     <div class="dialog">
                       <!-- Large modal -->
@@ -136,8 +205,8 @@
                                   <input type="checkbox" ng-model="cluster.selected" id="{{cluster.cluster_name}}"
                                     ng-checked="selection.indexOf(cluster.cluster_name) > -1"
                                     ng-click="selectCluster(cluster.cluster_id)" />
-                                  <label for={{cluster.cluster_name}}><span>Name :
-                                      {{cluster.cluster_name}}</span><span>Address :
+                                  <label for={{cluster.cluster_name}}><i ng-class="{'fa fa-home':cluster.cluster_type=='HOME','fa fa-map-marked-alt':cluster.cluster_type=='CLUSTER'}"></i> {{cluster.cluster_name}}
+                                  <span>Address :
                                       {{cluster.cluster_address}}</span></label></li>
                               </ul>
                             </div>
@@ -154,7 +223,8 @@
                 <br>
                 <br>
                 <div class="pull-right text-center">
-                  <button type="submit" class="btn btn-primary">Finish</button>
+                  <button type="submit" class="btn btn-primary" ng-disabled="!selectedCluster.length>0 || !selectedDonation.length>0">Finish</button>
+                  <input type="button" class="btn btn-primary" wz-previous="logStep()" value="Back" />
                 </div>
               </wz-step>
 
@@ -292,3 +362,131 @@
     border-bottom: 1px solid #ddd !important;
   }
 </style>
+        <style>
+            .whiteback{
+              background-color: white;
+              color: black;
+            }
+            .mb-0{
+              margin-bottom: 0;
+            }
+            .m-0{
+              margin: 0;
+            }
+            .expandCollapseBtn{
+              background-color: transparent;
+              border: None;
+            }
+            .pd-0{
+              padding: 0px;
+            }
+            .mr-10{
+              margin-right: 10px;
+            }
+            .profileHead{
+              padding-top: 1.5rem;
+            }
+            .activeTab{
+              background-color: #00622b;
+              color: white;
+            }
+            .nonActiveTab{
+              /* background-color: #0eb7b7; */
+              color: black;
+            }
+            .activeFilterclass{
+              background-color: #5ba56a;
+              color: white;
+            }
+            .card-heading {
+                display: block;
+                font-size: 15px;
+                line-height: 5px;
+                margin-bottom: 18px;
+                margin-left: 1em;
+                border-bottom: 1px #00612b;
+                color: #fff;
+            }
+            .card {
+                background:#FFF;
+                display: block;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                border:1px solid #AAA;
+                border-bottom:3px solid #BBB;
+                padding:0px;
+                cursor: pointer;
+                margin-top:1em;
+                overflow:hidden;
+                font-family: 'Roboto', sans-serif;
+                -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .card-body{
+             margin:1em;   
+            }
+            
+            .pull-left {
+              float: left;
+            }
+            
+            .pull-none {
+              float: none !important;
+            }
+            
+            .pull-right {
+              float: right;
+            }
+            
+            .card-header{
+                width:100%;
+                color:#2196F3;
+                border-bottom:3px solid #BBB;
+                box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                font-family: 'Roboto', sans-serif;
+                padding:0px;
+                margin-top:0px;
+                overflow:hidden;
+                -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                
+            }
+            .card-header-green{
+                background-color:#00622b;
+                color:#FFFFFF;
+                border-bottom:3px solid #BBB;
+                box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                font-family: 'Roboto', sans-serif;
+                padding:0px;
+                margin-top:0px;
+                overflow:hidden;
+                -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .card-header-btn{
+                border: 0.5rem solid white;
+                padding: 0.5rem;
+                background-color:#00622b;
+                color:#FFFFFF;
+                cursor: pointer;
+            }
+            .p-1{
+              padding: 0.5rem;
+            }
+            .card:hover{ 
+              box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+            .btn-green {
+              /* background: #00622b; */
+              border: 1px solid #00622b;
+              /* color: #fff!important; */
+              /* -webkit-box-shadow: inset 0 1px 0 #00622b; */
+              -moz-box-shadow: inset 0 1px 0 #00622b;
+              box-shadow: inset 0 1px 0 #00622b;
+              text-shadow: 0 1px 0 rgba(0,0,0,.1);
+            }
+            
+            </style>

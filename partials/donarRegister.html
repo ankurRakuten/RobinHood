@@ -26,7 +26,7 @@
                   <div class="form-group">
                     <label for="mobile">Mobile</label>
                     <input type="number" class="form-control" id="number" name="donarmobile" placeholder="Mobile number"
-                      ng-model="donar_info.mobile" required>
+                      ng-model="donar_info.mobile" maxlength="10" required>
                     <span ng-show="donarDetails.donarmobile.$invalid && donarDetails.donarmobile.$touched" class="small text-danger">* Item is required</span>
                   </div>
 
