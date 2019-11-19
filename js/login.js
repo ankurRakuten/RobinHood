@@ -450,7 +450,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 					});
 
 					// my drives
-					drivebRef.orderByChild('PIC').equalTo('nikitha.nimbalkar').on("value", function (snapshot) {
+					drivebRef.orderByChild('PIC').equalTo($localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name).on("value", function (snapshot) {
 						if (!$scope.$$phase) {
 							$scope.$apply(function () {
 								$scope.myDriveList = Object.values(snapshot.val());
