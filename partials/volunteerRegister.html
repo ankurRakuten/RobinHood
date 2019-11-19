@@ -57,7 +57,7 @@
                   </div>
                   <div class="form-group">
                     <label>RHA Chapters</label>
-                    <select class="form-control" name="chapter" ng-model="donar_info.chapter" ng-options="locality as locality.location_name for locality in localityList" required></select>
+                    <select class="form-control" name="chapter" ng-model="donar_info.chapter" ng-options="locality.location_id as locality.location_name for locality in localityList" required></select>
                     <span ng-show="VolunteerLocationDetails.chapter.$invalid && VolunteerLocationDetails.chapter.$touched" class="small text-danger">* Chapter is required</span>                            
                   </div>
                   <br>
@@ -71,6 +71,9 @@
               <wz-step wz-title="3">
                 <label for="city">Principle</label>
                 <div class="checkbox">
+                  <p>The RHA is a zero funds organization - I shall never collect or solicit funds in the name of the Robin Hood Army</p>
+                  <p>The RHA is apolitical - I shall never use the Robin Hood Army for political purposes</p>
+                  <p>The RHA includes all religions - I shall always respect all religions in my work with the Robin Hood Army</p>
                   <label><input type="checkbox" value="true">By Clicking this box, I agree to follow Robin hood arm's core principle</label>
                 </div>
                 <br>
@@ -86,7 +89,7 @@
                   <div class="form-group">
                     <label for="city">OTP for Mobile</label>
                     <input type="text" class="form-control" id="oyp_m" placeholder="OTP" name="otp" ng-model="otp" required>
-                    <span ng-show="VolunteerOtpDetails.otp.$invalid && VolunteerOtpDetails.otp.$touched" class="small text-danger">* Chapter is required</span>
+                    <span ng-show="VolunteerOtpDetails.otp.$invalid && VolunteerOtpDetails.otp.$touched" class="small text-danger">* OTP is required</span>
                   </div>
                   <!-- <label for="locality">OTP for Email</label>
                   <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
@@ -94,14 +97,16 @@
                   <br>
                   <br>
                 </form>
+                <div class="alert alert-danger" id ="errorMessageId" ng-show="errorMessage!=null">{{errorMessage}}</div>
                 <div class="pull-right text-center">
-                <button type="submit" wz-next class="btn btn-primary" ng-disabled="VolunteerOtpDetails.$invalid" ng-click="validateOtp(otp,1)">Finish</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="VolunteerOtpDetails.$invalid" ng-click="validateOtp(otp,1)">Finish</button>
                 </div>
               </wz-step>
               <wz-step wz-title="Finish">
                 <br>
                 <br>
                 <h2 style="text-align: center;border-bottom: 0px !important;">Thank You</h2>
+                <a href="#/login" ><button class="btn btn-primary" id="sign-in-btn">Login</button></a>
               </wz-step>
               </wizard>
             </section>

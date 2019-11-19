@@ -32,7 +32,8 @@
 
                   <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Email" ng-model="donar_info.email" >
+                    <input type="email" class="form-control" id="email" name='donaremail' placeholder="Email" ng-model="donar_info.email" required>
+                    <span ng-show="donarDetails.donaremail.$invalid && donarDetails.donaremail.$touched" class="small text-danger">* Item is required</span>
                   </div>
                   <br>
                   <br>
@@ -44,7 +45,7 @@
               <wz-step wz-title="2">
                 <form name="donarLocationDetails">
                   <div class="form-group">
-                    <label>Cities</label>                                                       
+                    <label>City</label>                                                       
                     <select class="form-control" name="city" placeholder="City" ng-model="donar_info.city" ng-options="city.name as city.name for city in cityList" required></select>
                     <span ng-show="donarLocationDetails.city.$invalid && donarLocationDetails.city.$touched" class="small text-danger">* Item is required</span>
                   </div>
@@ -69,6 +70,9 @@
               <wz-step wz-title="3">
                 <label for="city">Principle</label>
                 <div class="checkbox">
+                  <p>The RHA is a zero funds organization - I shall never collect or solicit funds in the name of the Robin Hood Army</p>
+                  <p>The RHA is apolitical - I shall never use the Robin Hood Army for political purposes</p>
+                  <p>The RHA includes all religions - I shall always respect all religions in my work with the Robin Hood Army</p>
                   <label><input type="checkbox" value="true">By Clicking this box, I agree to follow Robin hood arm's
                     core principle</label>
                 </div>
@@ -98,6 +102,7 @@
                 <br>
                 <br>
                 <h2 style="text-align: center;border-bottom: 0px !important;">Thank You</h2>
+                <a href="#/login" ><button class="btn btn-primary" id="sign-in-btn">Login</button></a>
               </wz-step>
             </wizard>
           </section>
