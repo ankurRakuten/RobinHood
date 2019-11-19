@@ -698,10 +698,11 @@ $scope.validateOtp=function(otp,role){
       userProfileDetails["chapter"] = $scope.donar_info.chapter;
     }
     if ($scope.donar_info.locality){
-      userProfileDetails["locality"] = $scope.donar_info.locality; 
+      userProfileDetails["locality"] = getLocalityID($scope.donar_info.locality); 
+      console.log("locality",getLocalityID($scope.donar_info.locality))
     }
     if ($scope.donar_info.landmark){
-      userProfileDetails["address"]=$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
+      userProfileDetails["address"]=$scope.donar_info.landmark +"," +$scope.donar_info.city
     }
     profileRef.child(user.uid).set(userProfileDetails);
 
@@ -714,6 +715,17 @@ $scope.validateOtp=function(otp,role){
     $scope.errorMessage = error['message'];
     $scope.$apply();
   });
+}
+
+function getLocalityID(name) {
+  var locid = null
+  for(var i=0; i<$scope.localityList.length; i++) {
+    if($scope.localityList[i].location_name === name) {
+      locid =  $scope.localityList[i].location_id;
+      break;
+    }
+  }
+  return locid
 }
 function getRHA_CityList(){
 
@@ -740,6 +752,7 @@ RHA_LocalityList.$loaded().then(function() {
     delete item["$priority"];
   });
   $scope.localityList=RHA_LocalityList;
+  console.log($scope.localityList)
   });
 }
 function getRHA_ChapterList(){
