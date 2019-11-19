@@ -8,12 +8,12 @@
             <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" pattern="[6-9]{1}[0-9]{9}" ng-model="phoneNumber" maxlength="10" required /> 
         </div>
         <div class="form-actions">
-            <button type="submit"  ng-show="showSubmitBtn" class="btn btn-primary" id="sign-in-btn">Go</button>
-            <img ng-show="!showSubmitBtn" src="http://wsdesign.in/app/webroot/img/loader/support_load.gif" alt="Loading" height="42" width="42" style="float: right;">
-
-            <a href="#/volunteer" class="btn btn-link">Register</a>
+            <div style="display: inline-block;width: 100%">
+                <button type="submit"  ng-show="showSubmitBtn" class="btn btn-primary" id="sign-in-btn" style="width: 75%;margin-bottom: 10px;margin-left: auto;margin-right: 30px;">Login</button>
+                <img ng-show="!showSubmitBtn" src="http://wsdesign.in/app/webroot/img/loader/support_load.gif" alt="Loading" height="42" width="42" style="float: right;">
+                <a href="#/volunteer" ><button class="btn btn-primary" id="sign-in-btn" style="width: 75%;margin-bottom: 10px;margin-left: auto;margin-right: 30px;">Join our Robin family</button></a>
+            </div>
             <!-- <a href="#/forgotPassword" class="btn btn-link">Forgot Password</a> -->
-			
         </div>
     </form>
     <form ng-show="!showNumber" name="form" ng-submit="loginOTPConfirm()" role="form">
