@@ -20,10 +20,10 @@
     <div class="section home">
             <div class="container">
                 
-                    <button class="btn btn-primary" ng-click="addDonationToDrive()" ng-if="!isAuthenticated">Add Selected Donations</button>
+                    <button class="btn btn-primary" ng-click="addDonationToDrive()" ng-if="!isAuthenticated">Add Selected Contributions</button>
                     <button class="btn btn-primary" ng-click="redirect('driveDetails')" ng-if="!isAuthenticated">Back</button>
                     <br><br>
-                    <div ng-if="showNoDonations"><h2 style="text-align: center;">NO Donations</h2></div>
+                    <div ng-if="showNoDonations"><h2 style="text-align: center;">NO Contributions</h2></div>
                     <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList">
                         <!-- | filter:{status:'Pending'} -->
                     <div class="card-content col-xs-12">
