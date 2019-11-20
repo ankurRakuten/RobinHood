@@ -113,7 +113,7 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-if="donation.PIC = ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
+              <a ng-if="donation.PIC == ''" href="#/createDrivePlan?donationId={{donation.$id}}" style="color: whitesmoke;">Create drive plan</a>
               <!-- <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a> -->
             </h3>
           </div>
@@ -179,7 +179,7 @@
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <!-- <a href="#/createDrivePlan">Volunteer</a> -->
-              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}" style="color: whitesmoke;">Drive Detail</a>
 
             </h3>
           </div>
@@ -239,8 +239,8 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-if="donation.PIC = ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
-              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
+              <a ng-if="donation.PIC == ''" href="#/createDrivePlan?donationId={{donation.$id}}" style="color: whitesmoke;">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}" style="color: whitesmoke;">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
