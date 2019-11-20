@@ -5,13 +5,13 @@
       Profile
     </div>
     <div class="card-header-btn col-md-4" ng-click="redirectFunc('pastDonations')">
-        Past Donations
+        Past Contributions
     </div>
     <div class="card-header-btn col-md-4" ng-click="redirectFunc('donate')">
         Donate now
     </div>
   </div>
-  <h3 class="col-xs-12">My Upcoming Donations :</h3>
+  <h3 class="col-xs-12">My Upcoming Contribution :</h3>
   <!-- {status:'Pending'} -->
   <!-- pickup_time > now -->
   <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList | filter:upcomingFilter">
@@ -47,8 +47,8 @@
     </div>
   </div>
   <div ng-show="DonationList.length == 0">
-    <h2>No Upcoming Donation</h2>    
-    <h2>Donate Now</h2>    
+    <h2>No Upcoming Contribution</h2>    
+    <h2>Contribute Now</h2>    
   </div>
 </div>
 <style>
