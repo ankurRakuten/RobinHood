@@ -11,40 +11,59 @@
         Donate now
     </div>
   </div>
-  <h3 class="col-xs-12">My Upcoming Contribution :</h3>
-  <!-- {status:'Pending'} -->
-  <!-- pickup_time > now -->
+  <h3 class="col-xs-12">My Upcoming Donations :</h3>
   <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList | filter:upcomingFilter">
-      <div class="card-content col-xs-12">
-        <div class="card-header-green">
-          <h3 class="card-heading pull-left">
-            <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
-            'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery'
-          }" aria-hidden="true"></i>
-            {{donationCategory[donation['donation_category_id']]['name']}}
-          </h3>
+          <div class="card-content col-xs-12">
+              <div class="card-header-green">
+                <h4 class="card-heading pull-left">
+                  <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
+                  'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
+                  {{donationCategory[donation['donation_category_id']]['name']}}
+                </h4>
+              </div>
+              <div class="card-body">
+                <p class="card-p">
+                  <div>
+                    <b><i class="fa fa-map-marker-alt" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'MMM dd, yyyy @ hh:mm a'}}
+                  </div>
+                </p>
+                <div ng-show="showDiv" >
+                  <!-- details -->
+                  <div>
+                    <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+                  </div>
+                  <div ng-if="donation['shelf_life']">
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                  </div>
+                  <div ng-show="donation['Landmark']">
+                    <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                  </div>
+                  <div ng-show="donation['remarks']">
+                      <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                    </div>
+                </div>
+                <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv" ><i class="fa fa-chevron-up"></i></button>
+                <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv ; showImages('-LmDhx6jsHc9fsPDyZgs/')"><i class="fa fa-chevron-down"></i></button>
+            </div>
         </div>
-        <div class="card-body">
-          <p class="card-p">
-            <div>
-              <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
-            </div>
-            <div>
-              <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'yyyy-MM-dd HH:mm'}}
-            </div>
-            <!-- details -->
-            <div>
-              <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
-            </div>
-            <div>
-              <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
-            </div>
-            <div>
-              <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
-            </div>
-          </p>
-      </div>
-    </div>
   </div>
   <div ng-show="DonationList.length == 0">
     <h2>No Upcoming Contribution</h2>    
@@ -136,4 +155,125 @@
 .card:hover{ 
   box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+</style>
+<style>
+    .container{
+        align-items: center;
+        margin-left:0 auto;
+        left:20%;
+        /* display: inline-block; */
+    }
+    .row{
+        width: 100%;
+        margin: 0 auto;
+        align-self: center;
+    }
+    .columnright{
+        width:40%;
+        align-items: stretch;
+        float: right;
+    }
+    .columnleft{
+        width:60%;
+        float:left;
+    }
+    .datetime{
+        font-size: 5fr;
+        color: grey;
+    }
+    .length{
+        color:green;
+    }
+    .expandCollapseBtn{
+              background-color: transparent;
+              border: None;
+            }
+
+    a.notif {
+  position: relative;
+  display: block;
+  height: 30px;
+  width: 30px;
+  background: url('http://i.imgur.com/evpC48G.png');
+  background-size: contain;
+  text-decoration: none;
+}
+.num {
+  position: absolute;
+  right: 11px;
+  top: 6px;
+  color: #fff;
+}
+.card-heading {
+                display: block;
+                font-size: 15px;
+                line-height: 5px;
+                margin-bottom: 18px;
+                margin-left: 1em;
+                border-bottom: 1px #00612b;
+                color: #fff;
+            }
+            .card {
+                background:#FFF;
+                display: block;
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                border:1px solid #AAA;
+                border-bottom:3px solid #BBB;
+                padding:0px;
+                cursor: pointer;
+                margin-top:1em;
+                overflow:hidden;
+                font-family: 'Roboto', sans-serif;
+                -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .card-body{
+             margin:1em;   
+            }
+            
+            .pull-left {
+              float: left;
+            }
+            
+            .pull-none {
+              float: none !important;
+            }
+            
+            .pull-right {
+              float: right;
+            }
+            
+            .card-header{
+                width:100%;
+                color:#2196F3;
+                border-bottom:3px solid #BBB;
+                box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                font-family: 'Roboto', sans-serif;
+                padding:0px;
+                margin-top:0px;
+                overflow:hidden;
+                -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                
+            }
+            .card-header-green{
+                background-color:#00622b;
+                color:#FFFFFF;
+                border-bottom:3px solid #BBB;
+                box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                font-family: 'Roboto', sans-serif;
+                padding:0px;
+                margin-top:0px;
+                overflow:hidden;
+                -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .card-content{
+                padding-bottom: 15px;
+            }
+
 </style>
