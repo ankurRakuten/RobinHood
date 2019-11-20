@@ -729,6 +729,7 @@ $scope.validateOtp=function(otp,role){
     // ...
       console.error("Authentication failed:", error);
       $scope.errorMessage = error['message'];
+      $scope.$apply();
     });
 }
 function getRHA_CityList(){
@@ -747,6 +748,16 @@ function getRHA_CityList(){
       });
       $scope.cityList=RHA_cityList
   });
+}
+function getLocalityID(name) {
+  var locid = null
+  for(var i=0; i<$scope.localityList.length; i++) {
+    if($scope.localityList[i].location_name === name) {
+      locid =  $scope.localityList[i].location_id;
+      break;
+    }
+  }
+  return locid
 }
 function getRHA_LocalityList(){
   let RHA_LocalityRef = firebase.database().ref("RHA_locality")

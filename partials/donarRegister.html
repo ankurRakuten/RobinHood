@@ -89,12 +89,13 @@
                   <label for="city">OTP for Mobile</label>
                   <input type="text" class="form-control" id="oyp_m" placeholder="OTP" ng-model="otp" name="otp"required>
                   <span ng-show="donarOtpDetails.otp.$invalid && donarOtpDetails.otp.$touched" class="small text-danger">* Item is required</span>
+                  <div class="alert alert-danger" id="errorMessageId" ng-show="errorMessage!=null">{{errorMessage}}</div>
                   <!-- <label for="locality">OTP for Email</label>
                   <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
                   <div id="recaptcha-container"></div>
                 </form>
                 <div class="pull-right text-center">
-                  <button type="submit" wz-next class="btn btn-primary"
+                  <button type="submit" class="btn btn-primary"
                     ng-click="validateOtp(otp,2)" ng-disabled="donarOtpDetails.$invalid" >Finish</button>
                 </div>
               </wz-step>
