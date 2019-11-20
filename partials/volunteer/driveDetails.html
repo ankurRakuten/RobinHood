@@ -145,7 +145,7 @@
             <h5><b>Cluster</b></h5>
             <div ng-repeat="cluster in clusterList">
                 <a ng-href="{{cluster['cluster_map_loc']}}">
-                    <i ng-class="{'fa fa-home':cluster['cluster_type']=='HOME','fa fa-map-marked-alt':cluster['cluster_type']=='CLUSTER'}"></i> <b>{{cluster["cluster_name"]}} :</b></a> {{cluster["cluster_address"]}}
+                    <i ng-class="{'fa fa-home':cluster['cluster_type']=='HOME','fa fa-map-marked-alt':cluster['cluster_type']=='CLUSTER'}"></i> <b>{{cluster["cluster_name"]}} </b></a><p ng-if="cluster['cluster_address']">: {{cluster["cluster_address"]}}</p>
                     <!-- <i class="fas fa-map-marked-alt"></i>  {{cluster}}  -->
             </div><br>
                 <h5><b>Contributions </b><i class="fas fa-edit" style="color: black;" ng-click="redirect('addDonations')"></i></h5>
