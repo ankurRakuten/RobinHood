@@ -125,7 +125,7 @@
                         <h2 style="text-align: left">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending'"> <b class="pull-right"><i>In Progress</i></b></span><span style="color: green" ng-if="driveDetails.status=='Completed'"> <b class="pull-right"><i>{{driveDetails.status}}</i></b></span><span style="color: grey" ng-if="driveDetails.status=='Expired'"> <b class="pull-right"><i>{{driveDetails.status}}</i></b></span></h2>
             </div>
                 <div class="columnleft">
-                    <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date:'MMM dd, yyyy @ hh:mm a' }}</span></h3>
+                    <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date:'MMM dd, yyyy hh:mm a' }}</span></h3>
             </div>
             <div class="row">
                     <div class="columnleft">
