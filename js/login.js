@@ -154,6 +154,7 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	$scope.selectedChapter = [];
 	$scope.selectedCluster = [];
 	$scope.selectedDonation = [];
+	$scope.selectedDonationDetails = [];
 
 	let userDetail = JSON.parse(localStorage.getItem('ngStorage-userDetail'));
 	console.log(userDetail)
@@ -164,6 +165,8 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	}
 	// Add selected donationId 
 	$scope.selectedDonation.push($scope.donationId);
+	
+	// Check if time is valid 
 	$scope.validTime=false;
 	$scope.checkTime=function(){
 		if(new Date($scope.drive_plan.schedule).getTime()>now){
@@ -194,11 +197,11 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	donation_details.$loaded().then(function() {
 		$scope.donation_details = donation_details.filter(function (el) {
 			return el.pickup_time > now && el.PIC=="" ;
-
 		});
+		addSelectedDonationDetails($scope.donationId);
 	});
 
-	console.log($scope.donation_details);
+
 	$scope.chapters = $firebaseArray(RHA_capter);
 	$scope.clusters = $firebaseArray(RHA_cluster);
 
@@ -233,6 +236,7 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 		// is newly selected
 		else {
 			$scope.selectedDonation.push(donation);
+			addSelectedDonationDetails(donation);
 			
 		}
 	};
@@ -258,6 +262,12 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	};
 
 
+	function addSelectedDonationDetails(donationId){
+		console.log($scope.donation_details)
+		console.log($scope.donation_details.filter(ele=>ele["$id"]==donationId));
+		$scope.selectedDonationDetails= [...$scope.selectedDonationDetails,($scope.donation_details.filter(ele=>ele["$id"]==donationId))[0]];
+		// $scope.selectDonationDetails.push(($scope.donation_details.filter(ele=>ele["$id"]==donationId))[0])
+	}
 	$scope.addDrivePlan = () => {
 		console.log($scope.drive_plan);
 		console.log(new Date($scope.drive_plan.schedule).getTime())
@@ -335,6 +345,9 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 		$scope.userDetail = $localStorage.userDetail;
 		console.log("inside donation controller>>>>", $scope.userDetail);
 
+		$scope.now = (new Date).getTime();
+
+
 		var don_cat = firebase.database().ref().child("Donation_category");
 		$scope.donationCategory = $firebaseObject(don_cat);
 		$scope.donationCategory.$loaded().then(function () {
@@ -352,8 +365,15 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 						});
 					}
 					$scope.DonationList = Object.values(snapshot.val());
-					console.log($scope.DonationList)
+					
 				});
+
+				// console.log($scope.DonationList)
+				// 	$scope.UpcomingDonationList = $scope.DonationList.filter(ele=>ele["pickup_time"]>$scope.now);
+				// 	console.log("upcoming",$scope.UpcomingDonationList);
+				// 	$scope.PastDonationList = $scope.DonationList.filter(ele=>ele["pickup_time"]<$scope.now);
+				// 	console.log("past",$scope.PastDonationList);
+				
 			});
 		});
 
@@ -362,6 +382,18 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 			console.log($rootScope.reDonationDetails);
 			$scope.redirectFunc('donate')
 		}
+
+		$scope.upcomingFilter = function(item){
+			// return item;
+			return item["pickup_time"]>$scope.now;
+		}
+
+		$scope.pastFilter = function(item){
+			return item["pickup_time"]<$scope.now;
+		}
+		// $scope.changeTab = function (status){
+		// 	$scope.tab = status;
+		// }
 		$scope.redirectFunc = function (page) {
 			console.log($window.location.href)
 			$window.location.href = "#/" + page;
@@ -376,6 +408,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		$scope.userDetail = $localStorage.userDetail;
 		$scope.statusFilter = 'all';
 		$scope.statusDriveFilter = 'all';
+		$scope.dataLoaded = false;
 		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
 		$scope.timeRange = [
 			{time : "1 Week", days : 7},
@@ -401,6 +434,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 							;
 						});
 						console.log("====new=$scope.DonationList====",$scope.DonationList);
+						$scope.dataLoaded = true;
 						$scope.PastDonationList = dList.filter(function (el) {
 							return el.pickup_time < Date.now() &&
 							el.pickup_time > Date.now() - 30*24*60*60*1000;

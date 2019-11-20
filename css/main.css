@@ -5090,6 +5090,12 @@ footer {
     border-top: 1px solid #2e343a;   
     margin-top: 0px;
     position: relative;
+    /* background-color: #155f30;
+    border-top: 1px solid #155f30;
+    position: absolute;
+    margin-top: -50px;
+    bottom: 0;
+    width: 100%; */
 }
 footer .top-footer-in {
 	padding: 80px 0;
@@ -5103,8 +5109,8 @@ footer h4{
     font-size: 14px;
 }
 .info-footer {
-	background: #282d33;
-	padding: 20px 0;
+	background: #155f30;
+	padding: 10px 0;
 	color: rgba(255,255,255,0.5);
 	font-weight: 300;
 	font-size: 14px;

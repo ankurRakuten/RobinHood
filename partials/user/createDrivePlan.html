@@ -1,12 +1,12 @@
 <div>
   <div class="ui-67">
-    <form ng-submit="addDrivePlan()" name="drive" class="drivePlan" novalidate>
+    <form  name="drive" class="drivePlan" novalidate>
       <div class="container">
+        <br>
         <div class="col-md-12 col-lg-12 acc-col">
           <section>
             <wizard on-cancel="cancelledWizard()">
               <wz-step wz-title="Step 1/2">
-                <button ng-click='test()'>test</button>
                 <div class="form-group">
                 <label for="driveTitle">Drive Title</label>
                 <input type="text" class="form-control" id="driveTitle" name="driveTitle" placeholder="Drive TItle"
@@ -16,8 +16,6 @@
                 </div>
                 <div class="form-group">
                 <label for="schedule">Schedule Date</label>
-                <!-- value="{{drive_plan.schedule}}"  -->
-                {{drive_plan.schedule}}
                 <input type="datetime-local" class="form-control" name="schedule" id="schedule" ng-model="drive_plan.schedule" ng-change="checkTime()" required/>
                 <span class="help-block" ng-show="drive.schedule.$touched && drive.schedule.$invalid">
                 Valid Schedule Date is required
@@ -76,9 +74,63 @@
               </wz-step>
               <wz-step wz-title="Step 2/2">
                 <section class="row">
-                  <label for="locality">Donations</label>
-                  <div ng-if="selectedDonation.length>0" ng-repeat="donationId in selectedDonation">
-                  <span style="padding:4px;"><a ng-href="#/donationDetails?donationId={{donationId}}"><i class="fas fa-hand-holding-heart fa-2x"></i></a></span>
+                  <label for="locality">Donations</label><br>
+                  <b ng-if="selectedDonation.length>0">Selected Donations : </b><br>
+                  <div ng-if="selectedDonation.length>0" ng-repeat="donation in selectedDonationDetails">
+                  <div class="card-content col-xs-12">
+                      <div class="card-header-green">
+                        <h3 class="card-heading pull-left">
+                          <i ng-class="{'fa fa-utensils': donationCategory[donation['donation_category_id']]['name'] == 'Food',
+                          'fa fa-book': donationCategory[donation['donation_category_id']]['name'] == 'Stationery','fa fa-tshirt':donationCategory[donation['donation_category_id']]['name']=='Clothes','fa fa-hand-holding-heart':donationCategory[donation['donation_category_id']]['name']=='Others'}" aria-hidden="true"></i>
+                          {{donationCategory[donation['donation_category_id']]['name']}}
+                        </h3>
+                      </div>
+                      <div class="card-body">
+                        <p class="card-p">
+                          <div>
+                            <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
+                          </div>
+                          <div>
+                            <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'yyyy-MM-dd HH:mm'}}
+                          </div>
+                        </p>
+                        <div ng-show="showDiv" >
+                          <!-- details -->
+                          <div>
+                            <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+                          </div>
+                          <div ng-if="donation['PIC']">
+                            <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                         </div>
+                          <div ng-if="donation['shelf_life']">
+                            <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
+                          </div>
+                          <div>
+                            <b><i class="fa fa-car" aria-hidden="true"></i> Transporation Provided : </b>{{donation['transporation_provided'] == 'True' && 'Yes' || 'No' }}
+                          </div>
+                          <div>
+                            <b><i class="fa fa-box" aria-hidden="true"></i> Container Provided : </b>{{donation['container_provided'] == 'True' && 'Yes' || 'No' }}
+                          </div>
+                          <div>
+                            <b><i class="fa fa-leaf" aria-hidden="true"></i> Perishable : </b>{{donation['perishable'] == 'True' && 'Yes' || 'No' }}
+                          </div>
+                          <div ng-show="donation['Landmark']">
+                            <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
+                          </div>
+                          <div>
+                            <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                          </div>
+                          <div>
+                            <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                          </div>
+                          <div ng-show="donation['remarks']">
+                              <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                            </div>
+                        </div>
+                        <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv" ><i class="fa fa-chevron-up"></i></button>
+                        <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv ; showImages('-LmDhx6jsHc9fsPDyZgs/')"><i class="fa fa-chevron-down"></i></button>
+                    </div>
+                </div>
                   </div>
                   <div class="modal-bg">
                     <div class="dialog">
@@ -93,6 +145,7 @@
                               <button type="button" class="close" data-dismiss="modal"
                                 aria-hidden="true">&times;</button>
                               <h4 class="modal-title" id="myModalLabel">Donations</h4>
+                              
                             </div>
                             <div class="modal-body">
                                 <!-- <input type="text" class="form-control" placeholder="Search for Donations" ng-model="allDonations" /> -->
@@ -130,7 +183,7 @@
                                           <div ng-if="donation['PIC']">
                                             <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
                                          </div>
-                                          <div>
+                                          <div ng-if="donation['shelf_life']">
                                             <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                                           </div>
                                           <div>
@@ -164,7 +217,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default" focus-element="autofocus"
-                                data-dismiss="modal">Close</button>
+                                data-dismiss="modal">Add</button>
                             </div>
                           </div>
                         </div>
@@ -174,9 +227,9 @@
                 </section>
                 <hr />
                 <section class="row">
-                  <label for="city">Clusters</label><br>
+                  <label for="city">Clusters/Homes</label><br>
 
-                  <b ng-if="selectedCluster.length>0">Selected Clusters : </b>
+                  <b ng-if="selectedCluster.length>0">Selected Clusters/Homes : </b>
                   
                   <div ng-repeat="cluster in selectedCluster">
                     <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}">
@@ -186,7 +239,7 @@
                     <div class="dialog">
                       <!-- Large modal -->
                       <a focus-index="1" ng:href="javascript:void(0);" class="btn btn-primary" data-toggle="modal"
-                        focus-element="autofocus" data-target=".clusterModal">Add Cluster</a>
+                        focus-element="autofocus" data-target=".clusterModal">Add Cluster/Home</a>
 
                       <div class="modal fade clusterModal" focus-group focus-group-head="loop" focus-group-tail="loop"
                         focus-stacktabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -213,7 +266,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default" focus-element="autofocus"
-                                data-dismiss="modal">Close</button>
+                                data-dismiss="modal">Add</button>
                             </div>
                           </div>
                         </div>
@@ -224,7 +277,7 @@
                 <br>
                 <br>
                 <div class="pull-right text-center">
-                  <button type="submit" class="btn btn-primary" ng-disabled="!selectedCluster.length>0 || !selectedDonation.length>0">Finish</button>
+                  <button ng-click="addDrivePlan()" class="btn btn-primary" ng-disabled="!selectedCluster.length>0 || !selectedDonation.length>0">Submit</button>
                   <input type="button" class="btn btn-primary" wz-previous="logStep()" value="Back" />
                 </div>
               </wz-step>

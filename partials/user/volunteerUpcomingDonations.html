@@ -296,6 +296,8 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
+            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
+            
             <!-- <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
             </h3> -->
@@ -353,6 +355,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
+            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
             <!-- <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <a href="#/volunteer">Volunteer</a>
@@ -411,10 +414,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
+            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -469,6 +469,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
+            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <a href="#/donate">Donate Again</a>

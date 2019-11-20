@@ -4,7 +4,7 @@
         <h3 class="col-xs-12">Past Donations :</h3>
     </div>
     
-    <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Success'}">
+    <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList | filter:pastFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
