@@ -96,11 +96,28 @@
         </div>
       </div> -->
     </div>
-    <div ng-show="DonationList.length == 0">
+    <div ng-show="!DonationList.length > 0">
       <h2>No Past Contribution</h2>    
-      <h2>Contribute Now</h2>    
+      <button class="btn btn-primary" style="width: 90%;margin: 5px;"onclick="redirect('donate')">Contribute Now</button>
+      <!-- <h2>Contribute Now</h2>     -->
     </div>
   </div>
+  <script>
+      function redirect(option){
+          console.log(window.location);
+                  let currentLocation = window.location;
+                  let optionPath="#/";
+      
+          switch (option){
+              case "home":break;
+              case "donate":optionPath+="donate";break;
+          }
+          console.log(currentLocation.origin+currentLocation.pathname+optionPath)
+                  window.location = currentLocation.origin+currentLocation.pathname+optionPath
+      
+      }
+      
+  </script>
   <style>
   #profileHead{
     padding-top: 1.5rem;

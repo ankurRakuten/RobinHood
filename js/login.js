@@ -409,11 +409,13 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 	function ($scope, $firebaseAuth, $firebaseObject, $firebaseArray, $localStorage,$location, $timeout, $window, $route, SessionService) {
 		$scope.showUpcomingTab = true;
 		$scope.showPastTab = false;
-		$scope.userDetail = $localStorage.userDetail;
+		$scope.userDetail = JSON.parse(localStorage.getItem('ngStorage-userDetail'));
+		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
+		
 		$scope.statusFilter = 'all';
 		$scope.statusDriveFilter = 'all';
 		$scope.dataLoaded = false;
-		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
+		
 		$scope.timeRange = [
 			{time : "1 Week", days : 7},
 			{time : "15 Days", days : 15},

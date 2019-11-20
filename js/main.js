@@ -490,7 +490,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
           // Check if time has expired and mark 
           if((driveDetails.schedule+86400000)<($scope.now)){
             firebase.database().ref("drive_details").child($scope.driveId).child("status").set("Expired");
-            updateDonationStatus("Expired");
+            // updateDonationStatus("Expired");
           }
           $scope.attendeeList = $firebaseArray(driveDetailsRef.child("attendees"))
           checkJoinStatus(driveDetails["attendees"]);

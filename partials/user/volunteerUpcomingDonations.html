@@ -13,8 +13,8 @@
       <!-- <div class="card-header-btn col-md-4" ng-click="redirectFunc('donate')">
           Donate now
       </div> -->
-    </div>
-    <h3 class="p-1 m-0">Donations:</h3>
+    </div><br>
+    <h3 class="p-1 m-0">Contributions:</h3><br>
     <div class="row">
       <div class="col-xs-2 pd-0">
         <div class="dropdown">
@@ -51,8 +51,8 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a ng-if="donation.PIC == ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
-              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
+              <a ng-if="donation.PIC == ''" href="#/createDrivePlan?donationId={{donation.$id}}" style="color: whitesmoke;">Create drive plan</a>
+              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}" style="color: whitesmoke;">Drive Detail</a>
             </h3>
           </div>
           <div class="card-body">
@@ -103,7 +103,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="DonationList.length > 0 && showUpcomingTab && statusFilter == 'unattended'" class="card col-md-4" ng-repeat='donation in DonationList| filter:{status:"Pending"}' ng-if="donation.PIC == ''">
+    <div ng-show="DonationList.length > 0 && showUpcomingTab && statusFilter == 'unattended'" class="card col-md-4" ng-repeat='donation in DonationList' ng-if="donation.PIC == ''">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -114,7 +114,7 @@
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <a ng-if="donation.PIC = ''" href="#/createDrivePlan?donationId={{donation.$id}}">Create drive plan</a>
-              <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a>
+              <!-- <a ng-if="donation.PIC != ''" href="#/driveDetails?driveId={{donation.driveId}}">Drive Detail</a> -->
             </h3>
           </div>
           <div class="card-body">
