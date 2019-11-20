@@ -1,7 +1,7 @@
 <div class="">
     <div id="profileHead">
-        <h3 class="col-xs-12"><a href="#/">Home</a>/<a href="#/upcomingDonations">Upcoming Donations</a></h3>
-        <h3 class="col-xs-12">Past Donations :</h3>
+        <h3 class="col-xs-12"><a href="#/">Home</a>/<a href="#/upcomingDonations">Upcoming Contributions</a></h3>
+        <h3 class="col-xs-12">Past Contributions :</h3>
     </div>
     
     <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList | filter:pastFilter">
@@ -67,7 +67,7 @@
             <h3 class="card-heading pull-right">
               <i class="fa fa-gift" aria-hidden="true"></i>
             
-              <a href="#" ng-click="reDonationData(donation)">Donate Again</a>
+              <a href="#" ng-click="reDonationData(donation)">Contribute Again</a>
             </h3>
           </div>
           <div class="card-body">
@@ -97,8 +97,8 @@
       </div> -->
     </div>
     <div ng-show="DonationList.length == 0">
-      <h2>No Past Donation</h2>    
-      <h2>Donate Now</h2>    
+      <h2>No Past Contribution</h2>    
+      <h2>Contribute Now</h2>    
     </div>
   </div>
   <style>
