@@ -672,6 +672,7 @@ $scope.register=function(){
         }).catch(function (error) {
           console.log("error in sending",error);
           $scope.errorMessage = error['message'];
+          $scope.$apply();
         });
      //  }
      // });
@@ -689,7 +690,7 @@ $scope.validateOtp=function(otp,role){
       let userProfileDetails={
         first_name: $scope.donar_info.firstName,
         last_name: $scope.donar_info.lastName,
-        mobile: $scope.donar_info.mobile,
+        mobile: String($scope.donar_info.mobile),
         email: $scope.donar_info.email,
         signupDate: (new Date).getTime(),
         // chapter: $scope.donar_info.chapter,
@@ -700,8 +701,12 @@ $scope.validateOtp=function(otp,role){
         delete $scope.donar_info.chapter.$id;
         userProfileDetails["chapter"] = $scope.donar_info.chapter;
       }
+      if ($scope.donar_info.locality){
+        userProfileDetails["locality"] = getLocalityID($scope.donar_info.locality); 
+        console.log("locality",getLocalityID($scope.donar_info.locality))
+      }
       if ($scope.donar_info.landmark){
-        userProfileDetails["address"]=$scope.donar_info.locality +"," +$scope.donar_info.landmark +"," +$scope.donar_info.city
+        userProfileDetails["address"]=$scope.donar_info.landmark +"," +$scope.donar_info.city
       }
       console.log(user.uid, userProfileDetails);
       profileRef.child(user.uid).set(userProfileDetails);
@@ -724,6 +729,7 @@ $scope.validateOtp=function(otp,role){
     // ...
       console.error("Authentication failed:", error);
       $scope.errorMessage = error['message'];
+      $scope.$apply();
     });
 }
 function getRHA_CityList(){
@@ -742,6 +748,16 @@ function getRHA_CityList(){
       });
       $scope.cityList=RHA_cityList
   });
+}
+function getLocalityID(name) {
+  var locid = null
+  for(var i=0; i<$scope.localityList.length; i++) {
+    if($scope.localityList[i].location_name === name) {
+      locid =  $scope.localityList[i].location_id;
+      break;
+    }
+  }
+  return locid
 }
 function getRHA_LocalityList(){
   let RHA_LocalityRef = firebase.database().ref("RHA_locality")

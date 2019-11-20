@@ -89,12 +89,13 @@
                   <label for="city">OTP for Mobile</label>
                   <input type="text" class="form-control" id="oyp_m" placeholder="OTP" ng-model="otp" name="otp"required>
                   <span ng-show="donarOtpDetails.otp.$invalid && donarOtpDetails.otp.$touched" class="small text-danger">* Item is required</span>
+                  <div class="alert alert-danger" id="errorMessageId" ng-show="errorMessage!=null">{{errorMessage}}</div>
                   <!-- <label for="locality">OTP for Email</label>
                   <input type="number" class="form-control" id="otp_e" placeholder="OTP"> -->
                   <div id="recaptcha-container"></div>
                 </form>
                 <div class="pull-right text-center">
-                  <button type="submit" wz-next class="btn btn-primary"
+                  <button type="submit" class="btn btn-primary"
                     ng-click="validateOtp(otp,2)" ng-disabled="donarOtpDetails.$invalid" >Finish</button>
                 </div>
               </wz-step>
@@ -115,33 +116,23 @@
   </div>
   <style>
     /* Head */
-
     .acc-col {
       margin-top: 5%;
       padding: 20px;
-
     }
-
     .acc-col>h3 {
       padding-bottom: 20px;
     }
-
     hr {
       border: solid 1px #d6d6d6;
     }
-
     section>form>div {
-
       padding: 5px;
     }
-
     .btn-div {
-
       margin-top: 10px;
       padding-bottom: 10px;
     }
-
-
     .ui-67 .ui-head {
       text-align: center;
       padding: 1px 0px;
@@ -150,19 +141,16 @@
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
       background-color: #0bb7b7;
     }
-
     /* Details */
     .ui-67 .ui-head .ui-details {
       margin: 0px 0px 74px;
     }
-
     .ui-67 .ui-head .ui-details h3 {
       color: #fff;
       font-size: 40px;
       line-height: 60px;
       font-weight: 300;
     }
-
     @media (max-width:400px) {
       .ui-67 .ui-head .ui-details h3 {
         font-size: 25px;
@@ -170,14 +158,12 @@
         font-weight: 400;
       }
     }
-
     .ui-67 .ui-head .ui-details h4 {
       color: #fff;
       font-size: 18px;
       line-height: 38px;
       font-weight: 400;
     }
-
     /* Image */
     .ui-67 .ui-head .ui-image {
       width: 100%;
@@ -185,7 +171,6 @@
       bottom: -55px;
       z-index: 10;
     }
-
     .ui-67 .ui-head img {
       width: 120px;
       border-radius: 100%;
