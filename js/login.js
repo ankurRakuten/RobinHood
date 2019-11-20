@@ -35,6 +35,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 					}, 1000);
 				}).catch(function (error) {
 					$scope.errorMessage = error['message'];
+					$scope.$apply();
 				});
 		}
 
@@ -70,11 +71,13 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 					} else {
 						console.log("not found");
 						$scope.errorMessage = "Mobile number not found. Please Register and try again";
+						$scope.$apply();
 					}
 				});
 			}).catch(function (error) {
 				console.log('error login ====>', error);
 				$scope.errorMessage = error['message'];
+				$scope.$apply();
 			});
 		}
 		$scope.adminLogin = function () {
@@ -105,6 +108,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 				})
 				.catch(function (error) {
 					$scope.errorMessage = error['message'];
+					$scope.$apply();
 				});
 		}
 
