@@ -12,6 +12,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 				'size': 'invisible',
 				'callback': function (response) {
 					// reCAPTCHA solved, allow signInWithPhoneNumber.
+					console.log(response)
 				}
 			});
 		}, 2000);
@@ -411,7 +412,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		$scope.showPastTab = false;
 		$scope.userDetail = JSON.parse(localStorage.getItem('ngStorage-userDetail'));
 		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
-		
+
 		$scope.statusFilter = 'all';
 		$scope.statusDriveFilter = 'all';
 		$scope.dataLoaded = false;
