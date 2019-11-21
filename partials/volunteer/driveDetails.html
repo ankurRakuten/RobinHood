@@ -117,6 +117,9 @@
             .card-content{
                 padding-bottom: 15px;
             }
+            .drivePlanButton{
+                margin: 5px;
+            }
 
 </style>
 <div class="section home">
@@ -142,10 +145,10 @@
             <div ng-repeat="chapter in chapterList">
                 <i class="fa fa-map-marker-alt"></i>  {{chapter}} 
             </div><br>
-            <h5><b>Cluster</b></h5>
+            <h5><b>Clusters / Homes</b></h5>
             <div ng-repeat="cluster in clusterList">
                 <a ng-href="{{cluster['cluster_map_loc']}}">
-                    <i ng-class="{'fa fa-home':cluster['cluster_type']=='HOME','fa fa-map-marked-alt':cluster['cluster_type']=='CLUSTER'}"></i> <b>{{cluster["cluster_name"]}} </b></a><p ng-if="cluster['cluster_address']">: {{cluster["cluster_address"]}}</p>
+                    <i ng-class="{'fa fa-home':cluster['cluster_type']=='HOME','fa fa-map-marked-alt':cluster['cluster_type']=='CLUSTER'}"></i> <b>{{cluster["cluster_name"]}} </b></a><p ng-if="cluster['cluster_address']"> {{cluster["cluster_address"]}}</p>
                     <!-- <i class="fas fa-map-marked-alt"></i>  {{cluster}}  -->
             </div><br>
                 <h5><b>Contributions </b><i class="fas fa-edit" style="color: black;" ng-click="redirect('addDonations')"></i></h5>
@@ -215,7 +218,9 @@
                 <textarea rows="3" class="form-control" ng-model="comment"></textarea>
                 <!-- <input type="textarea" class="form-control" ng-model="comment" rows="3" name="commentbox" width="100%"> -->
                 <br>
-                <button ng-if="comment.length > 0"class="btn btn-primary drivePlanButton" ng-click=postComment(comment) ng-disabled="comment.$invalid">Post</button>
+                <div class="row" style="width:100%; margin:5px;">
+                    <button ng-if="comment.length > 0" class="btn btn-primary drivePlanButton" ng-click=postComment(comment) ng-disabled="comment.$invalid">Post</button>
+                </div>
                 <hr>
                 <div ng-repeat="comment in comments| orderBy:'$id':true | limitTo : 2">
                     <div ng-if="comment.commentDetails"><i class="fas fa-user-circle"></i>  {{comment.commentBy}}
@@ -226,7 +231,5 @@
                 <div style="align-items: center;">
                     <button class="btn btn-primary drivePlanButton" ng-if="comments.length>3"ng-click="redirect('commentList')">View All</button>
                 </div>
-                
-
         </div>
 </div>
