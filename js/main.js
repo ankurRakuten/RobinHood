@@ -412,6 +412,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     $scope.driveId=param.driveId;
     $scope.donationId = param.donationId;
     $scope.now = new Date().getTime();
+    $scope.dataLoaded=false;
     getDonationCategory();
     getDriveDetails();
     getRHA_capterList();
@@ -504,6 +505,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
                donationDetails.$loaded().then(function() {
                  console.log(donationDetails)
                 $scope.driveDetails.donations[donationId] = donationDetails;
+                $scope.dataLoaded = true;
               })
             });
           }

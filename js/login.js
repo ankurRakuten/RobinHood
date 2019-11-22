@@ -521,13 +521,26 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 			listRef.listAll().then(function (res) {
 				console.log("images", res);
 			});
-			// listRef.once('value').then(function(snapshot){
-			// 	var value = snapshot.val();
-			// 	console.log("images value",value);
-			//   })
 
 		}
+		$scope.upcomingDriveFilter = function(item){
+			// return item;
+			return item["schedule"]>$scope.now;
+		}
+
+		$scope.pastDriveFilter = function(item){
+			return item["schedule"]<$scope.now;
+		}
+		getRHAClusters()
+		function getRHAClusters(){
+			let RHA_CLusterRef = firebase.database().ref("RHA_clusters");
+			$scope.clusters = $firebaseObject(RHA_CLusterRef);
+			console.log($scope.clusters)
+		
+		}
 	}
+	
+	
 ]);
 
 // app.controller("orderDetail", ["$scope", "$firebaseAuth", "$firebaseObject", "$localStorage", "$timeout", "$window", "$route", "SessionService", "$firebaseArray",

@@ -21,7 +21,7 @@
         <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
       </div>
     </div>
-    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:{status:'Pending'}">
+    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:upcomingDriveFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -29,7 +29,7 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/driveDetails?driveId={{drive['$id']}}">Details</a>
+              <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
             </h3>
           </div>
           <div class="card-body">
@@ -38,13 +38,18 @@
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
               </div>
               <div>
-                  <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                  <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                 </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
+                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
               <div>
                 <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+              </div>
+              
+              <div ng-if="drive['status']=='Completed'">
+                  <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                  <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
               </div>
             </p>
         </div>
@@ -56,10 +61,10 @@
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
+            <h3 class="card-heading pull-right mr-10">
+                <i class="fa fa-hands-helping" aria-hidden="true"></i>
+                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+              </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -67,29 +72,33 @@
                     <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
                   </div>
                   <div>
-                      <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                      <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                     </div>
                   <div>
-                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
-                  </div>
+                      <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'MMM dd, yyyy @ hh:mm a'}}
+                    </div>
                   <div>
                     <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
                   </div>
+                  <div ng-if="drive['status']=='Completed'">
+                      <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                  </div>
             </p>
         </div>
       </div>
     </div>
 
-    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:{status:'Pending'}">
+    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:upcomingDriveFilter}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
+            <h3 class="card-heading pull-right mr-10">
+                <i class="fa fa-hands-helping" aria-hidden="true"></i>
+                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+            </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -97,28 +106,33 @@
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
                 </div>
                 <div>
-                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                   </div>
                 <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
-                </div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'MMM dd, yyyy @ hh:mm a'}}
+                  </div>
                 <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
+                <div ng-if="drive['status']=='Completed'">
+                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
                 </div>
             </p>
         </div>
       </div>
     </div>
-    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList">
+    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList|filter:PastDriveList">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
+            <h3 class="card-heading pull-right mr-10">
+                <i class="fa fa-hands-helping" aria-hidden="true"></i>
+                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+            </h3>
+           
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -126,29 +140,33 @@
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
                 </div>
                 <div>
-                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                   </div>
                 <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
-                </div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'MMM dd, yyyy @ hh:mm a'}}
+                  </div>
                 <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
+                <div ng-if="drive['status']=='Completed'">
+                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
                 </div>
             </p>
         </div>
       </div>
     </div>
 
-    <div ng-show="volDriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:{status:'Pending'}">
+    <div ng-show="volDriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:upcomingDriveFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
+            <h3 class="card-heading pull-right mr-10">
+                <i class="fa fa-hands-helping" aria-hidden="true"></i>
+                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+              </h3>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -156,28 +174,32 @@
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
                 </div>
                 <div>
-                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                   </div>
                 <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
-                </div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'MMM dd, yyyy @ hh:mm a'}}
+                  </div>
                 <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
+                <div ng-if="drive['status']=='Completed'">
+                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
                 </div>
             </p>
         </div>
       </div>
     </div>
-    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList">
+    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList|filter:PastDriveList">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-              <a href="#/volunteer">Volunteer</a>
-            </h3> -->
+            <h3 class="card-heading pull-right mr-10">
+                <i class="fa fa-hands-helping" aria-hidden="true"></i>
+                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+              </h3>    
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -185,21 +207,23 @@
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
                 </div>
                 <div>
-                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{drive['locality']}}
+                    <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                   </div>
                 <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'yyyy-MM-dd HH:mm'}}
-                </div>
+                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> Scheduled Time : </b>{{drive['schedule']| date:'MMM dd, yyyy @ hh:mm a'}}
+                  </div>
                 <div>
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
+                </div>
+                
+                <div ng-if="drive['status']=='Completed'">
+                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
                 </div>
             </p>
         </div>
       </div>
     </div>
-    
-    
-    
    
     <div ng-show="DonationList.length == 0">
       <h2>No Upcoming Contribution</h2>    
