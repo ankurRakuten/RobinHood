@@ -230,10 +230,9 @@
                   <label for="city">Clusters/Homes</label><br>
 
                   <b ng-if="selectedCluster.length>0">Selected Clusters/Homes : </b>
-                  
                   <div ng-repeat="cluster in selectedCluster">
                     <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}">
-                    <i ng-class="{'fa fa-home':clusters[cluster-1]['cluster_type']=='HOME','fa fa-map-marked-alt':clusters[cluster-1]['cluster_type']=='CLUSTER'}"></i> <b>{{clusters[cluster-1]["cluster_name"]}} :</b></a> {{clusters[cluster-1]["cluster_address"]}}
+                    <i ng-class="{'fa fa-home':clusters[cluster-1]['cluster_type']=='HOME','fa fa-map-marked-alt':clusters[cluster-1]['cluster_type']=='CLUSTER'}"></i> <b>{{clusters[cluster-1]["cluster_name"]}} </b></a><p> {{clusters[cluster-1]["cluster_address"]}}</p> 
                   </div>
                   <div class="modal-bg">
                     <div class="dialog">
@@ -260,7 +259,7 @@
                                     ng-checked="selection.indexOf(cluster.cluster_name) > -1"
                                     ng-click="selectCluster(cluster.cluster_id)" />
                                   <label for={{cluster.cluster_name}}><i ng-class="{'fa fa-home':cluster.cluster_type=='HOME','fa fa-map-marked-alt':cluster.cluster_type=='CLUSTER'}"></i> {{cluster.cluster_name}}
-                                  <span>Address :
+                                  <span>
                                       {{cluster.cluster_address}}</span></label></li>
                               </ul>
                             </div>

@@ -116,18 +116,6 @@ app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObje
     getDonationCategory();
     getRHA_LocalityList();
 
-    // deleteData()
-    // function deleteData(){
-    //   let donationDetailsRef= firebase.database().ref().child("donation_details");
-    //   donationDetailsRef.orderByKey().limitToLast(1).on("child_added",function(snapshot){
-    //     $scope.key=snapshot.key;
-    //     console.log($scope.key)
-    //     donationDetailsRef.child($scope.key).remove();
-    //   });
-      
-
-    // }
-
     $scope.donation={};
     $scope.isAuthenticated = $localStorage.userIsAuthenticated;
     if($localStorage.userIsAuthenticated){
