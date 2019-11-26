@@ -412,7 +412,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		$scope.showPastTab = false;
 		$scope.userDetail = JSON.parse(localStorage.getItem('ngStorage-userDetail'));
 		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
-
+		$scope.now = (new Date).getTime();
 		$scope.statusFilter = 'all';
 		$scope.statusDriveFilter = 'all';
 		$scope.dataLoaded = false;
@@ -525,7 +525,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		}
 		$scope.upcomingDriveFilter = function(item){
 			// return item;
-			return item["schedule"]>$scope.now;
+			return item["schedule"] > $scope.now;
 		}
 
 		$scope.pastDriveFilter = function(item){
