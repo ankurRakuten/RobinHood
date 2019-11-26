@@ -5111,10 +5111,18 @@ footer h4{
 .info-footer {
 	background: #155f30;
 	padding: 10px 0;
-	color: rgba(255,255,255,0.5);
+	/* color: rgba(255,255,255,0.5); */
 	font-weight: 300;
 	font-size: 14px;
-	text-align: center;
+    text-align: center;
+    
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* background-color: red; */
+    /* color: white; */
+    /* text-align: center; */ 
 }
 .info-footer .ic-fo{
 	margin-right: 10px;
