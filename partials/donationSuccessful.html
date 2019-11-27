@@ -1,16 +1,30 @@
 <div class="section home">
         <div class="container">
                 <!-- <div class="col-md-6 col-md-offset-3 container-slide" style="margin-top: 10%;"> -->
-                    <div class="row" style="margin:5%;width:90%">
+                        <br>
+                    <div class="flex-container">
+                                <div class="item"><img src="../images/RobinHood/sucessful.png"></div><br><br>
+                                <div class="item"><p style="padding-left:10%" class="lead"><strong>Our volunteers will get in touch with you soon</strong></p></div><hr>
+                                <div class="item"> 
+                                        <button class="btn btn-primary" onclick="redirect('home')">Home</button><br>
+                                        <button class="btn btn-primary" onclick="redirect('donate')">Contribute Again</button>
+                                </div><br>
+                                <div class="item"><button class="btn btn-primary" onclick="redirect('donorRegister')" ng-if="!isAuthenticated">Become a regular Contributer</button> </div>
+                    </div>
+                      <!-- <div class="col">
+                        
+                      </div>  
                     <br>
-                    <img style="margin: auto;" src="../images/RobinHood/sucessful.png">
+                    <div class="col"></div>
                     <br><br>
-                    <p style="padding-left:10%" class="lead"><strong>Our volunteers will get in touch with you soon</strong></p>
                     <hr>
-                    <button class="btn btn-primary" style="width: 90%;margin: 5px;" onclick="redirect('home')">Home</button><br>
-                    <button class="btn btn-primary" style="width: 90%;margin: 5px;"onclick="redirect('donate')">Contribute Again</button>
-                    <button class="btn btn-primary" style="width: 90%; margin: 5px;"onclick="redirect('donorRegister')" ng-if="!isAuthenticated">Become a regular Contributer</button>
-                </div>
+                    <div class="col">
+                                <button class="btn btn-primary" style="width: 90%;margin: 5px;" onclick="redirect('home')">Home</button><br>
+                                <button class="btn btn-primary" style="width: 90%;margin: 5px;"onclick="redirect('donate')">Contribute Again</button>
+                                <button class="btn btn-primary" style="width: 90%; margin: 5px;"onclick="redirect('donorRegister')" ng-if="!isAuthenticated">Become a regular Contributer</button>      
+                    </div>
+                    
+                </div> -->
         </div>
 </div>
 <style>
@@ -34,6 +48,23 @@
   
   .pull-right {
     float: right;
+  }
+  .flex-container{
+    height:100%;
+    display: flex; 
+    justify-content: center;
+    /* margin-left: auto;  */
+    flex-direction: column;
+   
+  }
+  .item{
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        /*      */
+  }
+  .content{
+
   }
 </style>
 <script>
