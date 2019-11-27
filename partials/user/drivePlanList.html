@@ -1,4 +1,4 @@
-<div class="" style="margin-top: 40px;">
+<div class="" style="margin-top: 40px;margin-left:20px;margin-right:20px">
     <p><a href="#/">Home</a>/<a href="#/volunteerUpcomingDonations">Contribution List</a></p>
     <h3>Drive Plans List:</h3>
     <div class="row">
@@ -48,8 +48,12 @@
               </div>
               
               <div ng-if="drive['status']=='Completed'">
-                  <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
-                  <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                  <div>
+                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                  </div>
+                  <div>
+                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                  </div>
               </div>
             </p>
         </div>
@@ -81,8 +85,12 @@
                     <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
                   </div>
                   <div ng-if="drive['status']=='Completed'">
-                      <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
-                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                      <div>
+                        <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                      </div>
+                      <div>
+                        <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                      </div>
                   </div>
             </p>
         </div>
@@ -115,8 +123,12 @@
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
                 </div>
                 <div ng-if="drive['status']=='Completed'">
-                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
-                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    <div>
+                      <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    </div>
                 </div>
             </p>
         </div>
@@ -149,8 +161,12 @@
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
                 </div>
                 <div ng-if="drive['status']=='Completed'">
-                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
-                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    <div>
+                      <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    </div>
                 </div>
             </p>
         </div>
@@ -183,8 +199,12 @@
                   <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{drive['contactNumber']}}
                 </div>
                 <div ng-if="drive['status']=='Completed'">
-                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
-                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    <div>
+                      <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    </div>
                 </div>
             </p>
         </div>
@@ -217,17 +237,27 @@
                 </div>
                 
                 <div ng-if="drive['status']=='Completed'">
-                    <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
-                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    <div>
+                      <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
+                    </div>
+                    <div>
+                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    </div>
                 </div>
             </p>
         </div>
       </div>
     </div>
    
-    <div ng-show="DonationList.length == 0">
-      <h2>No Upcoming Contribution</h2>    
-      <h2>Contribute Now</h2>    
+    <div ng-if="!DriveList.length > 0 && showUpcomingTab">
+        <br><br>
+        <div style="text-align: center;"><h3>No Upcoming Drive Plans</h3> </div>  
+      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
+    </div>
+    <div ng-show="!PastDriveList.length > 0 && showPastTab">
+        <br><br>
+        <div style="text-align: center;"><h3>No Past Drive Plans</h3> </div>  
+      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
     </div>
   </div>
   <style>
