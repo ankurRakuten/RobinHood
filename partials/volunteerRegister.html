@@ -57,10 +57,11 @@
                     </ul>
                   </div>
                   <div class="form-group">
-                    <label>RHA Chapters</label>
-                    <select class="form-control" name="chapter" ng-model="donar_info.chapter" ng-options="locality.location_id as locality.location_name for locality in localityList" required></select>
-                    <span ng-show="VolunteerLocationDetails.chapter.$invalid && VolunteerLocationDetails.chapter.$touched" class="small text-danger">* Chapter is required</span>                            
-                  </div>
+                      <label>RHA Chapters</label>
+                      <input class="form-control" type="text" name="chapter" ng-model="donar_info.chapter" ng-readonly="true" required></select>
+                      <span ng-show="VolunteerLocationDetails.chapter.$invalid && VolunteerLocationDetails.chapter.$touched" class="small text-danger">* Chapter is required</span>                            
+                    </div>
+                 
                   <br>
                   <br>
                 </form>

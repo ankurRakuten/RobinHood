@@ -3,7 +3,10 @@
         <h3 class="col-xs-12"><a href="#/">Home</a>/<a href="#/upcomingDonations">Upcoming Contributions</a></h3>
         <h3 class="col-xs-12">Past Contributions :</h3>
     </div>
-    
+    <br>
+    <div class="spinner" ng-if="!dataLoaded">
+      <i class="fa fa-spinner fa-pulse" style="font-size:48px;padding:10%"></i>     
+    </div>
     <div ng-show="DonationList.length > 0" class="card col-md-4" ng-repeat="donation in DonationList | filter:pastFilter">
         <div class="card-content col-xs-12">
             <div class="card-header-green">
@@ -26,6 +29,9 @@
                 <!-- details -->
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
+                </div>
+                <div ng-if="donation['PIC']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> POC : </b>{{donation['PIC']}}
                 </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
@@ -331,5 +337,12 @@
               .card-content{
                   padding-bottom: 15px;
               }
+.spinner{
+    display: flex;
+    margin-left:5%;
+    margin-right:5%;
+    padding:2px;
+    justify-content: center;
+}
   
   </style>

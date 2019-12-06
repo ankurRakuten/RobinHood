@@ -41,6 +41,9 @@
       </div> -->
       
     </div>
+    <div class="spinner" ng-if="!dataLoaded">
+        <i class="fa fa-spinner fa-pulse" style="font-size:48px;padding:10%"></i>     
+      </div>
     <div ng-show="DonationList.length > 0 && showUpcomingTab && statusFilter == 'all'" class="card col-md-4" ng-repeat="donation in DonationList | filter:{status:'Pending'}">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
@@ -70,7 +73,7 @@
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
               <div ng-if="donation['PIC']">
-                  <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                  <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
                </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
@@ -132,7 +135,7 @@
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
                 <div ng-if="donation['PIC']">
-                    <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donation['PIC']}}
+                    <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
                  </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
@@ -197,6 +200,9 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
+                <div ng-if="donation['PIC']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
+               </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
@@ -257,6 +263,9 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
+                <div ng-if="donation['PIC']">
+                  <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
+               </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
@@ -296,11 +305,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
-            
-            <!-- <h3 class="card-heading pull-right mr-10">
-              <i class="fa fa-hands-helping" aria-hidden="true"></i>
-            </h3> -->
+            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation.PIC != '' && donation['driveId'] && donation['status']==='Completed' "><b><em><a href="#/driveDetails?driveId={{donation.driveId}}" style="color: beige;">{{donation['status']}}</a></em></b></h3></div>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -316,6 +321,9 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
+              <div ng-if="donation['PIC']">
+                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
+             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -355,7 +363,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
+            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation['status']='Completed' && donation.PIC != ''"><b><em><a href="#/driveDetails?driveId={{donation.driveId}}" style="color: beige;">{{donation['status']}}</a></em></b></h3></div>
             <!-- <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <a href="#/volunteer">Volunteer</a>
@@ -375,6 +383,9 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
+              <div ng-if="donation['PIC']">
+                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
+             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -414,7 +425,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
+            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation['status']='Completed' && donation.PIC != ''"><b><em><a href="#/driveDetails?driveId={{donation.driveId}}" style="color: beige;">{{donation['status']}}</a></em></b></h3></div>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -430,6 +441,9 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
+              <div ng-if="donation['PIC']">
+                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
+             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -469,7 +483,7 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <div class="pull-right" style="padding-right: 10px;"><h3  ng-if="donation['status']='Completed'"><b><em>{{donation['status']}}</em></b></h3></div>
+            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation['status']='Completed' && donation.PIC != ''"><b><em><a href="#/driveDetails?driveId={{donation.driveId}}" style="color: beige;">{{donation['status']}}</a></em></b></h3></div>
             <h3 class="card-heading pull-right mr-10">
               <i class="fa fa-hands-helping" aria-hidden="true"></i>
               <a href="#/donate">Contribute Again</a>
@@ -489,6 +503,9 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
+              <div ng-if="donation['PIC']">
+                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
+             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -520,13 +537,22 @@
       </div>
     </div>
     
-    <div ng-show="DonationList.length == 0">
+    <div ng-show="DonationList.length == 0 && showUpcomingTab">
       <br><br>
       <div style="text-align: center;"><h3>No Upcoming Contributions</h3> </div>  
       <!-- <div class="card-header-btn col-md-4" style="text-align: center;" ng-click="redirectFunc('donate')">
           Contribute now
       </div>  -->
     </div>
+    <div ng-show="PastDonationList.length == 0 && showPastTab" >
+        <br><br>
+        <div style="text-align: center;"><h3>No Past Contributions</h3> </div>  
+        <!-- <div class="card-header-btn col-md-4" style="text-align: center;" ng-click="redirectFunc('donate')">
+            Contribute now
+        </div>  -->
+      </div>
+        
+
   </div>
   <style>
   .whiteback{
@@ -654,4 +680,11 @@
     box-shadow: inset 0 1px 0 #00622b;
     text-shadow: 0 1px 0 rgba(0,0,0,.1);
   }
+  .spinner{
+    display: flex;
+    margin-left:5%;
+    margin-right:5%;
+    padding:2px;
+    justify-content: center;
+}
   </style>

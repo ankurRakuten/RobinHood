@@ -349,7 +349,7 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 		// $scope.DonationList = [];
 		$scope.userDetail = $localStorage.userDetail;
 		console.log("inside donation controller>>>>", $scope.userDetail);
-
+		$scope.dataLoaded = false;
 		$scope.now = (new Date).getTime();
 
 
@@ -370,6 +370,7 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 						});
 					}
 					$scope.DonationList = Object.values(snapshot.val());
+					$scope.dataLoaded = true;
 					
 				});
 
@@ -408,8 +409,10 @@ app.controller("userDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObjec
 ]);
 app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebaseArray","$location", "$localStorage", "$timeout", "$window", "$route", "SessionService",
 	function ($scope, $firebaseAuth, $firebaseObject, $firebaseArray, $localStorage,$location, $timeout, $window, $route, SessionService) {
+		$scope.dataLoaded = false;
 		$scope.showUpcomingTab = true;
 		$scope.showPastTab = false;
+		$scope.dataLoaded = false ;
 		$scope.userDetail = JSON.parse(localStorage.getItem('ngStorage-userDetail'));
 		console.log("inside volunteer donation controller>>>>", $scope.userDetail);
 		$scope.now = (new Date).getTime();
@@ -424,6 +427,7 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 		];
 
 		$scope.updateFilter = function(days){
+			// firebase.database.enablePersistent(true);
 			var don_cat = firebase.database().ref().child("Donation_category");
 			$scope.donationCategory = $firebaseObject(don_cat);
 			$scope.donationCategory.$loaded().then(function () {
@@ -435,14 +439,17 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 					var dList = $firebaseArray(dbRef);
 					dList.$loaded().then(function() {
 						console.log("====new=====",dList);
+						$scope.testList = dList;
 						$scope.DonationList = dList.filter(function (el) {
+							console.log("Inside filter",el)
 							return el.pickup_time > Date.now() &&
-							el.pickup_time < Date.now()+ 30*24*60*60*1000
-							;
+							el.pickup_time < Date.now()+ 30*24*60*60*1000;
 						});
 						console.log("====new=$scope.DonationList====",$scope.DonationList);
 						$scope.dataLoaded = true;
+						
 						$scope.PastDonationList = dList.filter(function (el) {
+							console.log(el)
 							return el.pickup_time < Date.now() &&
 							el.pickup_time > Date.now() - 30*24*60*60*1000;
 						});
@@ -468,28 +475,42 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 					});
 
 					// my drives
-					drivebRef.orderByChild('PIC').equalTo($localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name).on("value", function (snapshot) {
+					drivebRef.orderByChild('PIC').equalTo($scope.userDetail.first_name +" "+$scope.userDetail.last_name).on("value", function (snapshot) {
 						if (!$scope.$$phase) {
 							$scope.$apply(function () {
-								$scope.myDriveList = Object.values(snapshot.val());
+								console.log(snapshot.val())
+								var drivelist = snapshot.val()
+								Object.keys(drivelist).forEach(function(key){
+									drivelist[key]["$id"]=key;
+								})
+								console.log(Object.values(drivelist))
+								$scope.myDriveList = Object.values(drivelist);
 								console.log("###########>>>", $scope.myDriveList);
 							});
 						}
-						$scope.myDriveList = Object.values(snapshot.val());
 					});
+
 					// my attended Drive
 					drivebRef.orderByChild('schedule').on("value", function (snapshot) {
 						if (!$scope.$$phase) {
 							$scope.$apply(function () {
-								var volDList = Object.values(snapshot.val());
+								var drivelist = snapshot.val()
+								Object.keys(drivelist).forEach(function(key){
+									drivelist[key]["$id"]=key;
+								})
+								var volDList = Object.values(drivelist);
 								$scope.volDriveList = volDList.filter(function (el) {
 									if(el.attendees){
-										return Object.keys(el.attendees).includes($localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name);
+										return Object.keys(el.attendees).includes($scope.userDetail.first_name +" "+$scope.userDetail.last_name);
 									}
 								});
+								console.log("vol",$scope.volDriveList);
 							});
 						}
 					});
+					setTimeout(function(){
+						$scope.dataLoaded = true;
+					},5000)
 				});
 			});
 		}
@@ -523,14 +544,33 @@ app.controller("volunteerDonationDetail", ["$scope", "$firebaseAuth", "$firebase
 			});
 
 		}
+
+		$scope.objectLength = function(obj){
+			return Object.keys(obj).length;
+		}
 		$scope.upcomingDriveFilter = function(item){
 			// return item;
 			return item["schedule"] > $scope.now;
 		}
 
 		$scope.pastDriveFilter = function(item){
+			// console.log(item)
 			return item["schedule"]<$scope.now;
 		}
+		// $scope.pastMyDriveFilter=function(item){
+		// 	$scope.item = item ;
+		// 	console.log("filter item",item)
+
+		// }
+		// $scope.getMyDriveUpcoming=function(item){
+			
+		// 	console.log("filter item",item)
+		// 	console.log(item['schedule']>$scope.now);
+		// 	return item["schedule"]>$scope.now;
+
+		// }
+
+
 		getRHAClusters()
 		function getRHAClusters(){
 			let RHA_CLusterRef = firebase.database().ref("RHA_clusters");

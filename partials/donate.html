@@ -80,26 +80,38 @@
     #target {
       width: 345px;
     }
+    .spinner{
+    display: flex;
+    margin-left:5%;
+    margin-right:5%;
+    padding:2px;
+    justify-content: center;
+}
   </style>
   
 
 <div class="section home">
-                <div class="container">
+            <div class="spinner" ng-if="!dataLoaded">
+                <i class="fa fa-spinner fa-pulse" style="font-size:48px;padding:10%"></i>     
+              </div>
+
+                <div class="container" ng-if="dataLoaded">
                   <wizard on-finish="finished()" style="margin-top:25px;">
                     <wz-step wz-title="1">
                     <form name="donationDetails"> 
+                        
                       <div class="form-group">
                         <label for="donationItem">What do you want to contribute?</label>
                         <!-- <select class="form-control" name="donationItem" ng-model="donation.donation_category" ng-options="item as item.name for item in donationCategory"></select> -->
                         <select class="form-control" name="donationItem" ng-model="donation.donation_category_id" data-ng-options="item.$id as item.name for item in donationCategory"></select>
                               <span ng-show="donationItem.donation_category.$invalid && donationItem.donation_category.$touched" class="small text-danger">* Item is required</span>
                             </div>
-                        <div class="form-group" required>
+                        <div class="form-group" required >
                         <label for="perishable">Perishable ?</label>
                           <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="True" required> Yes</label>
-                          <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="False" ng-change="notPerishable()" required> No</label>
+                          <label class="form-check-label" ><input class="form-check-input" type="radio" ng-model="donation.perishable" name="perishable" value="False" required> No</label>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ng-if="donation.perishable==='True'">
                                 <label for="donationItem">Max shelf Life ? (In case of Perishable item)</label>
                                 <select class="form-control" name="shelfLife" ng-model="donation.shelf_life" ng-options="time as time for time in perishableTime"  ng-required="donation.perishable=='True'"></select>
                                 <!-- <input type="text" name="shelfLife" class="form-control" ng-model="donation.shelf_life" placeholder="2 days / 14 hours etc.."  required/>  -->
@@ -120,21 +132,28 @@
                       <select class="form-control" name="city" ng-model="donation.RHA_city_id" ng-options="city.$id as city.name for city in cityList" required></select>
                       <span ng-show="donationLocation.city.$invalid && donationLocation.city.$touched" class="small text-danger">* City is required</span>
                     </div> 
-                        <div class="form-group">
+                        <div class="form-group" ng-if="!donation.checked">
                               <label>Locality / Area</label>
-                              <select class="form-control" name="Locality" ng-model="donation.Locality" ng-options="locality as locality.location_name for locality in localityList" required></select>
+                              <select class="form-control" name="Locality" ng-model="donation.Locality" ng-options="locality as locality.location_name for locality in localityList" required ></select>
                               <span ng-show="donationLocation.Locality.$invalid && donationLocation.Locality.$touched" class="small text-danger">* Locality is required</span>
-                              <!-- <input type="text" name="locality" id="locality" ng-model="locality" ng-keyup="complete(locality)" class="form-control" />
-                                <ul class="list-group">
-                                    <li class="list-group-item" ng-repeat="localitydata in filterLocality" ng-click="fillTextbox(localitydata)">{{localitydata.name}}</li>
-                                </ul>
-                                {{selectedLocality}} -->
-                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label>Locality is not Listed ? Add Locality</label><span style="padding: 5px;"><input type="checkbox" ng-model="donation.checked"></span>
+                          <!-- <span><button class="btn btn-secondary" ng-click="addLocality()">Add Locality </button>
+                          </span> -->
+                        </div>
+                        <div class="form-group" ng-if="donation.checked">
+                            <label>Locality / Area</label>
+                            <!-- <select class="form-control" name="Locality" ng-model="donation.Locality" ng-options="locality as locality.location_name for locality in localityList" required ng-if="!checked"></select> -->
+                            <input type="text" class="form-control" name="newLocality" ng-model="donation.addNewLocality" placeholder="Enter Locality" required>
+                            <span ng-show="donationLocation.newLocality.$invalid && donationLocation.newLocality.$touched" class="small text-danger">* Locality is required</span>
+                      </div>
                         <div class="form-group">
                               <label for="donationItem">Landmark</label>
                               <input type="text" class="form-control" ng-model="donation.Landmark" name="Landmark"/> 
                         </div>
-          
+ {{checked }}
                       </form>                
                       <input type="button" class="btn btn-primary" wz-next="logStep(donation)" ng-disabled="donationLocation.$invalid" value="Next" />
                       <input type="button" class="btn btn-primary" wz-previous="logStep(donation)" value="Back" />
@@ -181,6 +200,11 @@
                             <label for="donationItem">Pick Up time</label>
                                   <input type="datetime-local" name="pickup_time"  class="form-control" ng-model="donation.pickup_time" min="{{now | date:'yyyy-MM-ddTHH:mm'}}" required /> 
                                   <span ng-show="donarDetails.pickup_time.$invalid && donarDetails.pickup_time.$touched" class="small text-danger">* Pick Up time required</span>
+                                  <!-- <input type="date" name="date"  class="form-control" ng-model="donation.date" required /> 
+                                  {{donation.date}}
+                                  <input type="time" name="time"  class="form-control" ng-model="donation.time"  required /> 
+                                  {{donation.time}} -->
+
                           </div>  
                           
                           <div class="form-group">

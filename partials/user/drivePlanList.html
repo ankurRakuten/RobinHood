@@ -21,6 +21,9 @@
         <!-- <button class="col-xs-4" ng-class="donateNowTab ? 'activeTab' : 'nonActiveTab'" ng-click="redirectFunc('donate')">Donate Now</button> -->
       </div>
     </div>
+    <div class="spinner" ng-if="!dataLoaded">
+        <i class="fa fa-spinner fa-pulse" style="font-size:48px;padding:10%"></i>     
+    </div>
     <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in DriveList | filter:upcomingDriveFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
@@ -52,13 +55,19 @@
                     <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                   </div>
                   <div>
-                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
+                    <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
                   </div>
               </div>
             </p>
         </div>
       </div>
     </div>
+    <div ng-show="!DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'all' && dataLoaded">
+        <br><br>
+        <div style="text-align: center;"><h3>No Upcoming Drive Plans</h3> </div>  
+      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
+    </div>
+
     <div ng-show="PastDriveList.length > 0 && showPastTab && statusDriveFilter == 'all'" class="card col-md-4" ng-repeat="drive in PastDriveList">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
@@ -67,7 +76,7 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
                 <i class="fa fa-hands-helping" aria-hidden="true"></i>
-                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+                <a ng-href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
               </h3>
           </div>
           <div class="card-body">
@@ -96,16 +105,20 @@
         </div>
       </div>
     </div>
-
-    <div ng-show="DriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:upcomingDriveFilter}">
-        <div class="card-content col-xs-12">
+    <div ng-show="!PastDriveList.length > 0 && showPastTab && statusDriveFilter == 'all' && dataLoaded">
+        <br><br>
+        <div style="text-align: center;"><h3>No Past Drive Plans</h3> </div>  
+      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
+    </div>
+    <div ng-show="myDriveList.length>0 && showUpcomingTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList | filter:upcomingDriveFilter">
+        <div class="card-content col-xs-12" >
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
                 <i class="fa fa-hands-helping" aria-hidden="true"></i>
-                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+                <a ng-href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
             </h3>
           </div>
           <div class="card-body">
@@ -134,17 +147,16 @@
         </div>
       </div>
     </div>
-    <div ng-show="DriveList.length > 0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList|filter:PastDriveList">
-        <div class="card-content col-xs-12">
+    <div ng-show="myDriveList.length>0 && showPastTab && statusDriveFilter == 'mydrive'" class="card col-md-4" ng-repeat="drive in myDriveList|filter:pastDriveFilter">
+      <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
               {{drive['driveTitle']}}
             </h3>
             <h3 class="card-heading pull-right mr-10">
                 <i class="fa fa-hands-helping" aria-hidden="true"></i>
-                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+                <a ng-href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
             </h3>
-           
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -172,6 +184,11 @@
         </div>
       </div>
     </div>
+    <div ng-show="!myDriveList.length > 0 && statusDriveFilter == 'mydrive' && dataLoaded">
+        <br><br>
+        <div style="text-align: center;"><h3>No Drive Plans</h3> </div>  
+      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
+    </div>
 
     <div ng-show="volDriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:upcomingDriveFilter">
         <div class="card-content col-xs-12">
@@ -181,7 +198,7 @@
             </h3>
             <h3 class="card-heading pull-right mr-10">
                 <i class="fa fa-hands-helping" aria-hidden="true"></i>
-                <a href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
+                <a ng-href="#/driveDetails?driveId={{drive['$id']}}" style="color: whitesmoke;">Details</a>
               </h3>
           </div>
           <div class="card-body">
@@ -210,7 +227,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList|filter:PastDriveList">
+    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList|filter:pastDriveFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -248,17 +265,14 @@
         </div>
       </div>
     </div>
+    <div ng-show="!volDriveList.length > 0 && statusDriveFilter == 'Volunteered' && dataLoaded">
+        <br><br>
+        <div style="text-align: center;"><h3>No Volunteered Drive Plans</h3> </div>  
+    </div>
    
-    <div ng-if="!DriveList.length > 0 && showUpcomingTab">
-        <br><br>
-        <div style="text-align: center;"><h3>No Upcoming Drive Plans</h3> </div>  
-      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
-    </div>
-    <div ng-show="!PastDriveList.length > 0 && showPastTab">
-        <br><br>
-        <div style="text-align: center;"><h3>No Past Drive Plans</h3> </div>  
-      <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
-    </div>
+   
+   
+    
   </div>
   <style>
   .pd-0{
@@ -382,4 +396,11 @@
     background-color: #00622b;
     color: white;
   }
+  .spinner{
+    display: flex;
+    margin-left:5%;
+    margin-right:5%;
+    padding:2px;
+    justify-content: center;
+}
   </style>

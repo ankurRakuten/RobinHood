@@ -80,6 +80,18 @@
             .pull-left {
               float: left;
             }
+
+            .titleContainer{
+              display: flex;
+              flex-direction: row;
+            }
+            .title{
+              justify-content: left;
+
+            }
+            .status{
+              justify-content: right;
+            }
             
             .pull-none {
               float: none !important;
@@ -120,12 +132,22 @@
             .drivePlanButton{
                 margin: 5px;
             }
+            .spinner{
+              display: flex;
+              margin-left:5%;
+              margin-right:5%;
+              padding:2px;
+              justify-content: center;
+          }
 
 </style>
 <div class="section home">
-        <div class="container" ng-if=dataLoaded>
+    <div class="spinner" ng-if="!dataLoaded">
+        <i class="fa fa-spinner fa-pulse" style="font-size:48px;padding:10%"></i>     
+     </div>
+        <div class="container" ng-if="dataLoaded">
             <div class="row">
-                        <h2 style="text-align: left">{{driveDetails.driveTitle}}<span style="color: grey" ng-if="driveDetails.status=='Pending' && (driveDetails.schedule>now)"> <b class="pull-right"><i>In Progress</i></b></span><span style="color: green" ng-if="driveDetails.status=='Completed'"> <b class="pull-right"><i>{{driveDetails.status}}</i></b></span><ng-template #inProgressPart><span style="color: grey"><b class="pull-right"><i ng-if="driveDetails.status=='Pending'&& (now>driveDetails.schedule)">Expired</i></b></span></ng-template></h2>
+                        <h2>{{driveDetails.driveTitle}}</h2><h2><span style="color: grey; margin-left:10px;" ng-if="driveDetails.status=='Pending' && (driveDetails.schedule>now)"><b class="pull-right"><i> In Progress</i></b></span><span style="color: green;margin-left:10px;" ng-if="driveDetails.status=='Completed'"> <b class="pull-right"><i> {{driveDetails.status}}</i></b></span><ng-template #inProgressPart><span style="color: grey; margin-left:10px;"><b class="pull-right"><i ng-if="driveDetails.status=='Pending'&& (now>driveDetails.schedule)"> Expired</i></b></span></ng-template></h2>
             </div>
                 <div class="columnleft">
                     <h3><i class="fa fa-clock"></i><span> {{driveDetails.schedule | date:'MMM dd, yyyy hh:mm a' }}</span></h3>
@@ -140,7 +162,16 @@
             </div>
             <button ng-if="driveDetails.status=='Pending' && userName!=driveDetails.PIC && (driveDetails.schedule>now)" class="drivePlanButton"  ng-click="updateAttendeeList(joinOrQuit)"><b>{{joinOrQuit}}</b></button>
                 <br>
-                <button ng-if="userName==driveDetails.PIC && (now>driveDetails.schedule) && driveDetails.status!='Completed'" class="drivePlanButton"  ng-click="markDriveStatus('Completed')"><b>Mark as Completed</b></button>
+                <div ng-if="driveDetails.status=='Completed' && driveDetails.smilesServed"><h3 style="color:green;"><i class="fa fa-smile" style="font-size:15px"></i> Smiles Served : {{driveDetails['smilesServed']}}</h3></div>
+              <form name="driveCompletion">
+                <div class="form-group" ng-if="userName==driveDetails.PIC && (now>driveDetails.schedule) && driveDetails.status!='Completed'">
+                  <label><h3 style="color:green;"><i class="fa fa-smile" style="font-size:15px"></i> Smiles Served</h3></label><input class="form-control"  type="number" name="smilesServed" ng-model="smilesServed" placeholder="Enter the number of smiles served" required>
+                  <small style="color: crimson;" ng-if="driveCompletion.smilesServed.$touched && driveCompletion.smilesServed.$invalid"> *Please add this before marking the drive as completed</small>
+                  <br>
+                  <button class="btn btn-primary drivePlanButton" ng-disabled="driveCompletion.$invalid" ng-click="markDriveStatus('Completed',smilesServed)" ><b>Mark as Completed</b></button>
+                </div>
+              </form>
+              <br>
             <h5><b>Chapters</b></h5>
             <div ng-repeat="chapter in chapterList">
                 <i class="fa fa-map-marker-alt"></i>  {{chapter}} 
