@@ -160,6 +160,8 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	$scope.selectedCluster = [];
 	$scope.selectedDonation = [];
 	$scope.selectedDonationDetails = [];
+	$scope.profileCheck=false;
+	$scope.checkUserDetail = {};
 
 	let userDetail = JSON.parse(localStorage.getItem('ngStorage-userDetail'));
 	console.log(userDetail)
@@ -190,6 +192,38 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	$scope.toggle = true;
 	$scope.toggleChapter = function () {
 		$scope.toggle = $scope.toggle === false ? true : false;
+	}
+
+	$scope.ChangePOC= function(){
+		$scope.drive_plan.mobile = "";
+		$scope.drive_plan.pic = "";
+		$scope.checkUserDetail={};
+		$scope.errorMessage="";
+	}
+
+	$scope.CheckNumberValidity = function(mobileNumber){
+		console.log(mobileNumber)
+		let profile = firebase.database().ref().child("profiles");
+		profile.orderByChild("mobile").equalTo(mobileNumber.toString()).once("value",snapshot => {
+			console.log(snapshot.exists())
+			if (snapshot.exists()){
+				setTimeout(function(){
+					$scope.checkUserDetail= Object.values(snapshot.val());
+					console.log("exists!", $scope.checkUserDetail);
+					var element1 = angular.element($('#PIC'));
+					$scope.errorMessage= "";
+					$scope.drive_plan.pic=$scope.checkUserDetail[0]['first_name'] +" " + $scope.checkUserDetail[0]['last_name']
+					element1.val($scope.checkUserDetail[0]['first_name'] +" " + $scope.checkUserDetail[0]['last_name'])
+					element1.scope().$apply();
+				 }, 2000);
+			}else {
+				$scope.errorMessage= "User is not a volunteer. Cannot be assigned as POC";
+				var element = angular.element($('#errorMessageId'));
+					element.val("User is not a volunteer. Cannot be assigned as POC")
+					$scope.drive_plan.pic="";
+					element.scope().$apply();
+			}
+		})
 	}
 
 
@@ -245,9 +279,6 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 			
 		}
 	};
-
-	console.log($scope.selectedDonation);
-
 
 	$scope.selectCluster = (cluster) => {
 		var idx = $scope.selectedCluster.indexOf(cluster);
@@ -307,6 +338,7 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 			console.log(driveId);
 			$scope.selectedDonation.forEach(function(donationId){
 				firebase.database().ref('donation_details').child(donationId).child("PIC").set($scope.drive_plan.pic);
+				firebase.database().ref('donation_details').child(donationId).child("PIC_Conatct").set($scope.drive_plan.mobile);
 				firebase.database().ref('donation_details').child(donationId).child("driveId").set(driveId);
 				var landingUrl = "http://" + $window.location.host + "/#/driveDetails?driveId="+driveId;
 				$window.location.href = landingUrl;

@@ -38,7 +38,7 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-user" aria-hidden="true"></i> POC : </b>{{drive['PIC']}}
               </div>
               <div>
                   <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
@@ -54,7 +54,7 @@
                   <div>
                     <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                   </div>
-                  <div>
+                  <div ng-if="drive['smilesServed']">
                     <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
                   </div>
               </div>
@@ -82,7 +82,7 @@
           <div class="card-body">
             <p class="card-p">
                 <div>
-                    <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                    <b><i class="fa fa-user" aria-hidden="true"></i> POC : </b>{{drive['PIC']}}
                   </div>
                   <div>
                       <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
@@ -97,9 +97,9 @@
                       <div>
                         <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                       </div>
-                      <div>
-                        <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
-                      </div>
+                      <div ng-if="drive['smilesServed']">
+                          <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
+                        </div>
                   </div>
             </p>
         </div>
@@ -124,8 +124,8 @@
           <div class="card-body">
             <p class="card-p">
                 <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
-                </div>
+                    <b><i class="fa fa-user" aria-hidden="true"></i> POC : </b>{{drive['PIC']}}
+                  </div>
                 <div>
                     <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
                   </div>
@@ -139,9 +139,9 @@
                     <div>
                       <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                     </div>
-                    <div>
-                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
-                    </div>
+                    <div ng-if="drive['smilesServed']">
+                        <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
+                      </div>
                 </div>
             </p>
         </div>
@@ -161,7 +161,7 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                  <b><i class="fa fa-user" aria-hidden="true"></i> POC : </b>{{drive['PIC']}}
                 </div>
                 <div>
                     <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
@@ -176,9 +176,9 @@
                     <div>
                       <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                     </div>
-                    <div>
-                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
-                    </div>
+                    <div ng-if="drive['smilesServed']">
+                        <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
+                      </div>
                 </div>
             </p>
         </div>
@@ -190,7 +190,7 @@
       <button class="btn btn-primary" style="width: 80%;margin: 10%;"onclick="redirect('donate')">Contribute Now</button>     
     </div>
 
-    <div ng-show="volDriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList | filter:upcomingDriveFilter">
+    <div ng-show="volDriveList.length > 0 && showUpcomingTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList.slice().reverse() | filter:upcomingDriveFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -204,7 +204,7 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                  <b><i class="fa fa-user" aria-hidden="true"></i> POC : </b>{{drive['PIC']}}
                 </div>
                 <div>
                     <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
@@ -219,15 +219,15 @@
                     <div>
                       <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                     </div>
-                    <div>
-                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
-                    </div>
+                    <div ng-if="drive['smilesServed']">
+                        <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
+                      </div>
                 </div>
             </p>
         </div>
       </div>
     </div>
-    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList|filter:pastDriveFilter">
+    <div ng-show="volDriveList.length > 0 && showPastTab && statusDriveFilter == 'Volunteered'" class="card col-md-4" ng-repeat="drive in volDriveList.slice().reverse()|filter:pastDriveFilter">
         <div class="card-content col-xs-12">
           <div class="card-header-green">
             <h3 class="card-heading pull-left">
@@ -241,7 +241,7 @@
           <div class="card-body">
             <p class="card-p">
               <div>
-                  <b><i class="fa fa-clock-o" aria-hidden="true"></i> PIC : </b>{{drive['PIC']| date:'yyyy-MM-dd HH:mm'}}
+                  <b><i class="fa fa-user" aria-hidden="true"></i> POC : </b>{{drive['PIC']}}
                 </div>
                 <div>
                     <b><i class="fa fa-map-marker" aria-hidden="true"></i> Distribution Points : </b><span ng-repeat="(clusterid,i) in drive['cluster']"> <a ng-href="{{clusters[cluster-1]['cluster_map_loc']}}"><b> {{clusters[clusterid+1]['cluster_name']}}  </b></a> <span ng-if="i==(drive['cluster'].length-1)"> , </span> </span>
@@ -257,9 +257,9 @@
                     <div>
                       <b><i class="fas fa-hand-holding-heart " aria-hidden="true" style="color: darkgreen;"></i> Status : </b>{{drive['status']}}
                     </div>
-                    <div>
-                      <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['simlesCount']}}
-                    </div>
+                    <div ng-if="drive['smilesServed']">
+                        <b><i class="fa fa-smile-o" aria-hidden="true" style="color: darkgreen;"></i> Number of smiles served : </b> {{drive['smilesServed']}}
+                      </div>
                 </div>
             </p>
         </div>

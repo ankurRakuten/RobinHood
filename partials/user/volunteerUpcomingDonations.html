@@ -64,7 +64,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time'] | date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -72,9 +72,6 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div ng-if="donation['PIC']">
-                  <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-               </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -91,13 +88,26 @@
                 <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
               </div>
               <div>
-                <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                <b><i class="fa fa-user" aria-hidden="true"></i> Contributor Name : </b>{{donation['userName']}}
               </div>
               <div>
-                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contributor Contact  : </b>{{donation['userMobile']}}
               </div>
               <div ng-show="donation['remarks']">
                   <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
+                <div ng-if="donation['PIC']" >
+                    <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                    <div><b> Name: </b>{{donation['PIC']}}</div>
+                    <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                  </div>
+                 
+                  <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                  <div>
+                    <b></i>Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
+                  <b></i>Contact  : </b>{{donation['userMobile']}}
                 </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv" ><i class="fa fa-chevron-up"></i></button>
@@ -126,7 +136,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
               <div ng-show="showDiv" >
@@ -134,9 +144,6 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div ng-if="donation['PIC']">
-                    <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-                 </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
@@ -153,13 +160,26 @@
                       <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                     </div>
                     <div>
-                      <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                      <b><i class="fa fa-user" aria-hidden="true"></i> Contributor Name : </b>{{donation['userName']}}
                     </div>
                 <div>
-                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contributor Contact  : </b>{{donation['userMobile']}}
                 </div>
                 <div ng-show="donation['remarks']">
                   <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
+                <div ng-if="donation['PIC']" >
+                    <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                    <div><b> Name: </b>{{donation['PIC']}}</div>
+                    <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                  </div>
+                 
+                  <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                  <div>
+                    <b></i>Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
+                  <b></i>Contact  : </b>{{donation['userMobile']}}
                 </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -192,7 +212,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
               <div ng-show="showDiv" >
@@ -200,9 +220,6 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div ng-if="donation['PIC']">
-                  <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-               </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
@@ -218,14 +235,21 @@
                   <div ng-show="donation['Landmark']">
                     <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                   </div>
-                  <div>
-                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
-                  </div>
-                <div>
-                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
-                </div>
                 <div ng-show="donation['remarks']">
                     <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                  </div>
+                  <div ng-if="donation['PIC']" >
+                      <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                      <div><b> Name: </b>{{donation['PIC']}}</div>
+                      <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                    </div>
+                   
+                    <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                    <div>
+                      <b></i>Name : </b>{{donation['userName']}}
+                    </div>
+                  <div>
+                    <b></i>Contact  : </b>{{donation['userMobile']}}
                   </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -255,7 +279,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
               <div ng-show="showDiv" >
@@ -263,9 +287,6 @@
                 <div>
                   <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
                 </div>
-                <div ng-if="donation['PIC']">
-                  <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-               </div>
                 <div ng-if="donation['shelf_life']">
                   <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
                 </div>
@@ -281,14 +302,21 @@
                   <div ng-show="donation['Landmark']">
                     <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                   </div>
-                  <div>
-                    <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
-                  </div>
-                <div>
-                  <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
-                </div>
                 <div ng-show="donation['remarks']">
                     <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                  </div>
+                  <div ng-if="donation['PIC']" >
+                      <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                      <div><b> Name: </b>{{donation['PIC']}}</div>
+                      <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                    </div>
+                   
+                    <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                    <div>
+                      <b></i>Name : </b>{{donation['userName']}}
+                    </div>
+                  <div>
+                    <b></i>Contact  : </b>{{donation['userMobile']}}
                   </div>
               </div>
               <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -305,7 +333,8 @@
             }" aria-hidden="true"></i>
               {{donationCategory[donation['donation_category_id']]['name']}}
             </h3>
-            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation.PIC != '' && donation['driveId'] && donation['status']==='Completed' "><b><em><a href="#/driveDetails?driveId={{donation.driveId}}" style="color: beige;">{{donation['status']}}</a></em></b></h3></div>
+            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation.PIC != '' && donation['driveId']"><b><em><a href="#/driveDetails?driveId={{donation.driveId}}" style="color: white;"><i class="fa fa-hands-helping"></i>Drive Details</a></em></b></h3></div>
+            <div class="pull-right" style="padding-right: 10px;"><h3 ng-if="donation.PIC == '' && !donation['driveId']"><b><em>Expired</em></b></h3></div>
           </div>
           <div class="card-body">
             <p class="card-p">
@@ -313,7 +342,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -321,9 +350,6 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div ng-if="donation['PIC']">
-                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -339,15 +365,22 @@
                 <div ng-show="donation['Landmark']">
                   <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                 </div>
+                <div ng-show="donation['remarks']">
+                    <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                  </div>
+                <div ng-if="donation['PIC']" >
+                  <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                  <div><b> Name: </b>{{donation['PIC']}}</div>
+                  <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                </div>
+               
+                <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
                 <div>
-                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
+                  <b></i>Name : </b>{{donation['userName']}}
                 </div>
               <div>
-                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
+                <b></i>Contact  : </b>{{donation['userMobile']}}
               </div>
-              <div ng-show="donation['remarks']">
-                  <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
-                </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="!showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-down"></i></button>
@@ -375,7 +408,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -383,9 +416,6 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div ng-if="donation['PIC']">
-                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -401,14 +431,21 @@
                 <div ng-show="donation['Landmark']">
                   <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                 </div>
-                <div>
-                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
-                </div>
-              <div>
-                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
-              </div>
               <div ng-show="donation['remarks']">
                   <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
+                <div ng-if="donation['PIC']" >
+                    <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                    <div><b> Name: </b>{{donation['PIC']}}</div>
+                    <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                  </div>
+                 
+                  <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                  <div>
+                    <b></i>Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
+                  <b></i>Contact  : </b>{{donation['userMobile']}}
                 </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -433,7 +470,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -441,9 +478,6 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div ng-if="donation['PIC']">
-                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -459,14 +493,21 @@
                 <div ng-show="donation['Landmark']">
                   <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                 </div>
-                <div>
-                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
-                </div>
-              <div>
-                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
-              </div>
               <div ng-show="donation['remarks']">
                   <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
+                <div ng-if="donation['PIC']" >
+                    <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                    <div><b> Name: </b>{{donation['PIC']}}</div>
+                    <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                  </div>
+                 
+                  <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                  <div>
+                    <b></i>Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
+                  <b></i>Contact  : </b>{{donation['userMobile']}}
                 </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>
@@ -495,7 +536,7 @@
                 <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donation['Locality']['location_name']}} , {{RHACity[donation['RHA_city_id']]['name']}}
               </div>
               <div>
-                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'yyyy-MM-dd HH:mm'}}
+                <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donation['pickup_time']| date:'MMM dd, yyyy @ hh:mm a'}}
               </div>
             </p>
             <div ng-show="showDiv" >
@@ -503,9 +544,6 @@
               <div>
                 <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donation['description']}}
               </div>
-              <div ng-if="donation['PIC']">
-                <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donation['PIC']}}
-             </div>
               <div ng-if="donation['shelf_life']">
                 <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donation['shelf_life']}}
               </div>
@@ -521,14 +559,21 @@
                 <div ng-show="donation['Landmark']">
                   <b><i class="fa fa-building" aria-hidden="true"></i> Landmark : </b>{{donation['Landmark']}}
                 </div>
-                <div>
-                  <b><i class="fa fa-user" aria-hidden="true"></i> Contact Name : </b>{{donation['userName']}}
-                </div>
-              <div>
-                <b><i class="fa fa-mobile" aria-hidden="true"></i> Contact Number : </b>{{donation['userMobile']}}
-              </div>
               <div ng-show="donation['remarks']">
                   <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donation['remarks']}}
+                </div>
+                <div ng-if="donation['PIC']" >
+                    <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                    <div><b> Name: </b>{{donation['PIC']}}</div>
+                    <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                  </div>
+                 
+                  <div><b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b></div>
+                  <div>
+                    <b></i>Name : </b>{{donation['userName']}}
+                  </div>
+                <div>
+                  <b></i>Contact  : </b>{{donation['userMobile']}}
                 </div>
             </div>
             <button class= "col-xs-12 expandCollapseBtn" ng-show="showDiv" ng-click="showDiv = !showDiv"><i class="fa fa-chevron-up"></i> </button>

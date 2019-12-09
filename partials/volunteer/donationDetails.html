@@ -33,7 +33,7 @@
                           <b><i class="fa fa-map-marker" aria-hidden="true"></i> Locality : </b>{{donationDetails['Locality']['location_name']}} , {{RHACity[donationDetails['RHA_city_id']]['name']}}
                         </div>
                         <div>
-                          <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donationDetails['pickup_time'] | date:'yyyy-MM-dd HH:mm'}}
+                          <b><i class="fa fa-clock-o" aria-hidden="true"></i> Pickup Time : </b>{{donationDetails['pickup_time'] | date:'yyyy-MM-dd HH:mm a'}}
                         </div>
                       </p>
                       <div>
@@ -41,9 +41,9 @@
                           <b><i class="fa fa-info" aria-hidden="true"></i> Description : </b>{{donationDetails['description']}}
                         </div>
                         <div ng-if="donationDetails['PIC']">
-                          <b><i class="fa fa-info" aria-hidden="true"></i> PIC: </b>{{donationDetails['PIC']}}
+                          <b><i class="fa fa-info" aria-hidden="true"></i> POC: </b>{{donationDetails['PIC']}}
                        </div>
-                        <div>
+                        <div ng-if="donationDetails['shelf_life']">
                           <b><i class="fa fa-clock-o" aria-hidden="true"></i> Shelf Life : </b>{{donationDetails['shelf_life']}}
                         </div>
                         <div>
@@ -67,6 +67,16 @@
                         <div ng-show="donationDetails['remarks']">
                             <b><i class="fa fa-info" aria-hidden="true"></i> Remark : </b>{{donationDetails['remarks']}}
                           </div>
+                          <div ng-if="donationDetails['PIC']">
+                              <b><img src="../../images/RobinHood/robin.png" style="width:18px;height:18px;"> POC Details</b>
+                              <div><b> Name: </b>{{donationDetails['PIC']}}</div>
+                              <div><b> Contact: </b>{{donation['PIC_Conatct']}}</div>
+                          </div>
+                          <div>
+                            <b><i class="fa fa-user" aria-hidden="true"></i> Contributor Details</b>
+                            <div><b></i>Name : </b>{{donationDetails['userName']}}</div>
+                            <div><b></i>Contact  : </b>{{donationDetails['userMobile']}}</div>
+                          </div> 
                       </div>
                       <br><br>
                       <button class="drivePlanButton"  ng-click="redirect('Home')"><b>Home</b></button>

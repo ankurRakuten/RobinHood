@@ -21,14 +21,9 @@
                 Valid Schedule Date is required
                 </span>
                 </div>
+                <button class="btn btn-primary" ng-click="ChangePOC()">Change POC</button><br>
                 <div class="form-group">
-                <label for="PIC">POC</label>
-                <input type="text" class="form-control" id="PIC" placeholder="PIC" name="pic" ng-model="drive_plan.pic"
-                  required>
-                <span ng-show="drive.pic.$touched && drive.pic.$invalid">The PIC is
-                  required.</span></div>
-                <div class="form-group">
-                <label for="mobile">Mobile</label>
+                <label >POC's Contact</label>
                 <input type="number" class="form-control" id="number" name="mobile" ng-minlength="10" ng-maxlength="10"
                   placeholder="Mobile number" ng-model="drive_plan.mobile" ng-required="true" />
                 <span class="help-block" ng-show="drive.mobile.$touched && drive.mobile.$invalid || 
@@ -40,8 +35,16 @@
                            drive.mobile.$dirty) ">
                   phone number should be 10 digits
                 </span></div>
+                <div class="help-block" id="errorMessageId" ng-if="errorMessage!=''">{{errorMessage}}</div>
+                <button class="btn btn-primary" ng-click="CheckNumberValidity(drive_plan.mobile)" ng-if="drive.mobile.$valid && drive_plan.mobile!=user.mobile">Verify the Contact</button><br>
                 <div class="form-group">
-                <label for="mobile">Chapter</label>
+                    <label for="PIC">POC</label>
+                    <input type="text" class="form-control" id="PIC" placeholder="POC name" name="pic" ng-model="drive_plan.pic"
+                      required>
+                    <span ng-show="drive.pic.$touched && drive.pic.$invalid">The POC is
+                      required.</span></div>
+                <div class="form-group">
+                <label>Chapter</label>
                 <div>
                   <div class="wrapper" z-index="1">
                     <div class="selected-items-box" z-index="1" ng-click="toggleChapter()">

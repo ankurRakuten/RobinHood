@@ -380,6 +380,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
   app.controller('DonationDetailsCtrl', function ($scope,$window,$location,$firebaseObject,$localStorage,$firebaseArray,$firebaseStorage) {
     var param = $location.search();
     $scope.donationId = param.donationId;
+    getRHA_CityList();
     var don_cat = firebase.database().ref().child("Donation_category");
 			$scope.donationCategory = $firebaseObject(don_cat);
     let donationDetailsRef = firebase.database().ref().child("donation_details").child($scope.donationId);
@@ -411,7 +412,24 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
           var landingUrl = "http://" + $window.location.host + "/#/";
         }
           $window.location.href = landingUrl;
-      }          
+      }         
+      function getRHA_CityList(){
+
+        var rha_city = firebase.database().ref().child("RHA_city");
+                $scope.RHACity = $firebaseObject(rha_city);
+                
+        let RHA_CityRef = firebase.database().ref("RHA_city")
+        let RHA_cityList = $firebaseArray(RHA_CityRef);
+        RHA_cityList.$loaded().then(function() {
+            console.log(RHA_cityList)
+            RHA_cityList = RHA_cityList.filter(item => item.active === "True");
+            angular.forEach(RHA_cityList, function(item) {
+                    delete  item["active"];
+                    delete item["$priority"];
+            });
+            $scope.cityList=RHA_cityList
+        });
+      } 
     
   })
 
@@ -428,6 +446,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
     getRHA_capterList();
     getRHA_clusterList();
     $scope.driveDetails={}
+    $scope.newPOC={}
     let userName = $localStorage.userDetail.first_name +" "+$localStorage.userDetail.last_name;
     $scope.userName = userName;
 
@@ -468,7 +487,52 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       getDriveDetails();
       $scope.newattendee["name"]="";
     }
-    
+
+    $scope.ChangePOC = function(){
+   
+    }
+
+    $scope.CheckNumberValidity=function(pocMobile){
+      console.log(pocMobile)
+      let profile = firebase.database().ref().child("profiles");
+		profile.orderByChild("mobile").equalTo(pocMobile.toString()).once("value",snapshot => {
+			console.log(snapshot.exists())
+			if (snapshot.exists()){
+				setTimeout(function(){
+          $scope.newUserID=(Object.keys(snapshot.val())[0]);	
+          $scope.newUserDetail= Object.values(snapshot.val());
+          console.log("exists!", $scope.newUserDetail);
+          console.log($scope.newUserDetail[0]['first_name'] +" " + $scope.newUserDetail[0]['last_name'],$scope.newUserID,pocMobile)
+          updatePOCDetails($scope.newUserDetail[0]['first_name'] +" " + $scope.newUserDetail[0]['last_name'],$scope.newUserID,pocMobile);
+				 }, 2000);
+			}else {
+        $scope.errorMessage= "User is not a volunteer. Cannot be assigned as POC";
+				var element = angular.element($('#errorMessageId'));
+					element.val("User is not a volunteer. Cannot be assigned as POC")
+					element.scope().$apply();
+			}
+		})
+    }
+    function updatePOCDetails(name,id,mobile){
+      let driveRef = firebase.database().ref().child('drive_details').child($scope.driveId);
+      let donationRef = firebase.database().ref('donation_details');
+      // change PIC name,ID and number on drive 
+      driveRef.child('PIC').set(name);
+      driveRef.child('PIC_ID').set(id);
+      driveRef.child('contactNumber').set(mobile);
+
+      // add these details in attendance 
+      driveRef.child('attendees').child(name).set({attended:false});
+
+      // add same details in donations 
+            Object.keys($scope.driveDetails.donations).forEach(function(donationId){
+				donationRef.child(donationId).child("PIC").set(name);
+				donationRef.child(donationId).child("PIC_Conatct").set(mobile);
+      });
+      // get updated details 
+      getDriveDetails();
+      $window.location.reload();
+    }
     function updateDonationStatus(status){
       Object.keys($scope.driveDetails.donations).forEach(function(donationId){
         console.log(donationId,status);
