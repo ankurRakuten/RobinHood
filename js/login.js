@@ -150,7 +150,7 @@ app.controller("Login", ["$scope", "$firebaseAuth", "$firebaseObject", "$firebas
 	}
 ]);
 
-app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$firebaseObject","$window", "dateFilter","$interval","$routeParams", function ($location,$scope, $firebaseArray, $firebaseObject,$window, $interval) {
+app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$firebaseObject","$window", "dateFilter","$interval","$routeParams","$http", function ($location,$scope, $firebaseArray, $firebaseObject,$window,$http, $interval) {
 	// extract param : donnationId
 	var param = $location.search();
 	$scope.donationId = param.donationId;
@@ -172,6 +172,10 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 	}
 	// Add selected donationId 
 	$scope.selectedDonation.push($scope.donationId);
+	// get donation Details 
+	var selectedDonationRef = firebase.database().ref().child("donation_details").child($scope.donationId);
+	// $scope.selectedDonationDetails.push($firebaseArray(selectedDonationRef)[0]);
+	
 	
 	// Check if time is valid 
 	$scope.validTime=false;
@@ -304,6 +308,8 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 		$scope.selectedDonationDetails= [...$scope.selectedDonationDetails,($scope.donation_details.filter(ele=>ele["$id"]==donationId))[0]];
 		// $scope.selectDonationDetails.push(($scope.donation_details.filter(ele=>ele["$id"]==donationId))[0])
 	}
+	console.log("Selected don",$scope.selectedDonation);
+	console.log("donationDetails",$scope.selectedDonationDetails)
 	$scope.addDrivePlan = () => {
 		console.log($scope.drive_plan);
 		console.log(new Date($scope.drive_plan.schedule).getTime())
@@ -338,14 +344,26 @@ app.controller("createDrivePlan", ["$location","$scope","$firebaseArray", "$fire
 			console.log(driveId);
 			$scope.selectedDonation.forEach(function(donationId){
 				firebase.database().ref('donation_details').child(donationId).child("PIC").set($scope.drive_plan.pic);
-				firebase.database().ref('donation_details').child(donationId).child("PIC_Conatct").set($scope.drive_plan.mobile);
+				firebase.database().ref('donation_details').child(donationId).child("PIC_Contact").set($scope.drive_plan.mobile);
 				firebase.database().ref('donation_details').child(donationId).child("driveId").set(driveId);
+				
 				var landingUrl = "http://" + $window.location.host + "/#/driveDetails?driveId="+driveId;
 				$window.location.href = landingUrl;
 			});
 		});
 	}
 }]);
+
+function sendMailToContributor(destinationMailId,donationId){
+	let url = "http://us-central1-rakutenrobin.cloudfunctions.net/sendMail?dest="+destinationMailId+"&donId="+donationId;
+	$http.get(url).then(function successCallback(response) {
+		console.log(response);
+
+	},
+	function errorCallback(response) {
+		console.log(response)
+	})
+}
 
 app.filter('filterCluster', function () {
 	// filter to check array of elements

@@ -148,7 +148,6 @@ app.controller('DonateCtrl', function ($scope, $window, $rootScope,$firebaseObje
       // alert("Thanks For Donating. Our volunteers will get in touch with you ");
       sendDonationDetails($scope.donationFormDetails);
       var landingUrl = "http://" + $window.location.host + "/#/successful";
-      console.log($window.location.host)
       $window.location.href = landingUrl;
   };
   $scope.logStep = function(donation) {
@@ -173,7 +172,6 @@ $scope.onFileSelect = function($files) {
 $scope.notPerishable=function(){
   $scope.donation["shelf_life"]="";
 }
-
 //Local Functions 
 function sendDonationDetails(donationDetails){
  console.log(donationDetails);
@@ -201,11 +199,24 @@ let imagePath=[];
  console.log(imagePath);
  let submittedDonation = $firebaseObject(donationDetailsRef.child($scope.key))
     console.log(submittedDonation);
+    sendMail($scope.key);
     donationDetailsRef.child($scope.key).child("path").set("https://firebasestorage.googleapis.com/v0/b/rakutenrobin.appspot.com/o/"+$scope.key,function(){
         console.log("Path Updated")
     });
 
   
+}
+function sendMail(donationId){
+  console.log(donationId)
+  let url =" https://us-central1-rakutenrobin.cloudfunctions.net/sendToAllMail?donid="+donationId;
+	$http({method:'PUT',url:url}).then(function successCallback(response) {
+    console.log(response);
+    if(response.data=="Success"){
+    }
+	},
+	function errorCallback(response) {
+		console.log(response)
+	})
 }
 
 async function uploadImage(file,donationId){
@@ -290,10 +301,6 @@ function labelToCategory(donationDetails){
         let created_at = now.getTime();
         donationDetails["created_at"]=created_at;
         donationDetails["pickup_time"]= new Date(donationDetails["pickup_time"]).getTime();
-        console.log(donationDetails["userMobile"]);
-        console.log(typeof(donationDetails["userMobile"]))
-        console.log(donationDetails["checked"])
-        console.log(donationDetails["checked"]&& donationDetails["addNewLocality"])
         if(donationDetails["checked"]&& donationDetails["addNewLocality"]){
           donationDetails["Locality"]={"location_name": donationDetails["addNewLocality"]}
           delete donationDetails["checked"]
@@ -527,7 +534,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http ) {
       // add same details in donations 
             Object.keys($scope.driveDetails.donations).forEach(function(donationId){
 				donationRef.child(donationId).child("PIC").set(name);
-				donationRef.child(donationId).child("PIC_Conatct").set(mobile);
+				donationRef.child(donationId).child("PIC_Contact").set(mobile);
       });
       // get updated details 
       getDriveDetails();

@@ -76,7 +76,9 @@
                 </div>
               </wz-step>
               <wz-step wz-title="Step 2/2">
-                <section class="row">
+              {{selectedDonation|json}}
+                {{selectedDonationDetails|json}}
+                <section>
                   <label for="locality">Contributions</label><br>
                   <b ng-if="selectedDonation.length>0">Selected Contributions : </b><br>
                   <div ng-if="selectedDonation.length>0" ng-repeat="donation in selectedDonationDetails">
@@ -148,7 +150,6 @@
                               <button type="button" class="close" data-dismiss="modal"
                                 aria-hidden="true">&times;</button>
                               <h4 class="modal-title" id="myModalLabel">Contributions</h4>
-                              
                             </div>
                             <div class="modal-body">
                                 <!-- <input type="text" class="form-control" placeholder="Search for Donations" ng-model="allDonations" /> -->
@@ -227,9 +228,10 @@
                       </div>
                     </div>
                   </div>
-                </section>
-                <hr />
-                <section class="row">
+                </section><br>
+                <hr/>
+                <hr>
+                <section>
                   <label for="city">Clusters/Homes</label><br>
 
                   <b ng-if="selectedCluster.length>0">Selected Clusters/Homes : </b>
